@@ -17,8 +17,8 @@ apply plugin: 'spring-boot'
 apply plugin: 'application'
 apply plugin: 'war'
 
-//mainClassName = "controllers.WebApplication"
-mainClassName = "controllers.TomcatConfiguration"
+mainClassName = "controllers.WebApplication"
+//mainClassName = "controllers.TomcatConfiguration"
 
 war {
     baseName = 'crs-rest-service'
