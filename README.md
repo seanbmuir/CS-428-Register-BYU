@@ -9,4 +9,5 @@ cd CS-428-Register-BYU
 ./gradlew
 ```
 To run, use `./gradlew run` and visit `http://localhost:8080`
+
 To see other available gradle tasks, use `./gradlew tasks`
