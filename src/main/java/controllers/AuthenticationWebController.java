@@ -2,6 +2,8 @@ package controllers;
 
 import exceptions.NotAuthorizedException;
 import models.UserCredentials;
+import org.jasig.cas.client.util.AbstractCasFilter;
+import org.jasig.cas.client.validation.Assertion;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -72,6 +74,23 @@ public class AuthenticationWebController {
 		session.removeAttribute("pepper");
 	}
 
+	@RequestMapping(value = "/service", method = GET)
+	@ResponseStatus(value = HttpStatus.OK)
+	@ResponseBody
+	public UserCredentials casService(HttpServletRequest request)
+	{
+		UserCredentials user = new UserCredentials();
+
+		final Assertion assertion=(Assertion)request.getSession().getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION);
+		if (assertion != null)
+		{
+			String username = assertion.getPrincipal().getName();
+			user.setUsername(username);
+		}
+
+		return user;
+	}
+
   @RequestMapping(value = "/logout", method = GET)
   @ResponseStatus(value = HttpStatus.OK)
   public void logout(HttpServletRequest request)
@@ -79,15 +98,6 @@ public class AuthenticationWebController {
     HttpSession session = request.getSession(false);
     if (session != null) {
       session.invalidate();
-    }
-  }
-
-  @RequestMapping(value = "/test", method = GET)
-  @ResponseStatus(value = HttpStatus.OK)
-  public void testSession(HttpServletRequest request) {
-    HttpSession session = request.getSession(false);
-    if (session == null) {
-      throw new NotAuthorizedException();
     }
   }
 
