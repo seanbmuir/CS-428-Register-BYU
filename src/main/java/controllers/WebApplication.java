@@ -12,7 +12,7 @@ import org.springframework.boot.context.embedded.tomcat.TomcatContextCustomizer;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-
+import java.net.*;
 import java.util.*;
 
 /**
@@ -24,10 +24,18 @@ import java.util.*;
 public class WebApplication
 {
     // Since "http://localhost" doesn't work when redirecting from the CAS server, the IP address of the server is given here
-    private final String service = "http://[2605:a601:5e1:7d01:ad84:43bd:b29:aa6a]:8080/auth/service";
+    private static String service;
 
 	public static void main(String[] args)
     {
+		String ip = "192.168.1.1";
+		try{
+			ip = InetAddress.getLocalHost().getHostAddress();
+		}
+		catch(Exception e){
+			System.out.println("Could not get IP Address");
+		}
+		service = "http://"+ip+":8080/";//auth/service
 		SpringApplication app = new SpringApplication(WebApplication.class);
 		System.out.print("Starting app with System Args: [" );
         for (String s : args)
@@ -76,7 +84,7 @@ public class WebApplication
         validFilter.setTicketValidator(validator);
         Map<String, String> params = new HashMap<String,String>();
         params.put("service", service);
-        params.put("casServerUrlPrefix", "https://cas.byu.edu/cas"); // TODO: try without /cas
+        params.put("casServerUrlPrefix", "https://cas.byu.edu/cas");
         params.put("ticketValidatorClass", "org.jasig.cas.client.validation.Cas20ServiceTicketValidator");
         filterRegBean.setInitParameters(params);
 
