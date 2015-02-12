@@ -77,7 +77,7 @@ public class AuthenticationWebController {
 	@RequestMapping(value = "/service", method = GET)
 	@ResponseStatus(value = HttpStatus.OK)
 	@ResponseBody
-	public UserCredentials casService(HttpServletRequest request)
+	public UserCredentials casService(HttpServletRequest request, HttpSession session)
 	{
 		UserCredentials user = new UserCredentials();
 
@@ -86,6 +86,8 @@ public class AuthenticationWebController {
 		{
 			String username = assertion.getPrincipal().getName();
 			user.setUsername(username);
+			String userId = service.loginViaService(user);
+			session.setAttribute("uid", userId);
 		}
 
 		return user;

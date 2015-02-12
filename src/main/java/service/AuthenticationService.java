@@ -50,6 +50,19 @@ public class AuthenticationService {
 		String encoded = encodeId(id);
 		return encoded;
 	}
+	
+	public String loginViaService(UserCredentials user){
+		try{
+			store.addUser(user);
+		}
+		catch(Exception e){
+			//user already exists.
+		}
+		//UserCredentials credentials = store.getCredentials(user.getUsername());
+		int id = store.getUserId(user.getUsername());
+		String encoded = encodeId(id);
+		return encoded;
+	}
 
 	public static String encodeId(int id) {
 		String encodedId = "";

@@ -8,11 +8,19 @@ var conflictingEventColor = '#C25151';
 /* Controllers */
 var classregControllers = angular.module('classregControllers', []);
 
-classregControllers.controller('HeaderController', ['$scope', '$rootScope', '$location',
-    function($scope, $rootScope, $location) {
+classregControllers.controller('HeaderController', ['$scope', '$http', '$rootScope', '$location',
+    function($scope, $http, $rootScope, $location) {
         $scope.isActive = function(viewLocation) {
             return viewLocation === $location.path();
         };
+		
+		//check if logged in
+		$http.get('auth/service').success(function (data) {
+            if(data.username!==null){
+				$rootScope.loggedIn = true;
+				$rootScope.username = data.username;
+			}
+        });
     }
 ]);
 
@@ -126,6 +134,7 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
             });
             $scope.isLoadingCourses = false;
         });
+		
         // popular courses to be shown when there are no filters applied
         $scope.popularCourses = ['REL A121', 'REL A122', 'A HTG100', 'BIO100', 'C S142', 'MATH112', 'MATH113', 'WRTG150', 'CHEM111', 'CHEM101', 'PHSCS121', 'COMMS101', 'ACC200', 'EL ED202'];
 
@@ -586,6 +595,26 @@ classregControllers.controller('CalendarCtrl', ['$scope',
 
     }]);
 
+function getParameterByName(name) {
+	name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+	var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+		results = regex.exec(location.search);
+	return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+if(getParameterByName('ticket')){
+	window.location.replace('/auth/service?ticket='+getParameterByName('ticket'));
+}
+
+$(function() {
+	$('#loginButton')[0].href = "https://cas.byu.edu/cas/login?service="+encodeURIComponent("http://"+window.location.host+"/");//must exactly match WebApplication.java:service
+	$('#logoutButton').click(function(event){
+		event.preventDefault();
+		$.ajax('auth/logout').done(function () {
+				location.reload(); 
+			});
+	});
+});
+	
 function loadRegistrationPage() {
     var domain = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
     $("#registration-iframe").attr("src", domain + '/byu-login-landing.html')
