@@ -12,7 +12,8 @@ import org.springframework.boot.context.embedded.tomcat.TomcatContextCustomizer;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import java.net.*;
+
+import java.net.InetAddress;
 import java.util.*;
 
 /**
@@ -49,11 +50,14 @@ public class WebApplication
 
     @Bean
     public EmbeddedServletContainerFactory servletContainer() {
-    TomcatEmbeddedServletContainerFactory factory = new TomcatEmbeddedServletContainerFactory();
-    factory.setTomcatContextCustomizers(Arrays.asList(new CustomCustomizer()));
-    return factory;
+        TomcatEmbeddedServletContainerFactory factory = new TomcatEmbeddedServletContainerFactory();
+        factory.setTomcatContextCustomizers(Arrays.asList(new CustomCustomizer()));
+        return factory;
     }
 
+    /*
+    Authenticates a user via the CAS server.
+     */
     @Bean()
     public FilterRegistrationBean authorizationFilter()
     {
@@ -74,6 +78,9 @@ public class WebApplication
         return filterRegBean;
     }
 
+    /*
+    Validates a ticket from the CAS server.
+     */
     @Bean()
     public FilterRegistrationBean ticketValidationFilter()
     {
