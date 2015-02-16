@@ -1,16 +1,19 @@
 package parser.catalog;
 
-import catalogData.DepartmentDownloader;
 import com.mongodb.*;
+import models.Section;
 import org.json.JSONException;
 import parser.instructor.InstructorParser;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class CatalogParser {
 	
@@ -60,17 +63,17 @@ public class CatalogParser {
         int profMatchCount = 0;
         int staffSections = 0;
         for (Section s: sections) {
-             if (professorCodes.containsKey(s.professor)){
-                s.rateMyProfId = professorCodes.get(s.professor);
+             if (professorCodes.containsKey(s.getProfessor())){
+                 s.setRateMyProfId(professorCodes.get(s.getProfessor()));
                 profMatchCount++;
              }
              else{
-                 if(s.professor.equals("") || s.professor.equalsIgnoreCase("staff"))
+                 if (s.getProfessor().equals("") || s.getProfessor().equalsIgnoreCase("staff"))
                      staffSections++;
                  else {
-                    System.out.println("Unmatched: " + s.professor);
+                    System.out.println("Unmatched: " + s.getProfessor());
                  }
-                 s.rateMyProfId = "";
+                 s.setRateMyProfId("");
              }
         }
 
@@ -151,74 +154,81 @@ public class CatalogParser {
      * STRUCTURE: Course document holds a list of Sections, which hold a list of TimePlaces
      */
     public static BasicDBObject[] buildCourseObjects() {
-        System.out.println("Start Creating Course Objects");
-        long startTime = System.currentTimeMillis();
-
-        Map<String, String> depNames = DepartmentDownloader.getDepartmentMap();
-
-    	// Map of course IDs that point to a list of section DATABASE OBJECTS that have that course ID
-    	Map<String, List<BasicDBObject>> courseMap = new HashMap<>();
-    	
-    	// Map of course IDs that point to a Course object (holding more details for the course) 
-    	Map<String, Course> courseInfoMap = new HashMap<>();
-    	
-    	// Fill these two maps by iterating through the list of sections
-    	for (int i = 0; i < sections.size(); i++) {
-
-    		if (courseMap.containsKey(sections.get(i).courseID))
-    			courseMap.get(sections.get(i).courseID).add(sections.get(i).getDBObject());
-    		else {
+        //"Don't worry about this unless we have to. Doesn't compile if uncommented"
+        throw new NotImplementedException();
 
 
-                Section s = sections.get(i);
-                List<String> outcomes = new ArrayList<String>();
-               /* try{
-                    String outcomes_str = httpCourseDownloader.getCourseOutcomes(s.courseID, s.newTitleCode);
-                    JSONArray jsonArray = new JSONArray(outcomes_str);
-                    for(int j = 0; j < jsonArray.length(); j++){
-                       // System.out.println(" OBJECTIVE-- " + jsonArray.get(j).toString());
-                         outcomes.add(jsonArray.get(j).toString());
-                    }
-                }  catch (JSONException ex) {
-                   System.out.println(ex.toString());
-                }
-                */
-
-                String deptName = depNames.get(s.department);
-    			courseMap.put(s.courseID, new ArrayList<BasicDBObject>(Arrays.asList(s.getDBObject())));
-    			courseInfoMap.put(s.courseID, new Course(s.courseID, s.courseName, outcomes, s.newTitleCode, s.department, deptName , s.registrationType, s.courseNumber));
-    		}
-    	}
-    	
-    	// Create an ArrayList of BasicDBObjects (one for each course) called courseObjects
-    	List<BasicDBObject> courseObjects = new ArrayList<>();
-    	for (Map.Entry<String, List<BasicDBObject>> curCourse : courseMap.entrySet()) {
-    		
-    		Course c = courseInfoMap.get(curCourse.getKey());
-    		BasicDBObject newCourse = new BasicDBObject();
-    		
-    		newCourse.put("courseID", curCourse.getKey());
-    		newCourse.put("courseName", c.courseName);
-            newCourse.put("outcomes", c.outcomes);
-    		newCourse.put("newTitleCode", c.newTitleCode);
-    		newCourse.put("department", c.department);
-            newCourse.put("departmentCode", c.departmentCode);
-    		newCourse.put("registrationType", c.registrationType);
-    		newCourse.put("courseNumber", c.courseNumber);
-    		newCourse.put("sections", curCourse.getValue());
-    		courseObjects.add(newCourse);
-    	}
-    	
-    	// Change format from ArrayList to an Array (for inserting)
-    	BasicDBObject[] courseArray = new BasicDBObject[courseObjects.size()];
-    	for (int i = 0; i < courseObjects.size(); i++)
-    		courseArray[i] = courseObjects.get(i);
 
 
-        long endTime = System.currentTimeMillis();
 
-        System.out.println("Done Creating Course Objects, took " + ((endTime - startTime)/1000.0) + " seconds\n");
-        return courseArray;
+//        System.out.println("Start Creating Course Objects");
+//        long startTime = System.currentTimeMillis();
+//
+//        Map<String, String> depNames = DepartmentDownloader.getDepartmentMap();
+//
+//    	// Map of course IDs that point to a list of section DATABASE OBJECTS that have that course ID
+//    	Map<String, List<BasicDBObject>> courseMap = new HashMap<>();
+//
+//    	// Map of course IDs that point to a Course object (holding more details for the course)
+//    	Map<String, Course> courseInfoMap = new HashMap<>();
+//
+//    	// Fill these two maps by iterating through the list of sections
+//    	for (int i = 0; i < sections.size(); i++) {
+//
+//    		if (courseMap.containsKey(sections.get(i).getCourseID()))
+//    			courseMap.get(sections.get(i).courseID).add(sections.get(i).getDBObject());
+//    		else {
+//
+//
+//                Section s = sections.get(i);
+//                List<String> outcomes = new ArrayList<String>();
+//               /* try{
+//                    String outcomes_str = httpCourseDownloader.getCourseOutcomes(s.courseID, s.newTitleCode);
+//                    JSONArray jsonArray = new JSONArray(outcomes_str);
+//                    for(int j = 0; j < jsonArray.length(); j++){
+//                       // System.out.println(" OBJECTIVE-- " + jsonArray.get(j).toString());
+//                         outcomes.add(jsonArray.get(j).toString());
+//                    }
+//                }  catch (JSONException ex) {
+//                   System.out.println(ex.toString());
+//                }
+//                */
+//
+//                String deptName = depNames.get(s.department);
+//    			courseMap.put(s.courseID, new ArrayList<BasicDBObject>(Arrays.asList(s.getDBObject())));
+//    			courseInfoMap.put(s.courseID, new Course(s.courseID, s.courseName, outcomes, s.newTitleCode, s.department, deptName , s.registrationType, s.courseNumber));
+//    		}
+//    	}
+//
+//    	// Create an ArrayList of BasicDBObjects (one for each course) called courseObjects
+//    	List<BasicDBObject> courseObjects = new ArrayList<>();
+//    	for (Map.Entry<String, List<BasicDBObject>> curCourse : courseMap.entrySet()) {
+//
+//    		Course c = courseInfoMap.get(curCourse.getKey());
+//    		BasicDBObject newCourse = new BasicDBObject();
+//
+//    		newCourse.put("courseID", curCourse.getKey());
+//    		newCourse.put("courseName", c.courseName);
+//            newCourse.put("outcomes", c.outcomes);
+//    		newCourse.put("newTitleCode", c.newTitleCode);
+//    		newCourse.put("department", c.department);
+//            newCourse.put("departmentCode", c.departmentCode);
+//    		newCourse.put("registrationType", c.registrationType);
+//    		newCourse.put("courseNumber", c.courseNumber);
+//    		newCourse.put("sections", curCourse.getValue());
+//    		courseObjects.add(newCourse);
+//    	}
+//
+//    	// Change format from ArrayList to an Array (for inserting)
+//    	BasicDBObject[] courseArray = new BasicDBObject[courseObjects.size()];
+//    	for (int i = 0; i < courseObjects.size(); i++)
+//    		courseArray[i] = courseObjects.get(i);
+//
+//
+//        long endTime = System.currentTimeMillis();
+//
+//        System.out.println("Done Creating Course Objects, took " + ((endTime - startTime)/1000.0) + " seconds\n");
+//        return courseArray;
     }
 
     private static void replaceAllCourseData(DB db, BasicDBObject[] courseArray) {
@@ -282,7 +292,9 @@ public class CatalogParser {
      * @param nextElement Next item to be placed into the current Section object
      */
     public static void insertElementIntoSection(String nextElement) {
-    	
+        //TODO: Until we can find out what to do with the DB this will be put on hold.
+    	throw new NotImplementedException();
+        /*
     	// Set the element using the current index before incrementing the index
     	curSection.setElement(index, nextElement);
         if (index == 17 && nextElement.equals("N/A")){
@@ -290,19 +302,20 @@ public class CatalogParser {
             index++;
         }
     	index++;
-    	
+
     	// If index equals this max index variable, this means the parser has finished one section
     	// and will move onto the next.  We'll finish off this section and start a new one
     	if (index == MAX_INDEX_BEFORE_INSERTION) {
-    	    		
+
     		sections.add(curSection);
     		curSection = new Section();
     		index = 0;
     	}
-    	
+
     	// This shouldn't be reached unless the code is modified incorrectly
     	if (index > MAX_INDEX_BEFORE_INSERTION)
     		System.out.println("Error: Index shouldn't be > " + MAX_INDEX_BEFORE_INSERTION + " (it is currently " + index + ")");
+    		*/
     }
 
     public static DB getDB() {

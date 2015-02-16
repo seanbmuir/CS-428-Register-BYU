@@ -16,6 +16,8 @@ public class Section {
     private String sectionType;
     private String professor;
     private String pid;
+    private String rateMyProfId;
+
 
     public String getCredits() {
         return credits;
@@ -116,5 +118,13 @@ public class Section {
 
     public void setWaitList(String waitList) {
         this.waitList = waitList;
+    }
+
+    public String getRateMyProfId() {
+        return rateMyProfId;
+    }
+
+    public void setRateMyProfId(String rateMyProfId) {
+        this.rateMyProfId = rateMyProfId;
     }
 }
