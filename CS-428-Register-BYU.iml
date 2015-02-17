@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.linked.project.path="$MODULE_DIR$" external.root.project.path="$MODULE_DIR$" external.system.id="GRADLE" external.system.module.group="" external.system.module.version="unspecified" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
+      <excludeFolder url="file://$MODULE_DIR$/.gradle" />
+      <excludeFolder url="file://$MODULE_DIR$/build" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" scope="TEST" name="Gradle: hamcrest-core-1.3" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: xml-apis-1.4.01" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: spring-expression-4.0.5.RELEASE" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: logback-core-1.1.2" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: selenium-api-2.37.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: netty-3.5.2.Final" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: spring-web-4.0.5.RELEASE" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: xmlsec-1.4.4" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: selenium-java-2.37.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: selenium-remote-driver-2.37.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: spring-boot-starter-tomcat-1.1.1.RELEASE" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: tomcat-embed-logging-juli-7.0.54" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: commons-httpclient-3.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: esapi-2.0GA" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: selenium-android-driver-2.37.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: serializer-2.7.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: spring-boot-starter-1.1.1.RELEASE" level="project" />
+    <orderEntry type="library" scope="TEST" name="Gradle: junit-4.11" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: selenium-iphone-driver-2.37.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: openws-1.4.2-1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: commons-lang3-3.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: spring-boot-starter-logging-1.1.1.RELEASE" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: commons-codec-1.8" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: tomcat-embed-core-7.0.54" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: selenium-firefox-driver-2.37.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: jackson-databind-2.3.3" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: gson-2.2.4" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: selenium-ie-driver-2.37.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: httpclient-4.3.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: spring-boot-starter-web-1.1.1.RELEASE" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: log4j-over-slf4j-1.7.7" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: jna-3.4.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: jboss-logging-3.1.1.GA" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: not-yet-commons-ssl-0.3.9" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: jetty-http-8.1.12.v20130726" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: webbit-0.4.14" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: jackson-annotations-2.3.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: jackson-core-2.3.3" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: velocity-1.5" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: cglib-nodep-2.1_3" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: nekohtml-1.9.19" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: platform-3.4.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: xalan-2.7.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: commons-collections-3.2.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: htmlunit-core-js-2.13" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: mongo-java-driver-2.11.3" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: snakeyaml-1.13" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: spring-boot-autoconfigure-1.1.1.RELEASE" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: selenium-chrome-driver-2.37.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: hibernate-validator-5.0.3.Final" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: joda-time-1.6.2" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: commons-io-2.4" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: commons-logging-1.1.3" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: json-20080701" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: xml-resolver-1.2" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: logback-classic-1.1.2" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: classmate-1.0.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: sac-1.3" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: httpmime-4.3.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: xercesImpl-2.11.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: spring-boot-1.1.1.RELEASE" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: cas-client-core-3.3.3" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: bcprov-jdk15-1.45" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: tomcat-embed-el-7.0.54" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: spring-beans-4.0.5.RELEASE" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: xmltooling-1.3.2-1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: jetty-util-8.1.12.v20130726" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: selenium-safari-driver-2.37.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: jetty-websocket-8.1.12.v20130726" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: spring-aop-4.0.5.RELEASE" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: spring-webmvc-4.0.5.RELEASE" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: spring-context-4.0.5.RELEASE" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: jcip-annotations-1.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: validation-api-1.1.0.Final" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: jetty-io-8.1.12.v20130726" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: guava-16.0.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: opensaml-2.5.1-1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: jul-to-slf4j-1.7.7" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: aopalliance-1.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: htmlunit-2.13" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: commons-lang-2.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: httpcore-4.3" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: cssparser-0.9.11" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: slf4j-api-1.7.7" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: commons-exec-1.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: selenium-support-2.37.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: selenium-htmlunit-driver-2.37.1" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: jcl-over-slf4j-1.7.7" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: spring-core-4.0.5.RELEASE" level="project" />
+  </component>
+</module>
+

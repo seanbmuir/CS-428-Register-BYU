@@ -1,8 +1,13 @@
 package database;
 
 import com.mongodb.*;
+import models.Course;
+import models.Semester;
+import models.TimePlace;
 
-public interface ISemesterDAO {
+import java.util.ArrayList;
+
+public interface    ISemesterDAO {
     
     public void addSemester(Semester semester);
     
@@ -16,7 +21,7 @@ public interface ISemesterDAO {
     
     public ArrayList<Course> getCoursesByCredit(int credit);
     
-    public ArrayList<Course> getCoursesByProfessor(Professor professor); // We don't have a model for professor
+    //public ArrayList<Course> getCoursesByProfessor(Professor professor); // We don't have a model for professor
     
     public ArrayList<Course> getCoursesByTimeOfDay(TimePlace timeplace);
 }
