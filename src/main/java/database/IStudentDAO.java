@@ -1,6 +1,6 @@
 package database;
 
-import com.mongodb.*;
+import models.*;
 
 public interface IStudentDAO {
     
