@@ -1,9 +1,7 @@
 package database;
 
 import com.mongodb.*;
-import models.Course;
-import models.Section;
-import models.Student;
+import models.*;
 
 public interface IStudentDAO {
     

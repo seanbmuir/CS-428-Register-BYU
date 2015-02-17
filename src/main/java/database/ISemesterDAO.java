@@ -1,13 +1,9 @@
 package database;
 
-import com.mongodb.*;
-import models.Course;
-import models.Semester;
-import models.TimePlace;
+import models.*;
+import java.util.*;
 
-import java.util.ArrayList;
-
-public interface    ISemesterDAO {
+public interface ISemesterDAO {
     
     public void addSemester(Semester semester);
     
