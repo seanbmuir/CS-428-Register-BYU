@@ -610,7 +610,7 @@ $(function() {
 	$('#logoutButton').click(function(event){
 		event.preventDefault();
 		$.ajax('auth/logout').done(function () {
-				location.reload(); 
+				location.replace('https://cas.byu.edu/cas/logout'); 
 			});
 	});
 });
