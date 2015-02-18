@@ -269,6 +269,31 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
             }
             return null;
         };
+		
+		$scope.loadByuCourses = function(){
+			if($rootScope.loggedIn){
+				$('#loadByuCoursesModal').show();
+			}else{
+				alert('please login before loading classes');
+			}
+		};
+				
+		$scope.loadByuCoursesOkay = function(){
+			try{
+				$scope.importedClasses = JSON.parse($('#jsonPlannedClasses')[0].value);
+				var plans = $scope.importedClasses.plans;
+				$scope.popularCourses = [];
+				for(var i=0; i< plans.length; i++){
+					if(plans[i]["yearTerm"]=="20151"){
+						var courseTitle = plans[i]["title"];
+						$scope.popularCourses.push(courseTitle.substr(0,courseTitle.length-4) + courseTitle.substr(courseTitle.length-3,3));
+					}
+				}
+			}catch(e){
+				//silently die, should tell users we couldn't parse their classes.
+			}
+			$('#loadByuCoursesModal').hide();
+		};
 
         $scope.addCourseToPlan = function(course, section) {
             $scope.saved = false;
