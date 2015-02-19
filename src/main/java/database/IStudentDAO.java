@@ -2,6 +2,7 @@ package database;
 
 import com.mongodb.*;
 import models.*;
+import packages.Courses;
 
 public interface IStudentDAO {
     
@@ -15,7 +16,7 @@ public interface IStudentDAO {
     
     public Student getStudent(int id);
     
-    public void addCourses(Course course);
+    public void addCourses(Courses course);
     
-    public void removeCourses(Course course);
+    public void removeCourses(Courses course);
 }

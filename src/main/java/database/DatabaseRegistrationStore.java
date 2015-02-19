@@ -85,6 +85,7 @@ public class DatabaseRegistrationStore implements RegistrationStore {
     }
 
     //@Override
+    //TODO:Figure out if needed
     public List<Requirement> getRequirementsForMajor(String major) {
         List<Requirement> requirementList = new ArrayList<>();
         return requirementList;

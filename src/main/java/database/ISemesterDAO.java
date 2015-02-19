@@ -1,6 +1,8 @@
 package database;
 
 import models.*;
+import packages.Courses;
+
 import java.util.*;
 
 public interface ISemesterDAO {
@@ -11,8 +13,8 @@ public interface ISemesterDAO {
     
     public Semester getSemester(int sem_id);
 
-    public void addCourses(Course course);
-    
+    public void addCourses(Courses courses);
+
     public ArrayList<Semester> getSetOfSemester();
     
     public ArrayList<Course> getCoursesByCredit(int credit);
