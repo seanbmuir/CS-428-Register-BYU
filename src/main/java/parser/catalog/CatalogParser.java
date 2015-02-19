@@ -325,7 +325,7 @@ public class CatalogParser {
 
         // Connect to our database
         MongoClientURI uri = new MongoClientURI("mongodb://" + dbUser + ":" + dbPassword +
-                "@mongo.registerbyu.com:27017/classreg");
+                "@54.204.96.22:27017/classreg");
         MongoClient client;
 		try {
 			client = new MongoClient(uri);
