@@ -3,6 +3,7 @@ package database;
 import models.Course;
 import models.Semester;
 import models.TimePlace;
+import packages.Courses;
 
 import java.util.ArrayList;
 
@@ -30,7 +31,7 @@ public class SemesterDAO implements ISemesterDAO
     }
 
     @Override
-    public void addCourses(Course course)
+    public void addCourses(Courses course)
     {
 
     }

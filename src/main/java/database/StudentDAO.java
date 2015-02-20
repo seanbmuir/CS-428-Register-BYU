@@ -3,6 +3,7 @@ package database;
 import models.Course;
 import models.Section;
 import models.Student;
+import packages.Courses;
 
 /**
  * Created by sean on 2/17/15.
@@ -40,14 +41,15 @@ public class StudentDAO implements IStudentDAO
     }
 
     @Override
-    public void addCourses(Course course)
+    public void addCourses(Courses course)
     {
 
     }
 
     @Override
-    public void removeCourses(Course course)
+    public void removeCourses(Courses course)
     {
 
     }
+
 }

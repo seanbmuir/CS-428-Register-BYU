@@ -32,23 +32,36 @@ public class DatabaseRegistrationStore implements RegistrationStore {
     }
 
 	public static DB getDB() {
+// ONLINE USE
+//		String dbUser = "admin";
+//		String dbPassword = "ad428min";
+//
+//		// Connect to our database
+//		MongoClientURI uri = new MongoClientURI("mongodb://" + dbUser + ":" + dbPassword +
+//				"@mongo.registerbyu.com/classreg");
+//		MongoClient client;
+//		try {
+//			client = new MongoClient(uri);
+//			DB db = client.getDB(uri.getDatabase());
+//			return db;
+//		} catch (UnknownHostException e) {
+//
+//			System.out.println("COULDN\'T GET THE DB");
+//			e.printStackTrace();
+//		}
 
-		String dbUser = "admin";
-		String dbPassword = "ad428min";
+//LOCAL USE
 
-		// Connect to our database
-		MongoClientURI uri = new MongoClientURI("mongodb://" + dbUser + ":" + dbPassword +
-				"@mongo.registerbyu.com/classreg");
-		MongoClient client;
-		try {
-			client = new MongoClient(uri);
-			DB db = client.getDB(uri.getDatabase());
-			return db;
-		} catch (UnknownHostException e) {
-
+        try{
+            MongoClient client = new MongoClient("localhost",27017);
+            DB db = client.getDB("test");
+            return db;
+        }catch(UnknownHostException e){
 			System.out.println("COULDN\'T GET THE DB");
 			e.printStackTrace();
-		}
+        }
+
+
 		return null;
 	}
 
