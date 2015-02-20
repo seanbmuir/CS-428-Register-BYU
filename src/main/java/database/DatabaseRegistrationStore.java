@@ -59,9 +59,7 @@ public class DatabaseRegistrationStore implements RegistrationStore {
         }catch(UnknownHostException e){
 			System.out.println("COULDN\'T GET THE DB");
 			e.printStackTrace();
-        }
-
-
+		}
 		return null;
 	}
 
