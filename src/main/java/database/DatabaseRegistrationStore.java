@@ -236,7 +236,7 @@ public class DatabaseRegistrationStore implements RegistrationStore {
                 BasicDBObject dbTimePlace = (BasicDBObject) dboTimePlace;
                 timePlaceList.add(buildTimePlaceObject(dbTimePlace));
             }
-            s.setTimePlaces(timePlaceList);
+            s.setTimePlaces(timePlaceList); TODO://FIX
             sectionList.add(s);
         }
 

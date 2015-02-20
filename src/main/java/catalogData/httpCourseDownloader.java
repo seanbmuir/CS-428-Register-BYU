@@ -114,6 +114,11 @@ public class httpCourseDownloader {
         String htmlString = new Scanner(new File(fileName)).useDelimiter("\\Z").next();
         htmlString=htmlString.replaceAll("<br>","\n");
         htmlString=htmlString.replaceAll("</li>","\n");
+        htmlString=htmlString.replaceAll("#R#", "R#");
+        htmlString=htmlString.replaceAll("#A#", "A#");
+        htmlString=htmlString.replaceAll("#M#", "M#");
+        htmlString=htmlString.replaceAll("#B#", "B#");
+        htmlString=htmlString.replaceAll("#D#", "D#");
         String noHTMLString = htmlString.replaceAll("\\<.*?\\>", "");
         PrintWriter out = new PrintWriter(fileName);
         //System.out.println(noHTMLString);
