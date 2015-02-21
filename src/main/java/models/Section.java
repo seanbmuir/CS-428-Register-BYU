@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,6 +18,47 @@ public class Section {
     private String professor;
     private String pid;
     private String rateMyProfId;
+    private String[] startTimes;
+    private String[] endTimes;
+    private String[] locations;
+    private String[] daysTaught;
+
+    public String[] getStartTimes() {
+		return startTimes;
+	}
+
+	public void setStartTimes(String[] startTimes) {
+		this.startTimes = startTimes;
+	}
+
+	public String[] getEndTimes() {
+		return endTimes;
+	}
+
+	public void setEndTimes(String[] endTimes) {
+		this.endTimes = endTimes;
+	}
+
+	public String[] getLocations() {
+		return locations;
+	}
+
+	public void setLocations(String[] locations) {
+		this.locations = locations;
+	}
+
+	public String[] getDaysTaught() {
+		return daysTaught;
+	}
+
+	public void setDaysTaught(String[] daysTaught) {
+		this.daysTaught = daysTaught;
+	}
+
+
+    private String seatsAvailable;
+    private String totalSeats;
+    private String waitList;
 
 
     public String getCredits() {
@@ -37,11 +79,6 @@ public class Section {
         this.pid = pid;
     }
 
-    private List<TimePlace> timePlaces;
-
-    private String seatsAvailable;
-    private String totalSeats;
-    private String waitList;
 
     public Section(){
 
@@ -49,7 +86,7 @@ public class Section {
 
     public String toString(){
         String output = "Section: " + sectionID + "\t" + sectionType + "\t" + professor + "\t";
-        for(TimePlace t : timePlaces){
+        for(TimePlace t : getTimePlaces()){
             output += "\n\t\t\t" + t.toString();
         }
 
@@ -89,12 +126,44 @@ public class Section {
     }
 
     public List<TimePlace> getTimePlaces() {
-        return timePlaces;
+    	
+    	List<TimePlace> timePlaces = new ArrayList<TimePlace>();
+    	for (int i = 0; i < startTimes.length; i++)
+    	{
+    		String location;
+    		if(i >= locations.length)
+    			location = locations[0];
+    		else
+    			location = locations[i];
+    			
+    		timePlaces.add(new TimePlace(daysTaught[i], startTimes[i], endTimes[i], location));
+    	}
+    		
+    	
+    	
+    	
+    return timePlaces;
+    	
+    	
+
+    }
+    
+    public void setTimePlaces(List<TimePlace> timePlaces)
+    {
+    	int numTimePlaces = timePlaces.size();
+    	startTimes = new String[numTimePlaces];
+    	endTimes = new String[numTimePlaces];
+    	locations = new String[numTimePlaces];
+    	daysTaught = new String[numTimePlaces];
+    	for(int i = 0; i < numTimePlaces; i++)
+    	{
+    		startTimes[i] = timePlaces.get(i).getStartTime();
+    		endTimes[i] = timePlaces.get(i).getEndTime();
+    		locations[i] = timePlaces.get(i).getLocation();
+    		daysTaught[i] = timePlaces.get(i).getDay();
+    	}
     }
 
-    public void setTimePlaces(List<TimePlace> timePlaces) {
-        this.timePlaces = timePlaces;
-    }
 
     public String getSeatsAvailable() {
         return seatsAvailable;

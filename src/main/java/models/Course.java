@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,7 +23,8 @@ public class Course {
     private List<Section> sections;
 
     public Course() {
-
+    	sections = new ArrayList<Section>();
+    	outcomes = new ArrayList<String>();
     }
 
     public String toString(){
@@ -104,5 +106,10 @@ public class Course {
 
     public void setDepartmentCode(String departmentCode) {
         this.departmentCode = departmentCode;
+    }
+    
+    public void addSection(Section s)
+    {
+    	sections.add(s);
     }
 }
