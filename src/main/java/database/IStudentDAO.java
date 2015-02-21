@@ -10,9 +10,9 @@ public interface IStudentDAO {
     
     public void deleteStudent(Student student);
     
-    public void addSection(Section section);
+    public void addSection(Section section, Student student);
     
-    public void removeSection(Section section);
+    public void removeSection(Section section, Student student);
     
     public Student getStudent(int id);
     
