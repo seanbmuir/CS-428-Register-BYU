@@ -22,4 +22,8 @@ public interface ISemesterDAO {
     //public ArrayList<Course> getCoursesByProfessor(Professor professor); // We don't have a model for professor
     
     public ArrayList<Course> getCoursesByTimeOfDay(TimePlace timeplace);
+
+    public void addSection(Course course,Section section);
+
+    public void removeSection(Section section);
 }

@@ -1,6 +1,7 @@
 package database;
 
 import models.Course;
+import models.Section;
 import models.Semester;
 import models.TimePlace;
 import packages.Courses;
@@ -52,5 +53,17 @@ public class SemesterDAO implements ISemesterDAO
     public ArrayList<Course> getCoursesByTimeOfDay(TimePlace timeplace)
     {
         return null;
+    }
+
+    @Override
+    public void addSection(Course course, Section section)
+    {
+
+    }
+
+    @Override
+    public void removeSection(Section section)
+    {
+
     }
 }
