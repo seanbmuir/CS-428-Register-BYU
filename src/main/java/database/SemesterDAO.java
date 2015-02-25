@@ -21,7 +21,7 @@ public class SemesterDAO implements ISemesterDAO
 {
     private DB db;
     private DBCollection collection;
-    
+
     public SemesterDAO(DB db){
         this.db = db;
         collection = db.getCollection("semester");
@@ -60,7 +60,9 @@ public class SemesterDAO implements ISemesterDAO
         while (cursor.hasNext())
         {
             DBObject semesterObject = cursor.next();
-            Semester semester = new Semester(semesterObject.get("name").toString(),Integer.parseInt(semesterObject.get("id").toString()));
+            String name = semesterObject.get("name").toString();
+            int id = Integer.parseInt(semesterObject.get("id").toString());
+            Semester semester = new Semester(name,id);
             return semester;
         }
         return null;
@@ -98,10 +100,10 @@ public class SemesterDAO implements ISemesterDAO
         while (cursor.hasNext())
         {
             DBObject semesterObject = cursor.next();
-            Semester semester = new Semester(semesterObject.get("name").toString(),Integer.parseInt(semesterObject.get("id").toString()));
-            semesters.add(semester);
+            //Semester semester = new Semester(semesterObject.get("name").toString(),semesterObject.get("id"));
+            //semesters.add(semester);
         }
-        return semesters;
+        return courses;
     }
 
     @Override
