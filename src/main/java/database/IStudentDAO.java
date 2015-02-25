@@ -16,7 +16,7 @@ public interface IStudentDAO {
     
     public Student getStudent(int id);
     
-    public void addCourses(Courses course);
+    public void addCourses(Courses course, Student student);
     
-    public void removeCourses(Courses course);
+    public void removeCourses(Courses course,Student student);
 }

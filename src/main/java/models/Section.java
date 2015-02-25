@@ -18,6 +18,9 @@ public class Section {
     private String professor;
     private String pid;
     private String rateMyProfId;
+    private String seatsAvailable;
+    private String totalSeats;
+    private String waitList;
     private String[] startTimes;
     private String[] endTimes;
     private String[] locations;
@@ -56,9 +59,7 @@ public class Section {
 	}
 
 
-    private String seatsAvailable;
-    private String totalSeats;
-    private String waitList;
+
 
 
     public String getCredits() {

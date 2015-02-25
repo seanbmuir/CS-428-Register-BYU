@@ -15,7 +15,7 @@ import java.util.Scanner;
  * To change this template use File | Settings | File Templates.
  */
 public class UpdateDatabase {
-    public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException, JSONException {
+    public static void main(String[] arags) throws FileNotFoundException, UnsupportedEncodingException, JSONException {
 
         String fileName = "UPDATE_DATABASE.txt";
         String semesterCode = "20151"; // TODO - Find each semester code
