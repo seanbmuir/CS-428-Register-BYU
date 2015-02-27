@@ -34,7 +34,7 @@ public class UpdateDatabase {
         }
 
         if(option.equals("p") || option.equals("a")){
-            httpCourseDownloader.createCourseDataFile(fileName, semesterCode);
+//            httpCourseDownloader.createCourseDataFile(fileName, semesterCode);
             System.out.println("<<<<<<<<<<<<<<<< DOWNLOAD COMPLETE >>>>>>>>>>>>>>>>");
         }
         if (option.equals("u") || option.equals("a")){

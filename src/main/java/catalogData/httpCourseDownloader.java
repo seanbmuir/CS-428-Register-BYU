@@ -18,7 +18,7 @@ public class httpCourseDownloader {
 
     private static List<String> DEPTS = DepartmentDownloader.getHTMLdeptCodes();
 
-    public static String executePost(String targetURL, String urlParameters)
+    private static String executePost(String targetURL, String urlParameters)
 	  {
 	    URL url;
 	    HttpURLConnection connection = null;  
@@ -78,22 +78,9 @@ public class httpCourseDownloader {
 	    }
 	  }
 	 
-	 public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
-
-         String outputFileName = "Fall2014CatalogTest.txt";
-         String semesterCode = "20145"; // TODO - Find each semester code
-
-         createCourseDataFile(outputFileName, semesterCode);
-	}
-
-    public static void createCourseDataFile(String outputFileName, String semesterCode) throws FileNotFoundException, UnsupportedEncodingException {
-        downloadCourses(outputFileName, semesterCode);
-        removeHtmlFromFile(outputFileName);
-    }
-
-    private static void downloadCourses(String outputFileName, String semesterCode) throws FileNotFoundException, UnsupportedEncodingException {
+    public static String downloadCourses(String semesterCode) throws FileNotFoundException, UnsupportedEncodingException {
         
-        PrintWriter writer = new PrintWriter(outputFileName, "UTF-8");
+        StringBuilder writer = new StringBuilder();
         String creditType = "A"; //Figure out what this means, also "S"
         
         for(String dept : DEPTS){
@@ -104,108 +91,21 @@ public class httpCourseDownloader {
            String out = executePost(targetURL, urlParams);
 
 
-           writer.print(out);
+           writer.append(out);
         }
-        writer.close();
+        return removeHtmlFromFile(writer.toString());
+       
     }
 
 
-    public static void removeHtmlFromFile(String fileName) throws FileNotFoundException {
-        String htmlString = new Scanner(new File(fileName)).useDelimiter("\\Z").next();
+    private static String removeHtmlFromFile(String rawInput) throws FileNotFoundException {
+        String htmlString = rawInput;
         htmlString=htmlString.replaceAll("<br>","\n");
         htmlString=htmlString.replaceAll("</li>","\n");
         String noHTMLString = htmlString.replaceAll("\\<.*?\\>", "");
-        PrintWriter out = new PrintWriter(fileName);
-        //System.out.println(noHTMLString);
-        out.println(noHTMLString);
-        out.close();
-        //CompareFile();
+        return noHTMLString;
     }
 
-
-    private static void CompareFile() throws Exception {
-
-        File f1 = new File("D:\\CS340\\CS340\\Test\\src\\TestCatalog.txt");
-        File f2 = new File("D:\\CS340\\CS340\\Test\\src\\catalog.txt");
-
-        FileReader fR1 = new FileReader(f1);
-        FileReader fR2 = new FileReader(f2);
-
-        BufferedReader reader1 = new BufferedReader(fR1);
-        BufferedReader reader2 = new BufferedReader(fR2);
-
-        String line1 = null;
-        String line2 = null;
-        int count =0;
-
-        while (((line1 = reader1.readLine()) != null) &&((line2 = reader2.readLine()) != null)) {
-            if (!line1.equalsIgnoreCase(line2)) {
-                System.out.println("The files are DIFFERENT on line "+ count);
-            } else {
-                //   System.out.println("The files are identical on line "+ count);
-            }
-            count++;
-
-        }
-        reader1.close();
-        reader2.close();
-    }
-
-    public static void getDataForCourse(PrintWriter writer, Section s, Course c, String semesterCode) {
-		String targetURL;
-		String urlParams;
-		//Individual Course HTTP requests here
-		//Need to parse this Data
-		//Outcomes, Catalog, Syllabus
-		String courseID = c.getCourseID(); //"02859";
-		String titleCode = c.getNewTitleCode(); //"006";
-		//Catalog, Syllabus
-		String section = s.getSectionID(); //"052";
-		String yearTerm = semesterCode; //Spring = "20135"
-		String creditType= "S";
-		//Only Syllabus
-		String department = c.getDepartment();//"A+HTG";
-		String CAT = "100";
-
-        //Outcomes
-        String outcomes = getCourseOutcomes(courseID, titleCode);
-
-        urlParams ="CUR_ID="+ courseID + "&TITLE_CODE=" + titleCode;
-		writer.println("<br>OUTCOMES= " + urlParams + "<br>");
-		writer.println(outcomes);
-        System.out.println("OUTCOMES:\n" + outcomes);
-		
-		//CatalogInfo
-		targetURL = "http://saasta.byu.edu/noauth/classSchedule/ajax/getCatalogInfo.php";
-		urlParams = "CUR_ID=" + courseID +"&TITLE_CODE=" + titleCode + "&SECTION_NUM=" + section + "&YEAR_TERM=" + yearTerm + "&CREDIT_TYPE=" + creditType;
-        System.out.println(targetURL +"?"+ urlParams);
-        String catalogInfo = executePost(targetURL, urlParams);
-		
-		writer.println("<br>CAT_INFO= " + urlParams + "<br>");
-		writer.println(catalogInfo);
-        System.out.println("CATALOG_INFO:\n" + catalogInfo);
-		
-		//Syllabus
-		targetURL = "http://saasta.byu.edu/noauth/classSchedule/ajax/getSyllabus.php";
-		urlParams = "CUR_ID=" + courseID + "&TITLE_CODE=" + titleCode + "&YEAR_TERM=" + yearTerm + "&SECTION=" + section + "&DEPT=" + department + "&CAT=" + CAT;
-        System.out.println(targetURL +"?"+ urlParams);
-        String syllabus = executePost(targetURL, urlParams);
-		
-		writer.println("<br>SYLLABUS= " + urlParams + "<br>");
-		writer.println(syllabus);
-        System.out.println("SYLLABUS:\n" + syllabus);
-	}
-
-    public static String getCourseOutcomes(String courseID, String titleCode){
-        //Outcomes
-        String targetURL = "http://saasta.byu.edu/noauth/classSchedule/ajax/getOutcomes.php";
-        String urlParams ="CUR_ID="+ courseID + "&TITLE_CODE=" + titleCode;
-        String outcomes = executePost(targetURL, urlParams);
-
-
-        System.out.println("\n\nURL:\n"+ targetURL +"?"+ urlParams + "\n" + outcomes);
-        return outcomes;
-    }
 
     public static List<String> getDepartments() {
     	

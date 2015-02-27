@@ -10,18 +10,19 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import catalogData.httpCourseDownloader;
 import models.*;
 import packages.Courses;
 
 public class CatalogParser_NEW {
 	
 	//Flip flag for more printouts to help debug parser
-	final private static boolean SHOULD_LOG = true;
+	final private static boolean SHOULD_LOG = false;
 	
 	public static void main(String[] args)
 	{
 		try {
-			System.out.println(parseCourses(new File("UPDATE_DATABASE.txt")).toString());
+			System.out.println(parseCourses(httpCourseDownloader.downloadCourses("20151")).toString());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
