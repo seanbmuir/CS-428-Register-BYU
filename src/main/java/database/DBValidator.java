@@ -1,0 +1,27 @@
+package database;
+
+import com.mongodb.WriteResult;
+import exceptions.DatabaseException;
+
+/**
+ *
+ */
+public class DBValidator
+{
+	/**
+	 * Validates the result of a DB operation
+	 * @param result the result to validate
+	 */
+	public static void validate(WriteResult result)
+	{
+		String error = result.getError();
+		if(error != null)
+		{
+			throw new DatabaseException(error);
+		}
+		else if(result.getN() < 1)
+		{
+			throw new DatabaseException("Database operation did not complete");
+		}
+	}
+}

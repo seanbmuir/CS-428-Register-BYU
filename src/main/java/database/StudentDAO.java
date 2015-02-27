@@ -1,8 +1,12 @@
 package database;
 
-import models.Course;
+import com.mongodb.DB;
+import com.mongodb.WriteResult;
+import exceptions.DatabaseException;
 import models.Section;
 import models.Student;
+import org.jongo.Jongo;
+import org.jongo.MongoCollection;
 import packages.Courses;
 
 /**
@@ -10,6 +14,17 @@ import packages.Courses;
  */
 public class StudentDAO implements IStudentDAO
 {
+    private DB Db;
+    private MongoCollection students;
+    private final String studentIdQuery = "{studentId: #}";
+
+    public StudentDAO(DB Db)
+    {
+        this.Db = Db;
+        Jongo jongo = new Jongo(this.Db);
+        this.students = jongo.getCollection("students");
+    }
+
     /**
      * Add one student to the database
      * @param student
@@ -17,8 +32,10 @@ public class StudentDAO implements IStudentDAO
     @Override
     public void addStudent(Student student)
     {
-
+        WriteResult result = this.students.insert(student);
+        DBValidator.validate(result);
     }
+
 
     /**
      * Delete one student from the database
@@ -27,7 +44,8 @@ public class StudentDAO implements IStudentDAO
     @Override
     public void deleteStudent(Student student)
     {
-
+        WriteResult result = this.students.remove(studentIdQuery, student.getStudentId());
+        DBValidator.validate(result);
     }
 
     /**
@@ -56,9 +74,15 @@ public class StudentDAO implements IStudentDAO
      * @return
      */
     @Override
-    public Student getStudent(int id)
+    public Student getStudent(String id)
     {
-        return null;
+        Student student = this.students.findOne(studentIdQuery, id).as(Student.class);
+        if(student == null)
+        {
+            throw new DatabaseException("Could not find student");
+        }
+
+        return student;
     }
 
     /**
