@@ -1,7 +1,11 @@
 package parser.catalog;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,9 +26,17 @@ public class CatalogParser_NEW {
 		}
 	}
 	
-	public static Courses parseCourses(String filePath) throws IOException
+	public static Courses parseCourses(String fileName) throws FileNotFoundException, IOException
 	{
-		Scanner scan = new Scanner(new File(filePath)).useDelimiter("#");
+		return parseCourses(new BufferedInputStream(new FileInputStream(new File(fileName))));
+	}
+	public static Courses parseCourses(File file) throws FileNotFoundException, IOException
+	{
+		return parseCourses(new BufferedInputStream(new FileInputStream(file)));
+	}
+	public static Courses parseCourses(BufferedInputStream stream) throws IOException
+	{
+		Scanner scan = new Scanner(stream).useDelimiter("#");
 		String tmp;
 		int currentIndex = 0;
 		Section currentSection = new Section();
