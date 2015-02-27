@@ -1,14 +1,13 @@
 package parser.catalog;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
 
 import models.*;
@@ -16,27 +15,36 @@ import packages.Courses;
 
 public class CatalogParser_NEW {
 	
+	//Flip flag for more printouts to help debug parser
+	final private static boolean SHOULD_LOG = true;
+	
 	public static void main(String[] args)
 	{
 		try {
-			System.out.println(parseCourses("UPDATE_DATABASE.txt").toString());
+			System.out.println(parseCourses(new File("UPDATE_DATABASE.txt")).toString());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	public static Courses parseCourses(String fileName) throws FileNotFoundException, IOException
-	{
-		return parseCourses(new BufferedInputStream(new FileInputStream(new File(fileName))));
-	}
+
+	// Takes File object to were the UPDATE_DATABASE.txt file
 	public static Courses parseCourses(File file) throws FileNotFoundException, IOException
 	{
-		return parseCourses(new BufferedInputStream(new FileInputStream(file)));
+		return parseCourses(new FileInputStream(file));
 	}
-	public static Courses parseCourses(BufferedInputStream stream) throws IOException
+	
+	// Takes string form of the input
+	public static Courses parseCourses(String info) throws IOException
 	{
-		Scanner scan = new Scanner(stream).useDelimiter("#");
+		return parseCourses(new ByteArrayInputStream(info.getBytes()));
+	}
+	
+	// Takes Generic InputStream
+	public static Courses parseCourses(InputStream stream) throws IOException
+	{
+		Scanner scan = new Scanner(new BufferedInputStream(stream)).useDelimiter("#");
 		String tmp;
 		int currentIndex = 0;
 		Section currentSection = new Section();
@@ -48,18 +56,27 @@ public class CatalogParser_NEW {
 			tmp = scan.next().trim();
 			if(tmp.isEmpty())
 			{
-				if(currentIndex == 14 || currentIndex == 8)//This check is for when there are no notes/outcomes or no professor Listed
+				//This check is for when there are no notes/outcomes, professor, or course Title Listed
+				if(currentIndex == 14 || currentIndex == 8 || currentIndex == 7)
 					currentIndex++;
 				continue;
 			}
+			// These show up I After section number L means Lab section, N i think is study abroad
 			if(currentIndex == 6 && (tmp.equals("L") || tmp.equals("N")))
-				continue; // These show up I After section number L means Lab section, N i think is study abroad
+				continue; 
 				
-			
+			// This is to catch the R in things like CS 498R
+			if(currentIndex == 5 && tmp.length() == 1)
+			{
+				currentCourse.setCourseNumber(currentCourse.getCourseNumber() + tmp);
+				continue;
+			}
+				
+				
 			switch (currentIndex)
 			{
 				case 0:
-//					System.out.println("Course Number Unique: " + tmp);
+					simpleLog("Course Number Unique: " + tmp, SHOULD_LOG);
 					if(tmp != currentCourse.getCourseID())
 					{
 						if(!firstTime)
@@ -79,69 +96,69 @@ public class CatalogParser_NEW {
 					}
 					break;
 				case 1:
-//					System.out.println("Title Code: " + tmp);
+					simpleLog("Title Code: " + tmp, SHOULD_LOG);
 					currentCourse.setNewTitleCode(tmp);
 					break;
 				case 2:
-//					System.out.println("Dept Code: " + tmp);
+					simpleLog("Dept Code: " + tmp, SHOULD_LOG);
 					currentCourse.setDepartment(tmp);
 					break;
 				case 3:
-//					System.out.println("Credit Type?: " + tmp);
+					simpleLog("Credit Type?: " + tmp, SHOULD_LOG);
 					currentCourse.setRegistrationType(tmp);
 					break;
 				case 4:
-//					System.out.println("Course Number: " + tmp);
+					simpleLog("Course Number: " + tmp, SHOULD_LOG);
 					currentCourse.setCourseNumber(tmp);
 					break;
 				case 5:
-//					System.out.println("Section Number: " + tmp);
+					simpleLog("Section Number: " + tmp, SHOULD_LOG);
 					currentSection.setSectionID(tmp);
 					break;
 				case 6:
-//					System.out.println("DAY or NIGHT: " + tmp);
+					simpleLog("DAY or NIGHT: " + tmp, SHOULD_LOG);
 					currentSection.setSectionType(tmp);
 					break;
 				case 7:
-//					System.out.println("Course Title: " + tmp);
+					simpleLog("Course Title: " + tmp, SHOULD_LOG);
 					currentCourse.setCourseName(tmp);	
 					break;
 				case 8:
-//					System.out.println("Prof Name: " + tmp);
+					simpleLog("Prof Name: " + tmp, SHOULD_LOG);
 					currentSection.setProfessor(tmp);
 					break;
 				case 9:
-//					System.out.println("Number of Credits: " + tmp);
+					simpleLog("Number of Credits: " + tmp, SHOULD_LOG);
 					currentSection.setCredits(tmp);
 					break;
 				case 10:
-//					System.out.println("Days Taught: " + tmp);
+					simpleLog("Days Taught: " + tmp, SHOULD_LOG);
 					currentSection.setDaysTaught(tmp.split("\n"));
 					break;
 				case 11:
-//					System.out.println("Start Time/s: " + tmp);
+					simpleLog("Start Time/s: " + tmp,SHOULD_LOG);
 					currentSection.setStartTimes(tmp.split("\n"));
 					break;
 				case 12:
-//					System.out.println("End Time/s: " + tmp);
+					simpleLog("End Time/s: " + tmp, SHOULD_LOG);
 					currentSection.setEndTimes(tmp.split("\n"));
 					break;
 				case 13:
-//					System.out.println("Location/s: " + tmp);
+					simpleLog("Location/s: " + tmp, SHOULD_LOG);
 					currentSection.setLocations(tmp.split("\n"));
 					break;
 				case 14:
-//					System.out.println("Notes: " + tmp);
+					simpleLog("Notes: " + tmp, SHOULD_LOG);
 					currentCourse.setOutcomes(Arrays.asList(tmp.split("\n")));
 					break;
 				case 15:
-//					System.out.println("How full is the class: " + tmp);
+					simpleLog("How full is the class: " + tmp, SHOULD_LOG);
 					String[] seats = tmp.split("\\s*/\\s* ");
 					currentSection.setSeatsAvailable(seats[0]);
 					currentSection.setTotalSeats(seats[1]);
 					break;
 				case 16:
-//					System.out.println("Weight List: " + tmp);
+					simpleLog("Weight List: " + tmp, SHOULD_LOG);
 					currentSection.setWaitList(tmp);
 					break;
 				default:
@@ -155,14 +172,23 @@ public class CatalogParser_NEW {
 				currentSection = new Section();
 				
 			}
-//			System.out.println(currentIndex);
+
 				
 			
 			
 		}
 		
 		scan.close();
+		stream.close();
 		return allCourses;
+	}
+	
+	private static void simpleLog(String log, boolean shouldLog)
+	{
+		if(shouldLog)
+		{
+			System.out.println(log);
+		}
 	}
 
 }
