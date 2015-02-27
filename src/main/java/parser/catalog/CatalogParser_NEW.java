@@ -54,6 +54,7 @@ public class CatalogParser_NEW {
 		while(scan.hasNext())
 		{
 			tmp = scan.next().trim();
+			// These three if statements handle edge cases for t
 			if(tmp.isEmpty())
 			{
 				//This check is for when there are no notes/outcomes, professor, or course Title Listed
@@ -61,11 +62,13 @@ public class CatalogParser_NEW {
 					currentIndex++;
 				continue;
 			}
+			
 			// These show up I After section number L means Lab section, N i think is study abroad
 			if(currentIndex == 6 && (tmp.equals("L") || tmp.equals("N")))
 				continue; 
 				
-			// This is to catch the R in things like CS 498R
+			// This takes care of adding the R or other Letters to the end of course numbers
+			// Like 498R
 			if(currentIndex == 5 && tmp.length() == 1)
 			{
 				currentCourse.setCourseNumber(currentCourse.getCourseNumber() + tmp);
