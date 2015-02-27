@@ -1,18 +1,15 @@
 package database;
 
+import com.mongodb.*;
 import models.Course;
 import models.Section;
 import models.Semester;
 import models.TimePlace;
+import org.jongo.Jongo;
+import org.jongo.MongoCollection;
 import packages.Courses;
 
 import java.util.ArrayList;
-
-import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
 
 /**
  * Created by sean on 2/17/15.
@@ -21,9 +18,12 @@ public class SemesterDAO implements ISemesterDAO
 {
     private DB db;
     private DBCollection collection;
+    private MongoCollection semesters;
 
     public SemesterDAO(DB db){
         this.db = db;
+        Jongo jongo = new Jongo(this.db);
+        semesters = jongo.getCollection("semester");
         collection = db.getCollection("semester");
     }
     
@@ -33,10 +33,12 @@ public class SemesterDAO implements ISemesterDAO
     @Override
     public void addSemester(Semester semester)
     {
-        BasicDBObject document = new BasicDBObject();
-        document.put("name",semester.getName());
-        document.put("id", semester.getID());
-        collection.insert(document);
+//        BasicDBObject document = new BasicDBObject();
+//        document.put("name",semester.getName());
+//        document.put("id", semester.getID());
+//        collection.insert(document);
+
+        WriteResult result = semesters.insert(semester);
     }
 
     @Override
@@ -54,18 +56,21 @@ public class SemesterDAO implements ISemesterDAO
     @Override
     public Semester getSemester(int sem_id)
     {
-        BasicDBObject searchQuery = new BasicDBObject();
-        searchQuery.put("id",sem_id);
-        DBCursor cursor = collection.find(searchQuery);
-        while (cursor.hasNext())
-        {
-            DBObject semesterObject = cursor.next();
-            String name = semesterObject.get("name").toString();
-            int id = Integer.parseInt(semesterObject.get("id").toString());
-            Semester semester = new Semester(name,id);
-            return semester;
-        }
-        return null;
+//        BasicDBObject searchQuery = new BasicDBObject();
+//        searchQuery.put("id",sem_id);
+//        DBCursor cursor = collection.find(searchQuery);
+//        while (cursor.hasNext())
+//        {
+//            DBObject semesterObject = cursor.next();
+//            String name = semesterObject.get("name").toString();
+//            int id = Integer.parseInt(semesterObject.get("id").toString());
+//            Semester semester = new Semester(name,id);
+//            return semester;
+//        }
+//        return null;
+        String query = "{id : "+sem_id+"}"; //TODO use StringBuilder or something else
+        Semester semester = semesters.findOne(query).as(Semester.class);
+        return semester;
     }
 
     @Override
@@ -133,5 +138,10 @@ public class SemesterDAO implements ISemesterDAO
         {
             collection.remove(cursor.next());
         }
+    }
+
+    public void removeCourse(Course course, int semID)
+    {
+        WriteResult result = semesters.update("queryhere").multi().with("updatestuffgoeshere");
     }
 }
