@@ -91,22 +91,16 @@ public class StudentDAO implements IStudentDAO
     @Override
     public void addCourse(Course course, Student student)
     {
-//        student.addPlannedCourses(courses);
-//        this.saveStudent(student);
-        String query = "{ $push : {'courses.courses' : #}}";
-        WriteResult result = students.update(studentIdQuery, student.getStudentId()).multi().with(query, course);
-        DBValidator.validate(result);
+        student.addPlannedCourse(course);
+        this.saveStudent(student);
 
     }
 
     @Override
     public void removeCourse(Course course, Student student)
     {
-//        student.removePlannedCourses(courses);
-//        this.saveStudent(student);
-        String query = "{ $pull : {'courses.courses' : { 'courseID' : #}}}";
-        WriteResult result = students.update(studentIdQuery, student.getStudentId()).multi().with(query, course.getCourseID());
-        DBValidator.validate(result);
+        student.removePlannedCourse(course);
+        this.saveStudent(student);
     }
 
 }

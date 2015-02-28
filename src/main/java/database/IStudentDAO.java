@@ -1,8 +1,8 @@
 package database;
 
+import models.Course;
 import models.Section;
 import models.Student;
-import packages.Courses;
 
 public interface IStudentDAO {
     
@@ -16,7 +16,7 @@ public interface IStudentDAO {
     
     public Student getStudent(String id);
     
-    public void addCourses(Courses course, Student student);
+    public void addCourse(Course course, Student student);
     
-    public void removeCourses(Courses course,Student student);
+    public void removeCourse(Course course,Student student);
 }

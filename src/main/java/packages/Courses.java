@@ -40,4 +40,9 @@ public class Courses {
   {
     this.courses.removeAll(courses.getCourses());
   }
+
+  public void removeCourse(Course course)
+  {
+    this.courses.remove(course);
+  }
 }

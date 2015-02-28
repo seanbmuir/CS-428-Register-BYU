@@ -110,4 +110,14 @@ public class Student
 		this.plannedCourses.removeCourses(courses);
 	}
 
+	public void removePlannedCourse(Course course)
+	{
+		this.plannedCourses.removeCourse(course);
+	}
+
+	public void addPlannedCourse(Course course)
+	{
+		this.plannedCourses.addCourse(course);
+	}
+
 }
