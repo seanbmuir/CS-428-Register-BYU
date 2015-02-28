@@ -1,6 +1,7 @@
 package models;
 
 import java.util.List;
+import org.jongo.marshall.jackson.oid.Id;
 
 /**
  * @autor: Nick Humrich
@@ -8,6 +9,7 @@ import java.util.List;
  */
 public class Schedule
 {
+    @Id
 	private String id;
 	private String name;
 	private int semesterID;

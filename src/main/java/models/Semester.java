@@ -1,6 +1,7 @@
 package models;
 
 import packages.Courses;
+import org.jongo.marshall.jackson.oid.Id;
 
 /**
  * @author: Nick Humrich
@@ -10,7 +11,9 @@ public class Semester
 {
 
 	private String name;
-	private int id;
+
+    @Id
+    private int id;
 	private Courses courses;
 
 	public Semester(){}

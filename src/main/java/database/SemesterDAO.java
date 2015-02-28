@@ -35,7 +35,7 @@ public class SemesterDAO implements ISemesterDAO
     public void addSemester(Semester semester)
     {
         WriteResult result = semesters.save(semester);
-        DBValidator.validate(result);
+        //DBValidator.validate(result);
     }
 
     @Override
