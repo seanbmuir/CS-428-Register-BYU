@@ -60,8 +60,7 @@ public class SemesterDAO implements ISemesterDAO
     @Override
     public void addCourses(Courses course, int semID)
     {
-        String query = "{id : "+semID+"}";
-        Semester semester = semesters.findOne(query).as(Semester.class);
+        Semester semester = semesters.findOne(semesterIDQuery, semID).as(Semester.class);
         deleteSemester(semester);
 
         Semester sem2 = new Semester();

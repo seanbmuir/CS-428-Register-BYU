@@ -8,7 +8,6 @@ import models.Section;
 import models.Student;
 import org.jongo.Jongo;
 import org.jongo.MongoCollection;
-import packages.Courses;
 
 /**
  * Created by sean on 2/17/15.
@@ -90,15 +89,24 @@ public class StudentDAO implements IStudentDAO
      * @param course
      */
     @Override
-    public void addCourses(Courses course, Student student)
+    public void addCourse(Course course, Student student)
     {
+//        student.addPlannedCourses(courses);
+//        this.saveStudent(student);
+        String query = "{ $push : {'courses.courses' : #}}";
+        WriteResult result = students.update(studentIdQuery, student.getStudentId()).multi().with(query, course);
+        DBValidator.validate(result);
 
     }
 
     @Override
-    public void removeCourses(Courses courses, Student student)
+    public void removeCourse(Course course, Student student)
     {
-
+//        student.removePlannedCourses(courses);
+//        this.saveStudent(student);
+        String query = "{ $pull : {'courses.courses' : { 'courseID' : #}}}";
+        WriteResult result = students.update(studentIdQuery, student.getStudentId()).multi().with(query, course.getCourseID());
+        DBValidator.validate(result);
     }
 
 }

@@ -1,57 +1,71 @@
 package models;
 
-import java.util.List;
+import packages.Courses;
+import packages.Schedules;
 //import java.util.Map;
 
 /**
  * @autor: Nick Humrich
  * @date: 1/17/14
  */
-public class Student {
+public class Student
+{
 
-  private String firstName;
-  private String lastName;
-  private String studentId;
-  private List<Schedule> schedules;
-  //private Map<Course, Grade> history;
-  private List<Course> plannedCourses;
+	private String firstName;
+	private String lastName;
+	private String studentId;
+	private Schedules schedules;
+	//private Map<Course, Grade> history;
+	private Courses plannedCourses;
 
-  public Student(){}
-  public Student(String studentId) {
-    this.studentId = studentId;
-  }
+	public Student()
+	{
+	}
 
-  public String getFirstName() {
-    return firstName;
-  }
+	public Student(String studentId)
+	{
+		this.studentId = studentId;
+	}
 
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
-  }
+	public String getFirstName()
+	{
+		return firstName;
+	}
 
-  public String getLastName() {
-    return lastName;
-  }
+	public void setFirstName(String firstName)
+	{
+		this.firstName = firstName;
+	}
 
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
-  }
+	public String getLastName()
+	{
+		return lastName;
+	}
 
-  public String getStudentId() {
-    return studentId;
-  }
+	public void setLastName(String lastName)
+	{
+		this.lastName = lastName;
+	}
 
-  public void setStudentId(String studentId) {
-    this.studentId = studentId;
-  }
+	public String getStudentId()
+	{
+		return studentId;
+	}
 
-  public List<Schedule> getSchedules() {
-    return schedules;
-  }
+	public void setStudentId(String studentId)
+	{
+		this.studentId = studentId;
+	}
 
-  public void setSchedules(List<Schedule> schedules) {
-    this.schedules = schedules;
-  }
+	public Schedules getSchedules()
+	{
+		return schedules;
+	}
+
+	public void setSchedules(Schedules schedules)
+	{
+		this.schedules = schedules;
+	}
 
 //  public Map<Course, Grade> getHistory() {
 //    return history;
@@ -61,13 +75,39 @@ public class Student {
 //    this.history = history;
 //  }
 
-  public List<Course> getPlannedCourses() {
-    return plannedCourses;
-  }
+	public Courses getPlannedCourses()
+	{
+		return plannedCourses;
+	}
 
-  public void setPlannedCourses(List<Course> plannedCourses) {
-    this.plannedCourses = plannedCourses;
-  }
+	/**
+	 * Sets the plannedCourses to this courses object
+	 * @param plannedCourses
+	 */
+	public void setPlannedCourses(Courses plannedCourses)
+	{
+		this.plannedCourses = plannedCourses;
+	}
 
+	/**
+	 * Adds more courses to the planned courses
+	 * @param courses
+	 */
+	public void addPlannedCourses(Courses courses)
+	{
+		if (this.plannedCourses == null)
+		{
+			this.plannedCourses = courses;
+		}
+		else
+		{
+			this.plannedCourses.addCourses(courses);
+		}
+	}
+
+	public void removePlannedCourses(Courses courses)
+	{
+		this.plannedCourses.removeCourses(courses);
+	}
 
 }

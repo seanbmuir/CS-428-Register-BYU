@@ -6,6 +6,7 @@ import models.Student;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import packages.Courses;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,7 +93,7 @@ public class StudentDAOTest
 		course.setCourseID("1234");
 		course.setSections(new ArrayList<Section>());
 		courses.add(course);
-		student.setPlannedCourses(courses);
+		student.setPlannedCourses(new Courses(courses));
 		student.setStudentId(studentID);
 		return student;
 	}

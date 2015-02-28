@@ -16,6 +16,11 @@ public class Courses {
     courses = new ArrayList<>();
   }
 
+  public Courses(List<Course> courses)
+  {
+    this.courses = courses;
+  }
+
   public List<Course> getCourses() { return courses;}
 
   public void setCourses(List<Course> list) {
@@ -24,5 +29,15 @@ public class Courses {
 
   public void addCourse(Course course) {
     courses.add(course);
+  }
+
+  public void addCourses(Courses courses)
+  {
+    this.courses.addAll(courses.getCourses());
+  }
+
+  public void removeCourses(Courses courses)
+  {
+    this.courses.removeAll(courses.getCourses());
   }
 }
