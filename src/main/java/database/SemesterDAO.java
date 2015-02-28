@@ -48,16 +48,11 @@ public class SemesterDAO implements ISemesterDAO
     @Override
     public Semester getSemester(int sem_id)
     {
-<<<<<<< Updated upstream
         Semester semester = semesters.findOne(semesterIDQuery).as(Semester.class);
         if(semester == null)
         {
             throw new DatabaseException("Semester not found");
         }
-=======
-        String query = "{id : "+sem_id+"}";
-        Semester semester = semesters.findOne(query).as(Semester.class);
->>>>>>> Stashed changes
         return semester;
     }
 
