@@ -30,9 +30,10 @@ public class StudentDAO implements IStudentDAO
      * @param student
      */
     @Override
-    public void addStudent(Student student)
+    public void saveStudent(Student student)
     {
-        WriteResult result = this.students.insert(student);
+        WriteResult result = this.students.save(student);
+        DBValidator.validate(result);
     }
 
 
