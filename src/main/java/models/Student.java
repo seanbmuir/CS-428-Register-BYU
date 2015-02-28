@@ -16,6 +16,7 @@ public class Student {
   //private Map<Course, Grade> history;
   private List<Course> plannedCourses;
 
+  public Student(){}
   public Student(String studentId) {
     this.studentId = studentId;
   }
@@ -68,5 +69,5 @@ public class Student {
     this.plannedCourses = plannedCourses;
   }
 
-  private Student(){}
+
 }

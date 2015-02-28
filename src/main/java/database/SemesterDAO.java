@@ -1,6 +1,9 @@
 package database;
 
-import com.mongodb.*;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.WriteResult;
+import exceptions.DatabaseException;
 import models.Course;
 import models.Section;
 import models.Semester;
@@ -18,6 +21,7 @@ public class SemesterDAO implements ISemesterDAO
 {
     private DB db;
     private DBCollection collection;
+    private final String semesterIDQuery = "{id : #}";
     private MongoCollection semesters;
 
     public SemesterDAO(DB db){
@@ -46,8 +50,11 @@ public class SemesterDAO implements ISemesterDAO
     @Override
     public Semester getSemester(int sem_id)
     {
-        String query = "{id : "+sem_id+"}"; //TODO use StringBuilder or something else
-        Semester semester = semesters.findOne(query).as(Semester.class);
+        Semester semester = semesters.findOne(semesterIDQuery).as(Semester.class);
+        if(semester == null)
+        {
+            throw new DatabaseException("Semester not found");
+        }
         return semester;
     }
 

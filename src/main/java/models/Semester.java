@@ -13,6 +13,13 @@ public class Semester
 	private int id;
 	private Courses courses;
 
+	public Semester(){}
+
+	public Semester(int semesterID)
+	{
+		this.id = semesterID;
+	}
+
 	public String getName()
 	{
 		return name;
