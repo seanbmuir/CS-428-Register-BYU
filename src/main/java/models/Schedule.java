@@ -6,41 +6,68 @@ import java.util.List;
  * @autor: Nick Humrich
  * @date: 1/17/14
  */
-public class Schedule {
-    private String id;
-    private String name;
-    private Semester semester;
-    private List<Section> classes;
+public class Schedule
+{
+	private String id;
+	private String name;
+	private int semesterID;
+	private List<Section> classes;
 
-  public String getName() {
-    return name;
-  }
 
-  public void setId(String id) {
-    this.id = id;
-  }
+	public Schedule(int semesterID)
+	{
+		this.semesterID = semesterID;
+	}
 
-  public String getId() {
-    return id;
-  }
+	public Schedule(){}
 
-  public void setName(String name) {
-    this.name = name;
-  }
+	public String getName()
+	{
+		return name;
+	}
 
-  public Semester getSemester() {
-    return semester;
-  }
+	public void setId(String id)
+	{
+		this.id = id;
+	}
 
-  public void setSemester(Semester semester) {
-    this.semester = semester;
-  }
+	public String getId()
+	{
+		return id;
+	}
 
-  public List<Section> getClasses() {
-    return classes;
-  }
+	public void setName(String name)
+	{
+		this.name = name;
+	}
 
-  public void setClasses(List<Section> classes) {
-    this.classes = classes;
-  }
+	public List<Section> getClasses()
+	{
+		return classes;
+	}
+
+	public void setClasses(List<Section> classes)
+	{
+		this.classes = classes;
+	}
+
+	public int getSemesterID()
+	{
+		return semesterID;
+	}
+
+	public void setSemesterID(int semesterID)
+	{
+		this.semesterID = semesterID;
+	}
+
+	public void addSection(Section section)
+	{
+		this.classes.add(section);
+	}
+
+	public void removeSection(Section section)
+	{
+		this.classes.remove(section);
+	}
 }
