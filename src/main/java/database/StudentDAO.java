@@ -33,7 +33,6 @@ public class StudentDAO implements IStudentDAO
     public void addStudent(Student student)
     {
         WriteResult result = this.students.insert(student);
-        DBValidator.validate(result);
     }
 
 
