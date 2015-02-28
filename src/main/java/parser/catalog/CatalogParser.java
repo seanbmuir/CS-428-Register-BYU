@@ -82,7 +82,7 @@ public class CatalogParser {
 			{
 				case 0:
 					simpleLog("Course Number Unique: " + tmp, SHOULD_LOG);
-					if(tmp != currentCourse.getCourseID())
+					if(!tmp.equalsIgnoreCase(currentCourse.getCourseID()))
 					{
 						if(!firstTime)
 						{
@@ -106,7 +106,7 @@ public class CatalogParser {
 					break;
 				case 2:
 					simpleLog("Dept Code: " + tmp, SHOULD_LOG);
-					currentCourse.setDepartment(tmp);
+					currentCourse.setDepartmentCode(tmp);
 					break;
 				case 3:
 					simpleLog("Credit Type?: " + tmp, SHOULD_LOG);
@@ -154,7 +154,7 @@ public class CatalogParser {
 					break;
 				case 14:
 					simpleLog("Notes: " + tmp, SHOULD_LOG);
-					currentCourse.setOutcomes(Arrays.asList(tmp.split("\n")));
+					//currentCourse.setOutcomes(Arrays.asList(tmp.split("\n")));
 					break;
 				case 15:
 					simpleLog("How full is the class: " + tmp, SHOULD_LOG);
