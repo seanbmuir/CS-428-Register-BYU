@@ -13,13 +13,6 @@ public class Semester
 	private int id;
 	private Courses courses;
 
-
-	public Semester(String name, int id)
-	{
-		this.name = name;
-		this.id = id;
-	}
-
 	public String getName()
 	{
 		return name;
@@ -36,16 +29,6 @@ public class Semester
 	}
 
 	public void setID(int id)
-	{
-		this.id = id;
-	}
-
-	public int getId()
-	{
-		return id;
-	}
-
-	public void setId(int id)
 	{
 		this.id = id;
 	}
