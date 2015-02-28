@@ -13,7 +13,7 @@ public interface ISemesterDAO {
     
     public Semester getSemester(int sem_id);
 
-    public void addCourses(Courses courses);
+    public void addCourses(Courses courses, int semID);
 
     public ArrayList<Semester> getSetOfSemester();
     
@@ -23,7 +23,7 @@ public interface ISemesterDAO {
     
     public ArrayList<Course> getCoursesByTimeOfDay(TimePlace timeplace);
 
-    public void addSection(Course course,Section section);
+    //public void addSection(Course course,Section section);
 
-    public void removeSection(Section section);
+    //public void removeSection(Section section);
 }
