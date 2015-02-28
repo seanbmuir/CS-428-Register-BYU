@@ -164,4 +164,10 @@ public class MemoryRegistrationStore implements RegistrationStore {
 		return i;
 	}
 
+	@Override
+	public Student getStudent(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

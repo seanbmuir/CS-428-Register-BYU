@@ -33,12 +33,8 @@ public class SemesterDAO implements ISemesterDAO
     @Override
     public void addSemester(Semester semester)
     {
-//        BasicDBObject document = new BasicDBObject();
-//        document.put("name",semester.getName());
-//        document.put("id", semester.getID());
-//        collection.insert(document);
-
-        WriteResult result = semesters.insert(semester);
+        WriteResult result = semesters.save(semester);
+        DBValidator.validate(result);
     }
 
     @Override
@@ -91,8 +87,8 @@ public class SemesterDAO implements ISemesterDAO
         while (cursor.hasNext())
         {
             DBObject semesterObject = cursor.next();
-            Semester semester = new Semester(semesterObject.get("name").toString(),Integer.parseInt(semesterObject.get("id").toString()));
-            semesters.add(semester);
+            //Semester semester = new Semester(semesterObject.get("name").toString(),Integer.parseInt(semesterObject.get("id").toString()));
+            //semesters.add(semester);
         }
         return semesters;
     }
