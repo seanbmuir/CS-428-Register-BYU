@@ -80,11 +80,13 @@ public class SemesterDownloader{
         //CreditTypes - A = All, S = Semester Block, 1 = Term 1, 2 = Term 2
 		int year = getYear(s);
 		switch(s.charAt(s.length()-1)){
-			case 1:
+			case '1':
 				return "Winter " + year;
-			case 3:
-				return "Spring/Summer " + year;
-			case 5:
+			case '3':
+				return "Spring " + year;
+            case '4':
+                return "Summer " + year;
+			case '5':
 				return "Fall " + year;
 		}
 		return "Invalid";
