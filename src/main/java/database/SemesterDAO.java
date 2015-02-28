@@ -60,8 +60,8 @@ public class SemesterDAO implements ISemesterDAO
         while (cursor.hasNext())
         {
             DBObject semesterObject = cursor.next();
-            Semester semester = new Semester(semesterObject.get("name").toString(),Integer.parseInt(semesterObject.get("id").toString()));
-            return semester;
+            //Semester semester = new Semester(semesterObject.get("name").toString(),Integer.parseInt(semesterObject.get("id").toString()));
+            //return semester;
         }
         return null;
     }
@@ -84,8 +84,8 @@ public class SemesterDAO implements ISemesterDAO
         while (cursor.hasNext())
         {
             DBObject semesterObject = cursor.next();
-            Semester semester = new Semester(semesterObject.get("name").toString(),Integer.parseInt(semesterObject.get("id").toString()));
-            semesters.add(semester);
+            //Semester semester = new Semester(semesterObject.get("name").toString(),Integer.parseInt(semesterObject.get("id").toString()));
+            //semesters.add(semester);
         }
         return semesters;
     }
@@ -98,10 +98,11 @@ public class SemesterDAO implements ISemesterDAO
         while (cursor.hasNext())
         {
             DBObject semesterObject = cursor.next();
-            Semester semester = new Semester(semesterObject.get("name").toString(),Integer.parseInt(semesterObject.get("id").toString()));
-            semesters.add(semester);
+            //Semester semester = new Semester(semesterObject.get("name").toString(),Integer.parseInt(semesterObject.get("id").toString()));
+            //semesters.add(semester);
         }
-        return semesters;
+        //return semesters;
+        return null;
     }
 
     @Override

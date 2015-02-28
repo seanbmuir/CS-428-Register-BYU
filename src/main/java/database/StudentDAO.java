@@ -4,6 +4,7 @@ import com.mongodb.*;
 import models.Course;
 import models.Section;
 import models.Student;
+import org.jongo.Jongo;
 import packages.Courses;
 
 import java.net.UnknownHostException;
@@ -20,7 +21,7 @@ public class StudentDAO implements IStudentDAO
 
     private MongoClient client;
     private DB db;
-
+    private Jongo jongo = new Jongo();
     public StudentDAO()
     {
         try
