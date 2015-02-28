@@ -28,12 +28,8 @@ public class SemesterDAO implements ISemesterDAO
         this.db = db;
         Jongo jongo = new Jongo(this.db);
         semesters = jongo.getCollection("semester");
-        //collection = db.getCollection("semester");
     }
-    
-    //public void createCollection(){
-    //    db.createCollection("semester", new BasicDBObject("capped", false));
-    //}
+
     @Override
     public void addSemester(Semester semester)
     {
@@ -44,24 +40,38 @@ public class SemesterDAO implements ISemesterDAO
     @Override
     public void deleteSemester(Semester semester)
     {
-    
+        WriteResult result = null;
+        //WriteResult result = semesters.remove(semester);
+        DBValidator.validate(result);
     }
 
     @Override
     public Semester getSemester(int sem_id)
     {
+<<<<<<< Updated upstream
         Semester semester = semesters.findOne(semesterIDQuery).as(Semester.class);
         if(semester == null)
         {
             throw new DatabaseException("Semester not found");
         }
+=======
+        String query = "{id : "+sem_id+"}";
+        Semester semester = semesters.findOne(query).as(Semester.class);
+>>>>>>> Stashed changes
         return semester;
     }
 
     @Override
-    public void addCourses(Courses course)
+    public void addCourses(Courses course, int semID)
     {
+        String query = "{id : "+semID+"}";
+        Semester semester = semesters.findOne(query).as(Semester.class);
+        deleteSemester(semester);
 
+        Semester sem2 = new Semester();
+        sem2.setCourses(course);
+        sem2.setID(semID);
+        addSemester(sem2);
     }
 
     @Override
@@ -82,20 +92,9 @@ public class SemesterDAO implements ISemesterDAO
         return null;
     }
 
-    @Override
-    public void addSection(Course course, Section section)
-    {
-
-    }
-
-    @Override
-    public void removeSection(Section section)
-    {
-
-    }
-
     public void removeCourse(Course course, int semID)
     {
-        WriteResult result = semesters.update("queryhere").multi().with("updatestuffgoeshere");
+        String query = "{id : "+semID+"}";
+        WriteResult result = semesters.update(query).multi().with("updatestuffgoeshere");
     }
 }
