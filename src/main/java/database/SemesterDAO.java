@@ -35,15 +35,15 @@ public class SemesterDAO implements ISemesterDAO
     public void addSemester(Semester semester)
     {
         WriteResult result = semesters.save(semester);
-        DBValidator.validate(result);
+        //DBValidator.validate(result);
     }
 
     @Override
     public void deleteSemester(Semester semester)
     {
-        WriteResult result = null;
+        //WriteResult result = null;
         //WriteResult result = semesters.remove(semester);
-        DBValidator.validate(result);
+        //DBValidator.validate(result);
     }
 
     @Override

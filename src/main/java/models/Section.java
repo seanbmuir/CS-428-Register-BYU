@@ -2,6 +2,7 @@ package models;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.jongo.marshall.jackson.oid.Id;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,6 +14,7 @@ import java.util.List;
 public class Section {
     private String courseID;
 
+    @Id
     private String sectionID;
     private String sectionType;
     private String professor;
