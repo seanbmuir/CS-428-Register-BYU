@@ -41,9 +41,9 @@ public class SemesterDAO implements ISemesterDAO
     @Override
     public void deleteSemester(Semester semester)
     {
-        WriteResult result = null;
+        //WriteResult result = null;
         //WriteResult result = semesters.remove(semester);
-        DBValidator.validate(result);
+        //DBValidator.validate(result);
     }
 
     @Override
