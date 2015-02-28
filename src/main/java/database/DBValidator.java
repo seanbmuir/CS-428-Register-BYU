@@ -9,7 +9,7 @@ import exceptions.DatabaseException;
 public class DBValidator
 {
 	/**
-	 * Validates the result of a DB operation
+	 * Validates the result of a DB operation. Only works with Removal and Update - not inserting
 	 * @param result the result to validate
 	 */
 	public static void validate(WriteResult result)

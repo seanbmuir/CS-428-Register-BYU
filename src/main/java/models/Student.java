@@ -16,6 +16,10 @@ public class Student {
   private Map<Course, Grade> history;
   private List<Course> plannedCourses;
 
+  public Student(String studentId) {
+    this.studentId = studentId;
+  }
+
   public String getFirstName() {
     return firstName;
   }
@@ -63,4 +67,6 @@ public class Student {
   public void setPlannedCourses(List<Course> plannedCourses) {
     this.plannedCourses = plannedCourses;
   }
+
+  private Student(){}
 }
