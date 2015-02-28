@@ -1,5 +1,6 @@
 package models;
 
+import org.jongo.marshall.jackson.oid.Id;
 import packages.Courses;
 import packages.Schedules;
 //import java.util.Map;
@@ -11,9 +12,10 @@ import packages.Schedules;
 public class Student
 {
 
+	@Id
+	private String studentId;
 	private String firstName;
 	private String lastName;
-	private String studentId;
 	private Schedules schedules;
 	//private Map<Course, Grade> history;
 	private Courses plannedCourses;
