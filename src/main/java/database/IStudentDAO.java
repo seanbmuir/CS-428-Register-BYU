@@ -6,7 +6,7 @@ import packages.Courses;
 
 public interface IStudentDAO {
     
-    public void addStudent(Student student);
+    public void saveStudent(Student student);
     
     public void deleteStudent(Student student);
     

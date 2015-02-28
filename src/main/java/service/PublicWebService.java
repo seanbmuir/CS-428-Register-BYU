@@ -3,6 +3,7 @@ package service;
 import database.DatabaseRegistrationStore;
 import database.MemoryRegistrationStore;
 import database.RegistrationStore;
+import database.SemesterDAO;
 import exceptions.ForbiddenException;
 import models.Course;
 import models.Department;
@@ -15,6 +16,7 @@ import packages.Requirements;
 import packages.Schedules;
 
 import javax.net.ssl.HttpsURLConnection;
+
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -36,20 +38,16 @@ public class PublicWebService {
   }
 
   public Courses getAllCourses() {
-    String semester = getCurrentSemester();
-    return getAllCourses(semester);
+    return getAllCourses(getCurrentSemester());
   }
 
   public Courses getAllCourses(String semester) {
-    Courses courses = new Courses();
-    //ToDo: edit below to reflect semester
-    List<Course> list = registrationStore.getAllCourses();
-    courses.setCourses(list);
-    return courses;
+	SemesterDAO sdao = new SemesterDAO(DatabaseRegistrationStore.getDB());
+    return sdao.getSemester(Integer.parseInt(semester)).getCourses();
   }
 
   public String getCurrentSemester() {
-    return "Winter2015"; //ToDo: change this
+    return "20155"; //ToDo: change this
   }
 
     public void handleRegistration(String courseInfo, String ticket) {

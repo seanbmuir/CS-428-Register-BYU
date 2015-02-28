@@ -18,7 +18,7 @@ classregControllers.controller('HeaderController', ['$scope', '$http', '$rootSco
 		$http.get('auth/service').success(function (data) {
             if(data.username!==null){
 				$rootScope.loggedIn = true;
-				$rootScope.username = data.username;
+				$rootScope.username = data.studentId;
 			}
         });
     }
@@ -70,7 +70,7 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
                 angular.forEach(apiCourse.sections, function (apiSection) {
                     var section = {}
                     section.sectionId = apiSection.sectionID
-                    section.professor = apiSection.professor
+                    section.professor = apiSection.professor==null ? '' : apiSection.professor
                     if( apiSection.pid === "undefined" || apiSection.pid === undefined || apiSection.pid === null || apiSection.pid === "" ) {
                         section.rateMyProfessorQuery = "search.jsp?query=BYU%20" + section.professor.split(",")[0] + " " + section.professor.split(",")[1] //"SelectTeacher.jsp?searchName="+section.professor.split(",")[0]+"&search_submit1=Search&sid=135"
                     } else
@@ -149,7 +149,7 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
 
         $scope.initStuff = function() {
             $scope.courseLevels = ['100', '200', '300', '400', '500', '600'];
-            $scope.currentSemester = "Winter 2015" //Should do some kind of logic or API call here
+            $scope.currentSemester = "Fall 2015" //Should do some kind of logic or API call here
             $scope.initPlannedCourses();
             $scope.saved = false;
             $scope.filterOptions = {

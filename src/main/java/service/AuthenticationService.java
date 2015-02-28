@@ -2,11 +2,13 @@ package service;
 
 import com.google.common.base.Charsets;
 import com.google.common.hash.Hashing;
-import database.MemoryRegistrationStore;
+
+import database.DatabaseRegistrationStore;
 import database.RegistrationStore;
 import exceptions.BadRequestException;
 import exceptions.NotAuthorizedException;
 import exceptions.ServerException;
+import models.Student;
 import models.UserCredentials;
 
 import java.security.SecureRandom;
@@ -20,7 +22,7 @@ public class AuthenticationService {
 	private RegistrationStore store;
 
 	public AuthenticationService() {
-		store = MemoryRegistrationStore.getInstance();
+		store = DatabaseRegistrationStore.getInstance();
 	}
 
 	public UserCredentials startLoginProcess() {
@@ -51,17 +53,8 @@ public class AuthenticationService {
 		return encoded;
 	}
 	
-	public String loginViaService(UserCredentials user){
-		try{
-			store.addUser(user);
-		}
-		catch(Exception e){
-			//user already exists.
-		}
-		//UserCredentials credentials = store.getCredentials(user.getUsername());
-		int id = store.getUserId(user.getUsername());
-		String encoded = encodeId(id);
-		return encoded;
+	public Student loginViaService(String id){
+		return store.getStudent(id);
 	}
 
 	public static String encodeId(int id) {

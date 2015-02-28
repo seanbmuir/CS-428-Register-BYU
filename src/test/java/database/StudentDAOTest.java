@@ -26,11 +26,25 @@ public class StudentDAOTest
 		String studentID = "reggiebyu";
 		Student student = getTestStudent(studentID);
 
-		dao.addStudent(student);
+		dao.saveStudent(student);
 
 		Student fromDB = dao.getStudent(studentID);
 		Assert.assertNotEquals("Student is null", null, fromDB);
 		Assert.assertEquals("Student ID not the same", studentID, student.getStudentId());
+	}
+	
+	@Test
+	public void testStudentDoesNotExist() throws Exception
+	{
+		String studentID = "____fakeUser_____";
+		Student fromDB = null;
+		try{
+			fromDB = dao.getStudent(studentID);
+			Assert.fail();//should not get to this line of code
+		}catch(Exception e){
+			Assert.assertNull(fromDB);
+		}
+		Assert.assertNull(fromDB);
 	}
 
 	@Test
@@ -71,7 +85,8 @@ public class StudentDAOTest
 
 	private Student getTestStudent(String studentID)
 	{
-		Student student = new Student(studentID);
+		Student student = new Student();
+		student.setStudentId(studentID);
 		List<Course> courses = new ArrayList<>();
 		Course course = new Course();
 		course.setCourseID("1234");
