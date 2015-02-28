@@ -9,11 +9,13 @@ import org.junit.Test;
 import packages.Courses;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class StudentDAOTest
 {
+	private final String testCourseID = "1234";
+	private final String testStudentID = "reggiebyu";
 	private StudentDAO dao;
+
 
 	@Before
 	public void setUp()
@@ -73,14 +75,27 @@ public class StudentDAOTest
 	}
 
 	@Test
-	public void testAddCourses() throws Exception
+	public void testAddCourse() throws Exception
 	{
+		String courseID = "98765";
+		Course course = getTestCourse(courseID);
+		Student student = getTestStudent(testStudentID);
+		dao.addCourse(course, student);
 
+		student = dao.getStudent(testStudentID);
+
+		Courses courses = student.getPlannedCourses();
+		Assert.assertTrue("Course not added", courses.contains(course));
 	}
 
 	@Test
-	public void testRemoveCourses() throws Exception
+	public void testRemoveCourse() throws Exception
 	{
+		dao.saveStudent(getTestStudent(testStudentID));
+		dao.removeCourse(getTestCourse(testCourseID), getTestStudent(testStudentID));
+
+		Student student = dao.getStudent(testStudentID);
+		Assert.assertEquals("Planned course did not get removed", 0, student.getPlannedCourses().size());
 
 	}
 
@@ -88,13 +103,21 @@ public class StudentDAOTest
 	{
 		Student student = new Student();
 		student.setStudentId(studentID);
-		List<Course> courses = new ArrayList<>();
-		Course course = new Course();
-		course.setCourseID("1234");
-		course.setSections(new ArrayList<Section>());
-		courses.add(course);
-		student.setPlannedCourses(new Courses(courses));
+
+		Courses courses = new Courses();
+		Course course = getTestCourse(testCourseID);
+		courses.addCourse(course);
+
+		student.setPlannedCourses(courses);
 		student.setStudentId(studentID);
 		return student;
+	}
+
+	private Course getTestCourse(String courseID)
+	{
+		Course course = new Course();
+		course.setCourseID(courseID);
+		course.setSections(new ArrayList<Section>());
+		return course;
 	}
 }

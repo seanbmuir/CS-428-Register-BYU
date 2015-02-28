@@ -16,7 +16,7 @@ public class StudentDAO implements IStudentDAO
 {
     private DB Db;
     private MongoCollection students;
-    private final String studentIdQuery = "{studentId: #}";
+    private final String studentIdQuery = "{ _id: #}";
 
     public StudentDAO(DB Db)
     {

@@ -19,7 +19,7 @@ public class DBValidator
 		{
 			throw new DatabaseException(error);
 		}
-		else if(result.getN() != 0)
+		else if(result.getN() == 0)
 		{
 			throw new DatabaseException("Database operation did not complete");
 		}

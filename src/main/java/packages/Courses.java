@@ -57,4 +57,9 @@ public class Courses
 	{
 		return this.courses.contains(course);
 	}
+
+	public int size()
+	{
+		return courses.size();
+	}
 }
