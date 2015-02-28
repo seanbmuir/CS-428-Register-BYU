@@ -73,15 +73,7 @@ public class SemesterDAO implements ISemesterDAO
     @Override
     public ArrayList<Semester> getSetOfSemester()
     {
-        ArrayList<Semester> semesters = new ArrayList<Semester>();
-        DBCursor cursor = collection.find(); //could have an error here, what set of semester are we looking for?
-        while (cursor.hasNext())
-        {
-            DBObject semesterObject = cursor.next();
-            Semester semester = new Semester(semesterObject.get("name").toString(),Integer.parseInt(semesterObject.get("id").toString()));
-            semesters.add(semester);
-        }
-        return semesters;
+        return null;
     }
 
     @Override
@@ -96,13 +88,11 @@ public class SemesterDAO implements ISemesterDAO
         return null;
     }
 
-    @Override
     public void addSection(Course course, Section section)
     {
 
     }
 
-    @Override
     public void removeSection(Section section)
     {
 
