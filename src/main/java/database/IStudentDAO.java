@@ -1,12 +1,12 @@
 package database;
 
-import com.mongodb.*;
-import models.*;
+import models.Section;
+import models.Student;
 import packages.Courses;
 
 public interface IStudentDAO {
     
-    public void addStudent(Student student);
+    public void saveStudent(Student student);
     
     public void deleteStudent(Student student);
     
@@ -14,7 +14,7 @@ public interface IStudentDAO {
     
     public void removeSection(Section section, Student student);
     
-    public Student getStudent(int id);
+    public Student getStudent(String id);
     
     public void addCourses(Courses course, Student student);
     

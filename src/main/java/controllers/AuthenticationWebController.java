@@ -1,7 +1,9 @@
 package controllers;
 
 import exceptions.NotAuthorizedException;
+import models.Student;
 import models.UserCredentials;
+
 import org.jasig.cas.client.util.AbstractCasFilter;
 import org.jasig.cas.client.validation.Assertion;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+
 import service.AuthenticationService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -77,20 +80,20 @@ public class AuthenticationWebController {
 	@RequestMapping(value = "/service", method = GET)
 	@ResponseStatus(value = HttpStatus.OK)
 	@ResponseBody
-	public UserCredentials casService(HttpServletRequest request, HttpSession session)
+	public Student casService(HttpServletRequest request, HttpSession session)
 	{
-		UserCredentials user = new UserCredentials();
+		Student student = new Student();
+		//UserCredentials user = new UserCredentials();
 
 		final Assertion assertion=(Assertion)request.getSession().getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION);
 		if (assertion != null)
 		{
 			String username = assertion.getPrincipal().getName();
-			user.setUsername(username);
-			String userId = service.loginViaService(user);
-			session.setAttribute("uid", userId);
+			student = service.loginViaService(username);
+			session.setAttribute("uid", student.getStudentId());
 		}
 
-		return user;
+		return student;
 	}
 
   @RequestMapping(value = "/logout", method = GET)

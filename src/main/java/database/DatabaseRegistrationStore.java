@@ -3,6 +3,7 @@ package database;
 import com.mongodb.*;
 import exceptions.AccountAlreadyExistsException;
 import models.*;
+import packages.*;
 import models.requirements.Requirement;
 
 import java.net.UnknownHostException;
@@ -18,10 +19,9 @@ import java.util.List;
 public class DatabaseRegistrationStore implements RegistrationStore {
     private static RegistrationStore root = new DatabaseRegistrationStore();
     private static DB db;
+    private StudentDAO sdao = new StudentDAO(getDB());
     private final String COURSE_COLLECTION = "course";
     private final String USER_COLLECTION = "user";
-    private final String SCHEDULE_COLLECTION = "schedule";
-    private final String DEPARTMENT_COLLECTION = "department";
 
     public static RegistrationStore getInstance() {
         return root;
@@ -154,6 +154,17 @@ public class DatabaseRegistrationStore implements RegistrationStore {
     public int getOwningUserForSchedule(int scheduleId) {
         int userId = 0;
         return userId;
+    }
+    
+    public Student getStudent(String id){
+    	Student s = new Student();
+    	try{
+    		s = sdao.getStudent(id);
+    	}catch(Exception e){
+    		s.setStudentId(id);
+    		sdao.saveStudent(s);
+    	}
+    	return s;
     }
 
     //@Override

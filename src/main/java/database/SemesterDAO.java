@@ -4,6 +4,8 @@ import models.Course;
 import models.Section;
 import models.Semester;
 import models.TimePlace;
+import org.jongo.Jongo;
+import org.jongo.MongoCollection;
 import packages.Courses;
 
 import java.util.ArrayList;
@@ -21,22 +23,24 @@ public class SemesterDAO implements ISemesterDAO
 {
     private DB db;
     private DBCollection collection;
-    
+    private final String semesterIDQuery = "{id : #}";
+    private MongoCollection semesters;
+
     public SemesterDAO(DB db){
         this.db = db;
-        collection = db.getCollection("semester");
+        Jongo jongo = new Jongo(this.db);
+        semesters = jongo.getCollection("semester");
+        //collection = db.getCollection("semester");
     }
     
-    public void createCollection(){
-        db.createCollection("semester", new BasicDBObject("capped", false));
-    }
+    //public void createCollection(){
+    //    db.createCollection("semester", new BasicDBObject("capped", false));
+    //}
     @Override
     public void addSemester(Semester semester)
     {
-        BasicDBObject document = new BasicDBObject();
-        document.put("name",semester.getName());
-        document.put("id", semester.getID());
-        collection.insert(document);
+        WriteResult result = semesters.save(semester);
+        DBValidator.validate(result);
     }
 
     @Override
@@ -54,26 +58,18 @@ public class SemesterDAO implements ISemesterDAO
     @Override
     public Semester getSemester(int sem_id)
     {
-        BasicDBObject searchQuery = new BasicDBObject();
-        searchQuery.put("id",sem_id);
-        DBCursor cursor = collection.find(searchQuery);
-        while (cursor.hasNext())
+        Semester semester = semesters.findOne(semesterIDQuery).as(Semester.class);
+        if(semester == null)
         {
-            DBObject semesterObject = cursor.next();
-            //Semester semester = new Semester(semesterObject.get("name").toString(),Integer.parseInt(semesterObject.get("id").toString()));
-            //return semester;
+            throw new DatabaseException("Semester not found");
         }
-        return null;
+        return semester;
     }
 
     @Override
     public void addCourses(Courses course)
     {
-        //Model Course needs to be revised
-        BasicDBObject document = new BasicDBObject();
-        //document.put("name",semester.getName());
-        //document.put("id", semester.getID());
-        collection.insert(document);
+
     }
 
     @Override
@@ -84,8 +80,8 @@ public class SemesterDAO implements ISemesterDAO
         while (cursor.hasNext())
         {
             DBObject semesterObject = cursor.next();
-            //Semester semester = new Semester(semesterObject.get("name").toString(),Integer.parseInt(semesterObject.get("id").toString()));
-            //semesters.add(semester);
+            Semester semester = new Semester(semesterObject.get("name").toString(),Integer.parseInt(semesterObject.get("id").toString()));
+            semesters.add(semester);
         }
         return semesters;
     }
@@ -98,11 +94,10 @@ public class SemesterDAO implements ISemesterDAO
         while (cursor.hasNext())
         {
             DBObject semesterObject = cursor.next();
-            //Semester semester = new Semester(semesterObject.get("name").toString(),Integer.parseInt(semesterObject.get("id").toString()));
-            //semesters.add(semester);
+            Semester semester = new Semester(semesterObject.get("name").toString(),Integer.parseInt(semesterObject.get("id").toString()));
+            semesters.add(semester);
         }
-        //return semesters;
-        return null;
+        return semesters;
     }
 
     @Override
@@ -124,13 +119,11 @@ public class SemesterDAO implements ISemesterDAO
     @Override
     public void removeSection(Section section)
     {
-        //Model Section needs to be revised
-        BasicDBObject searchQuery = new BasicDBObject();
-        //searchQuery.put("id", semester.getID());
-        DBCursor cursor = collection.find(searchQuery);
-        while(cursor.hasNext())
-        {
-            collection.remove(cursor.next());
-        }
+
+    }
+
+    public void removeCourse(Course course, int semID)
+    {
+        WriteResult result = semesters.update("queryhere").multi().with("updatestuffgoeshere");
     }
 }
