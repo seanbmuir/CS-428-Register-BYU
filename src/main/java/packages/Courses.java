@@ -25,16 +25,4 @@ public class Courses {
   public void addCourse(Course course) {
     courses.add(course);
   }
-  
-  @Override
-  public String toString()
-  {
-	  StringBuilder sb = new StringBuilder();
-	  for(Course c: courses)
-	  {
-		  sb.append(c.toString());
-		  sb.append("\n");
-	  }
-	  return sb.toString();
-  }
 }
