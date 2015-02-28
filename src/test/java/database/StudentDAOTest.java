@@ -26,7 +26,7 @@ public class StudentDAOTest
 		String studentID = "reggiebyu";
 		Student student = getTestStudent(studentID);
 
-		dao.addStudent(student);
+		dao.saveStudent(student);
 
 		Student fromDB = dao.getStudent(studentID);
 		Assert.assertNotEquals("Student is null", null, fromDB);
@@ -71,7 +71,8 @@ public class StudentDAOTest
 
 	private Student getTestStudent(String studentID)
 	{
-		Student student = new Student(studentID);
+		Student student = new Student();
+		student.setStudentId(studentID);
 		List<Course> courses = new ArrayList<>();
 		Course course = new Course();
 		course.setCourseID("1234");

@@ -1,7 +1,7 @@
 package models;
 
 import java.util.List;
-import java.util.Map;
+//import java.util.Map;
 
 /**
  * @autor: Nick Humrich
@@ -13,7 +13,7 @@ public class Student {
   private String lastName;
   private String studentId;
   private List<Schedule> schedules;
-  private Map<Course, Grade> history;
+  //private Map<Course, Grade> history;
   private List<Course> plannedCourses;
 
   public String getFirstName() {
@@ -48,13 +48,13 @@ public class Student {
     this.schedules = schedules;
   }
 
-  public Map<Course, Grade> getHistory() {
-    return history;
-  }
-
-  public void setHistory(Map<Course, Grade> history) {
-    this.history = history;
-  }
+//  public Map<Course, Grade> getHistory() {
+//    return history;
+//  }
+//
+//  public void setHistory(Map<Course, Grade> history) {
+//    this.history = history;
+//  }
 
   public List<Course> getPlannedCourses() {
     return plannedCourses;
