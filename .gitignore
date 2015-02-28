@@ -1,3 +1,9 @@
 .gradle
 .idea
 build
+.plugins
+.metadata/
+.settings/
+bin/
+libnative-platform-java-0.3~rc2/
+CS-428-Register-BYU.iml
