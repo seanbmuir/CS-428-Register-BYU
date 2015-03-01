@@ -16,7 +16,7 @@ import packages.Departments;
 import packages.Requirements;
 import packages.Schedules;
 import service.PublicWebService;
-
+import catalogData.SemesterDownloader;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
@@ -43,6 +43,7 @@ public class PublicWebController {
 
 	private PublicWebService webService;
 	private Courses cachedCourses;
+	private List<String> cachedSemesters;
 
 	public PublicWebController() {
     countdown = 5;
@@ -115,6 +116,15 @@ public class PublicWebController {
 		}
 		return webService.getRequirements(major);
 
+	}
+	
+	@RequestMapping(value = "/semesters", method = GET)
+	public @ResponseBody
+	List<String> getSemesters()
+	{
+		if(cachedSemesters==null)
+			cachedSemesters = SemesterDownloader.getSemesterCodes();
+		return cachedSemesters;
 	}
 
   @RequestMapping(value = "/courses/all", method = GET)
@@ -283,6 +293,7 @@ public class PublicWebController {
 	@RequestMapping(value="dbupdated", method=GET)
 	public @ResponseBody String dbUpdated() {
 		cachedCourses = null;
+		cachedSemesters = null;
 		return "success";
 	}
 

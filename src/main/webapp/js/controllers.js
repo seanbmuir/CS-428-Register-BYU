@@ -27,18 +27,8 @@ classregControllers.controller('HeaderController', ['$scope', '$http', '$rootSco
 classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies', '$rootScope', '$interval', '$timeout',
     function ($scope, $http, $cookies, $rootScope, $interval, $timeout) {
 
-        $scope.isLoadingCourses = true;
-        $http.get('public-api/courses/all').success(function (data) {
-            var previouslySavedPlan = {}
-            if( $cookies.classes !== undefined && $cookies.classes !== "undefined" && $cookies.classes !== null )
-            {
-                try {
-                    var classes = JSON.parse($cookies.classes)
-                    for (var i = 0; i < classes.length; i++)
-                        previouslySavedPlan[classes[i].courseNumber] = classes[i].sectionId
-                } catch( exception ) { /* don't die */}
-            }
-            $scope.departments = []
+		$scope.loadSemesterCourses = function(data){
+			$scope.departments = []
             $scope.courses = []
             angular.forEach(data.courses, function (apiCourse) {
                 var course = {}
@@ -69,7 +59,7 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
                 course.sections = []
                 angular.forEach(apiCourse.sections, function (apiSection) {
                     var section = {}
-                    section.sectionId = apiSection.sectionID
+                    section.sectionId = apiSection._id
                     section.professor = apiSection.professor==null ? '' : apiSection.professor
                     if( apiSection.pid === "undefined" || apiSection.pid === undefined || apiSection.pid === null || apiSection.pid === "" ) {
                         section.rateMyProfessorQuery = "search.jsp?query=BYU%20" + section.professor.split(",")[0] + " " + section.professor.split(",")[1] //"SelectTeacher.jsp?searchName="+section.professor.split(",")[0]+"&search_submit1=Search&sid=135"
@@ -126,13 +116,58 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
                         }
                     });
                     course.sections.push(section)
-                    if( previouslySavedPlan[course.byuId] === section.sectionId ) {
+                    if( $scope.previouslySavedPlan[course.byuId] === section.sectionId ) {
                         $scope.addCourseToPlan(course, section)
                     }
                 });
                 $scope.courses.push(course)
             });
+		};
+		
+		$scope.previouslySavedPlan = {}
+        $scope.isLoadingCourses = true;
+        $http.get('public-api/courses/all').success(function (data) {
+            if( $cookies.classes !== undefined && $cookies.classes !== "undefined" && $cookies.classes !== null )
+            {
+                try {
+                    var classes = JSON.parse($cookies.classes)
+                    for (var i = 0; i < classes.length; i++)
+                        previouslySavedPlan[classes[i].courseNumber] = classes[i].sectionId
+                } catch( exception ) { /* don't die */}
+            }
+            $scope.loadSemesterCourses(data);
             $scope.isLoadingCourses = false;
+        });
+		
+		$scope.semesterNames = function(year){
+			var sType = year.substring(4,5);
+			var sYear = year.substring(0,4);
+			if(sType === "1"){
+				return "Winter "+sYear;
+			}
+			if(sType === "3"){
+				return "Spring "+sYear;
+			}
+			if(sType === "4"){
+				return "Summer "+sYear;
+			}
+			if(sType === "5"){
+				return "Fall "+sYear;
+			}
+			return year;
+		};
+		
+		$http.get('public-api/semesters').success(function (data) {
+			$scope.semesters = [];
+			for(var i=0;i<data.length;i++){
+				var se = {};
+				se["name"] = $scope.semesterNames(data[i]);
+				se["value"] = data[i];
+				if(parseInt(se["value"].substring(0,4))>=(new Date().getFullYear()))
+					$scope.semesters.push(se);
+			}
+			$scope.currentSemester = $scope.semesters[$scope.semesters.length-1].name;
+			$scope.selectedSemester = $scope.semesters[$scope.semesters.length-1];
         });
 		
         // popular courses to be shown when there are no filters applied
@@ -148,8 +183,9 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
         };
 
         $scope.initStuff = function() {
+			$scope.semesters = [];
             $scope.courseLevels = ['100', '200', '300', '400', '500', '600'];
-            $scope.currentSemester = "Fall 2015" //Should do some kind of logic or API call here
+            $scope.currentSemester = "Fall 2015" //updated after the load semesters is called
             $scope.initPlannedCourses();
             $scope.saved = false;
             $scope.filterOptions = {
@@ -276,6 +312,23 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
 			}else{
 				alert('please login before loading classes');
 			}
+		};
+		
+		$scope.changeCurrentSemester = function(selected){
+			$scope.currentSemester = selected.name;
+			$scope.isLoadingCourses = true;
+			$http.get('public-api/courses/all?semester='+selected.value).success(function (data) {
+				if( $cookies.classes !== undefined && $cookies.classes !== "undefined" && $cookies.classes !== null )
+				{
+					try {
+						var classes = JSON.parse($cookies.classes)
+						for (var i = 0; i < classes.length; i++)
+							previouslySavedPlan[classes[i].courseNumber] = classes[i].sectionId
+					} catch( exception ) { /* don't die */}
+				}
+				$scope.loadSemesterCourses(data);
+				$scope.isLoadingCourses = false;
+			});
 		};
 				
 		$scope.loadByuCoursesOkay = function(){
