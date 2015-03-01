@@ -1,3 +1,7 @@
 .gradle
 .idea
 build
+test.iml
+main.iml
+MANIFEST.MF
+Fall2014CatalogTest.txt
