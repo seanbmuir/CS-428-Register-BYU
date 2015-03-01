@@ -7,7 +7,7 @@ import java.util.*;
 
 public interface ISemesterDAO {
     
-    public void addSemester(Semester semester);
+    public void saveSemester(Semester semester);
     
     public void deleteSemester(Semester semester);
     
@@ -17,11 +17,11 @@ public interface ISemesterDAO {
 
     public ArrayList<Semester> getSetOfSemester();
     
-    public ArrayList<Course> getCoursesByCredit(int credit);
+    public ArrayList<Course> getCoursesByCredit(int credit, int semID);
     
     //public ArrayList<Course> getCoursesByProfessor(Professor professor); // We don't have a model for professor
     
-    public ArrayList<Course> getCoursesByTimeOfDay(TimePlace timeplace);
+    public ArrayList<Course> getCoursesByTimeOfDay(TimePlace timeplace, int semID);
 
     //public void addSection(Course course,Section section);
 

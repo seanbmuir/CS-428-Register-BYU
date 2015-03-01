@@ -60,7 +60,7 @@ public class UpdateDatabase {
 					} catch (IOException e) {
 						System.out.println("failed to download and update database for " + semester.getName());
 					}
-	        		sdao.addSemester(semester);
+	        		sdao.saveSemester(semester);
         		}
         		else
         		{
@@ -82,7 +82,7 @@ public class UpdateDatabase {
 			} catch (IOException e) {
 				System.out.println("failed to download and update database for " + semesterName);
 			}
-    		sdao.addSemester(semester);
+    		sdao.saveSemester(semester);
             System.out.println("<<<<<<<<<<<<<<<< DATABASE UPDATED >>>>>>>>>>>>>>>>");
         }
     }

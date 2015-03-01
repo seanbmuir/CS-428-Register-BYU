@@ -11,6 +11,7 @@ import models.TimePlace;
 import org.jongo.Jongo;
 import org.jongo.MongoCollection;
 import packages.Courses;
+import java.util.List;
 
 import java.util.ArrayList;
 
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 public class SemesterDAO implements ISemesterDAO
 {
     private DB db;
-    private DBCollection collection;
+    //private DBCollection collection;
     private final String semesterIDQuery = "{ _id : #}";
     private MongoCollection semesters;
 
@@ -32,7 +33,7 @@ public class SemesterDAO implements ISemesterDAO
     }
 
     @Override
-    public void addSemester(Semester semester)
+    public void saveSemester(Semester semester)
     {
         WriteResult result = semesters.save(semester);
         DBValidator.validate(result);
@@ -41,9 +42,8 @@ public class SemesterDAO implements ISemesterDAO
     @Override
     public void deleteSemester(Semester semester)
     {
-        //WriteResult result = null;
-        //WriteResult result = semesters.remove(semester);
-        //DBValidator.validate(result);
+        WriteResult result = this.semesters.remove(semesterIDQuery, semester.getID());
+        DBValidator.validate(result);
     }
 
     @Override
@@ -61,30 +61,64 @@ public class SemesterDAO implements ISemesterDAO
     public void addCourses(Courses course, int semID)
     {
         Semester semester = semesters.findOne(semesterIDQuery, semID).as(Semester.class);
-        deleteSemester(semester);
+        semester.addCourses(course);
+        this.saveSemester(semester);
+    }
 
-        Semester sem2 = new Semester();
-        sem2.setCourses(course);
-        sem2.setID(semID);
-        addSemester(sem2);
+
+    public void removeCourse(Course course, int semID)
+    {
+        Semester semester = semesters.findOne(semesterIDQuery, semID).as(Semester.class);
+        semester.removeCourse(course);
+        this.saveSemester(semester);
     }
 
     @Override
     public ArrayList<Semester> getSetOfSemester()
     {
-        return null;
+        ArrayList<Semester> allSemesters = new ArrayList<Semester>();
+        for (int n = 0; n < semesters.count(); n++)
+        {
+            allSemesters.add(getSemester(n));
+        }
+        return allSemesters;
     }
 
     @Override
-    public ArrayList<Course> getCoursesByCredit(int credit)
+    public ArrayList<Course> getCoursesByCredit(int credit, int semID)
     {
-        return null;
+        Semester semester = semesters.findOne(semesterIDQuery, semID).as(Semester.class);
+        Courses courses = semester.getCourses();
+        List<Course> allCourses = courses.getCourses();
+
+        ArrayList<Course> matchedCourses = new ArrayList<Course>();
+        for(int n = 0; n < courses.size(); n++)
+        {
+            if(allCourses.get(n).getCredit() == credit)
+            {
+                matchedCourses.add(allCourses.get(n));
+            }
+        }
+        return matchedCourses;
     }
 
     @Override
-    public ArrayList<Course> getCoursesByTimeOfDay(TimePlace timeplace)
+    public ArrayList<Course> getCoursesByTimeOfDay(TimePlace timeplace, int semID)
     {
-        return null;
+        Semester semester = semesters.findOne(semesterIDQuery, semID).as(Semester.class);
+        Courses courses = semester.getCourses();
+        List<Course> allCourses = courses.getCourses();
+
+        ArrayList<Course> matchedCourses = new ArrayList<Course>();
+        for(int n = 0; n < courses.size(); n++)
+        {
+            //Section has TimePlace, discuss if Section or this feature is required?
+            /*if(allCourses.get(n).getTimePlace() == credit)
+            {
+                matchedCourses.add(allCourses.get(n));
+            }*/
+        }
+        return matchedCourses;
     }
 
     public void addSection(Course course, Section section)
@@ -97,9 +131,4 @@ public class SemesterDAO implements ISemesterDAO
 
     }
 
-    public void removeCourse(Course course, int semID)
-    {
-        String query = "{id : "+semID+"}";
-        WriteResult result = semesters.update(query).multi().with("updatestuffgoeshere");
-    }
 }

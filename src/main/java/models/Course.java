@@ -23,6 +23,8 @@ public class Course {
     private List<String> outcomes;
     private List<Section> sections;
 
+    private int credit;
+
     public Course() {
     	sections = new ArrayList<Section>();
     	outcomes = new ArrayList<String>();
@@ -72,6 +74,7 @@ public class Course {
         this.sections = sections;
     }
 
+    public void setCredit(int credit) { this.credit = credit;}
 
     public String getCourseID() {
         return courseID;
@@ -104,6 +107,8 @@ public class Course {
     public String getDepartmentCode() {
         return departmentCode;
     }
+
+    public int getCredit() { return credit; }
 
     public void setDepartmentCode(String departmentCode) {
         this.departmentCode = departmentCode;

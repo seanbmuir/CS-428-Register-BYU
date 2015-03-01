@@ -52,4 +52,21 @@ public class Semester
 	{
 		this.courses = courses;
 	}
+
+    public void addCourses(Courses courses)
+    {
+        if (this.courses == null)
+        {
+            this.courses = courses;
+        }
+        else
+        {
+            this.courses.addCourses(courses);
+        }
+    }
+
+    public void removeCourse(Course course)
+    {
+        this.courses.removeCourse(course);
+    }
 }
