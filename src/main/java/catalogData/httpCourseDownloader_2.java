@@ -17,7 +17,7 @@ import java.util.Scanner;
 public class httpCourseDownloader_2 {
 	//private static String[] DEPTS = {"A+HTG", "ACC", "AEROS", "AFRIK", "AM+ST", "ANES", "ANTHR", "ARAB", "ARTHC", "ASIAN", "ASL", "BIO", "BULGN", "BUS+M", "C+S", "CANT", "CE+EN", "CH+EN", "CHEM", "CHIN", "CL+CV", "CLSCS", "CM", "CMLIT", "CMPST", "COMD", "COMMS", "CPSE", "CSANM", "CZECH", "DANCE", "DIGHT", "DUTCH", "EC+EN", "ECE", "ECON", "EDLF", "EIME", "EL+ED", "ELANG", "EMBA", "ENG+T", "ENGL", "ESL", "EUROP", "EXSC", "FIN", "FINN", "FLANG", "FNART", "FPM", "FREN", "GEOG", "GEOL", "GERM", "GREEK", "HCOLL", "HEB", "HIST", "HLTH", "HONRS", "IAS", "ICLND", "IHUM", "INDES", "IP&T", "IR", "IS", "IT", "ITAL", "JAPAN", "KOREA", "LATIN", "LAW", "LFSCI", "LING", "LINGC", "LT+AM", "M+B+A", "M+COM", "MATH", "ME+EN", "MESA", "MFG", "MFHD", "MFT", "MIL+S", "MMBIO", "MTHED", "MUSIC", "NDFS", "NE+LG", "NES", "NEURO", "NORWE", "NURS", "ORG+B", "P+MGT", "P+POL", "PDBIO", "PETE", "PHIL", "PHSCS", "PHY+S", "PL+SC", "POLSH", "PORT", "PSYCH", "PWS", "RECM", "REL+A", "REL+C", "REL+E", "ROM", "RUSS", "SC+ED", "SCAND", "SFL", "SLAT", "SOC", "SOC+W", "SPAN", "STAC", "STAT", "STDEV", "SWED", "T+ED", "TECH", "TEE", "TELL", "TMA", "UNIV", "VA", "VAANM", "VADES", "VAEDU", "VAGD", "VAILL", "VAPHO", "VASTU", "WELSH", "WRTG", "WS"};
 
-    private static List<String> DEPTS = DepartmentDownloader.getHTMLdeptCodes();
+
 
     public static String executePost(String targetURL, String urlParameters)
 	  {
@@ -106,7 +106,7 @@ public class httpCourseDownloader_2 {
 
         String creditType = "A"; //Figure out what this means, also "S"
         
-        for(String dept : DEPTS){
+        for(String dept : DepartmentDownloader.getHTMLdeptCodes(semesterCode)){
            System.out.println(dept);
            
            String targetURL = "http://saasta.byu.edu/noauth/classSchedule/ajax/searchXML.php";
@@ -232,10 +232,5 @@ public class httpCourseDownloader_2 {
 
         System.out.println("\n\nURL:\n"+ targetURL +"?"+ urlParams + "\n" + outcomes);
         return outcomes;
-    }
-
-    public static List<String> getDepartments() {
-    	
-    	return DEPTS;
     }
 }
