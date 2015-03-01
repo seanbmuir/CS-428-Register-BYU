@@ -3,11 +3,7 @@
 		<div class="col-md-3">
 			<div class="col-md-4"><h4>Semester:</h4></div>
 			<div class="col-md-8">
-			<select id="semesterSelect">
-				<option value='20151'>Winter 2015</option>
-				<option value='20153'>Sp/Su 2015</option>
-				<option value='20155' selected>Fall 2015</option>
-			</select>
+				<select id="semesterSelect" ng-model="selectedSemester" ng-options="sem.name for sem in semesters" ng-change="changeCurrentSemester(selectedSemester)"></select>
 			</div>
 		</div>
 	</div>

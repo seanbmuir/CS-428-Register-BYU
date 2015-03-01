@@ -21,7 +21,7 @@ public class SemesterDAO implements ISemesterDAO
 {
     private DB db;
     private DBCollection collection;
-    private final String semesterIDQuery = "{id : #}";
+    private final String semesterIDQuery = "{ _id : #}";
     private MongoCollection semesters;
 
     public SemesterDAO(DB db){
@@ -35,7 +35,7 @@ public class SemesterDAO implements ISemesterDAO
     public void addSemester(Semester semester)
     {
         WriteResult result = semesters.save(semester);
-        //DBValidator.validate(result);
+        DBValidator.validate(result);
     }
 
     @Override
@@ -47,9 +47,9 @@ public class SemesterDAO implements ISemesterDAO
     }
 
     @Override
-    public Semester getSemester(int sem_id)
+    public Semester getSemester(int semID)
     {
-        Semester semester = semesters.findOne(semesterIDQuery).as(Semester.class);
+        Semester semester = semesters.findOne(semesterIDQuery, semID).as(Semester.class);
         if(semester == null)
         {
             throw new DatabaseException("Semester not found");

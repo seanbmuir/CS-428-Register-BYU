@@ -1,7 +1,13 @@
 .gradle
 .idea
 build
-test.iml
+.plugins
+.metadata/
+.settings/
+bin/
+libnative-platform-java-0.3~rc2/
+CS-428-Register-BYU.imltest.iml
 main.iml
 MANIFEST.MF
 Fall2014CatalogTest.txt
+test.iml
