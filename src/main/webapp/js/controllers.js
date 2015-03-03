@@ -16,9 +16,9 @@ classregControllers.controller('HeaderController', ['$scope', '$http', '$rootSco
 		
 		//check if logged in
 		$http.get('auth/service').success(function (data) {
-            if(data.username!==null){
+            if(data._id!==null){
 				$rootScope.loggedIn = true;
-				$rootScope.username = data.studentId;
+				$rootScope.username = data._id;
 			}
         });
     }
