@@ -135,7 +135,7 @@ public class CatalogParser {
 				case 9:
 					simpleLog("Number of Credits: " + tmp, SHOULD_LOG);
 					currentSection.setCredits(tmp);
-                    currentCourse.setCourseID(tmp); //add this so course can has it's own credit hours as well
+                    currentCourse.setCredit(tmp); //add this so course can has it's own credit hours as well
 					break;
 				case 10:
 					simpleLog("Days Taught: " + tmp, SHOULD_LOG);

@@ -43,7 +43,12 @@ public class SemesterDAO implements ISemesterDAO
     public void deleteSemester(Semester semester)
     {
         WriteResult result = this.semesters.remove(semesterIDQuery, semester.getID());
-        DBValidator.validate(result);
+        try{
+        	DBValidator.validate(result);
+        }
+        catch(Exception e){
+        	System.out.println("Failed to delete database, it may not exist. "+e.getMessage());
+        }
     }
 
     @Override
@@ -85,7 +90,7 @@ public class SemesterDAO implements ISemesterDAO
     }
 
     @Override
-    public ArrayList<Course> getCoursesByCredit(int credit, int semID)
+    public ArrayList<Course> getCoursesByCredit(String credit, int semID)
     {
         Semester semester = semesters.findOne(semesterIDQuery, semID).as(Semester.class);
         Courses courses = semester.getCourses();
@@ -94,7 +99,7 @@ public class SemesterDAO implements ISemesterDAO
         ArrayList<Course> matchedCourses = new ArrayList<Course>();
         for(int n = 0; n < courses.size(); n++)
         {
-            if(allCourses.get(n).getCredit() == credit)
+            if(allCourses.get(n).getCredit().equals(credit))
             {
                 matchedCourses.add(allCourses.get(n));
             }
