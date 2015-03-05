@@ -1,8 +1,12 @@
 package database;
 
+import com.mongodb.DB;
+import exceptions.DatabaseException;
 import models.Course;
 import models.Section;
 import models.Student;
+import org.jongo.Jongo;
+import org.jongo.MongoCollection;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,25 +19,31 @@ public class StudentDAOTest
 	private final String testCourseID = "1234";
 	private final String testStudentID = "reggiebyu";
 	private StudentDAO dao;
+	private MongoCollection collection;
 
 
 	@Before
 	public void setUp()
 	{
-		dao = new StudentDAO(DatabaseRegistrationStore.getDB());
+		DB db = TestDatabase.getDB();
+
+		// Start with a clean database before each test
+		collection = (new Jongo(db)).getCollection(StudentDAO.getCollectionID());
+		TestDatabase.dropCollection(collection);
+
+		dao = new StudentDAO(db);
 	}
 
 	@Test
 	public void testAddStudent() throws Exception
 	{
-		String studentID = "reggiebyu";
-		Student student = getTestStudent(studentID);
+		Student student = getTestStudent(testStudentID);
 
 		dao.saveStudent(student);
 
-		Student fromDB = dao.getStudent(studentID);
+		Student fromDB = dao.getStudent(testStudentID);
 		Assert.assertNotEquals("Student is null", null, fromDB);
-		Assert.assertEquals("Student ID not the same", studentID, student.getStudentId());
+		Assert.assertEquals("Student ID not the same", testStudentID, student.getStudentId());
 	}
 	
 	@Test
@@ -53,23 +63,42 @@ public class StudentDAOTest
 	@Test
 	public void testDeleteStudent() throws Exception
 	{
+		// Insert and verify it inserted
+		Student student = getTestStudent(testStudentID);
+		dao.saveStudent(student);
+		Student fromDB = dao.getStudent(testStudentID);
+		Assert.assertNotEquals("Student is null", null, fromDB);
 
+
+		fromDB = null;
+		dao.deleteStudent(student);
+		try
+		{
+			fromDB = dao.getStudent(testStudentID);
+			Assert.fail("DatabaseException not thrown when it should have");
+		}
+		catch (DatabaseException e)
+		{
+			Assert.assertNull("Student wasn't deleted", fromDB);
+		}
 	}
 
 	@Test
 	public void testAddSection() throws Exception
 	{
+		Student student = getTestStudent(testStudentID);
+		dao.saveStudent(student);
+		Student fromDB = dao.getStudent(testStudentID);
+
+		Assert.assertFalse(fromDB.getSchedules().contains(new Section())); //TODO finish this
+		Section section = new Section();
+		String sectionID = "OLAF";
+		dao.addSection(section, fromDB);
 
 	}
 
 	@Test
 	public void testRemoveSection() throws Exception
-	{
-
-	}
-
-	@Test
-	public void testGetStudent() throws Exception
 	{
 
 	}

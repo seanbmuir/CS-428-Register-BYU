@@ -1,7 +1,6 @@
 package database;
 
 import com.mongodb.DB;
-import com.mongodb.DBCollection;
 import com.mongodb.WriteResult;
 import exceptions.DatabaseException;
 import models.Course;
@@ -11,9 +10,9 @@ import models.TimePlace;
 import org.jongo.Jongo;
 import org.jongo.MongoCollection;
 import packages.Courses;
-import java.util.List;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by sean on 2/17/15.
@@ -24,11 +23,12 @@ public class SemesterDAO implements ISemesterDAO
     //private DBCollection collection;
     private final String semesterIDQuery = "{ _id : #}";
     private MongoCollection semesters;
+    private static final String collectionID = "semester";
 
     public SemesterDAO(DB db){
         this.db = db;
         Jongo jongo = new Jongo(this.db);
-        semesters = jongo.getCollection("semester");
+        semesters = jongo.getCollection(collectionID);
         //collection = db.getCollection("semester");
     }
 
@@ -134,6 +134,11 @@ public class SemesterDAO implements ISemesterDAO
     public void removeSection(Section section)
     {
 
+    }
+
+    public static String getCollectionID()
+    {
+        return collectionID;
     }
 
 }

@@ -17,13 +17,16 @@ public class StudentDAO implements IStudentDAO
     private DB Db;
     private MongoCollection students;
     private final String studentIdQuery = "{ _id: #}";
+    private static String collectionID = "students";
 
     public StudentDAO(DB Db)
     {
         this.Db = Db;
         Jongo jongo = new Jongo(this.Db);
-        this.students = jongo.getCollection("students");
+        this.students = jongo.getCollection(collectionID);
     }
+
+
 
     /**
      * Add one student to the database
@@ -101,6 +104,11 @@ public class StudentDAO implements IStudentDAO
     {
         student.removePlannedCourse(course);
         this.saveStudent(student);
+    }
+
+    public static String getCollectionID()
+    {
+        return collectionID;
     }
 
 }
