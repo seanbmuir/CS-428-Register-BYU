@@ -12,11 +12,11 @@ public class Schedule
     @Id
 	private String id;
 	private String name;
-	private int semesterID;
+	private String semesterID;
 	private List<Section> classes;
 
 
-	public Schedule(int semesterID)
+	public Schedule(String semesterID)
 	{
 		this.semesterID = semesterID;
 	}
@@ -53,12 +53,12 @@ public class Schedule
 		this.classes = classes;
 	}
 
-	public int getSemesterID()
+	public String getSemesterID()
 	{
 		return semesterID;
 	}
 
-	public void setSemesterID(int semesterID)
+	public void setSemesterID(String semesterID)
 	{
 		this.semesterID = semesterID;
 	}
