@@ -38,7 +38,7 @@ public class SemesterDAOTest {
 		Semester s = new Semester();
 		s.setID(semesterId);
 		s.setName(fakeSemester);
-		dao.addSemester(s);
+		dao.saveSemester(s);
 		Semester s2 = dao.getSemester(semesterId);
 		Assert.assertEquals("Semester id is the same", s.getID(), s2.getID());
 		Assert.assertEquals("Semester name is the same", s.getName(),s2.getName());

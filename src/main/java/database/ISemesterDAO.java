@@ -17,7 +17,7 @@ public interface ISemesterDAO {
 
     public ArrayList<Semester> getSetOfSemester();
     
-    public ArrayList<Course> getCoursesByCredit(int credit, int semID);
+    public ArrayList<Course> getCoursesByCredit(String credit, int semID);
     
     //public ArrayList<Course> getCoursesByProfessor(Professor professor); // We don't have a model for professor
     
