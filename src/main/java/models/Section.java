@@ -13,7 +13,7 @@ import org.jongo.marshall.jackson.oid.Id;
  */
 public class Section {
     private String courseID;
-
+    private String semesterID;
     @Id
     private String sectionID;
     private String sectionType;
@@ -27,6 +27,16 @@ public class Section {
     private String[] endTimes;
     private String[] locations;
     private String[] daysTaught;
+
+    public String getSemesterID()
+    {
+        return semesterID;
+    }
+
+    public void setSemesterID(String semesterID)
+    {
+        this.semesterID = semesterID;
+    }
 
     public String[] getStartTimes() {
 		return startTimes;
