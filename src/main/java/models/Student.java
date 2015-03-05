@@ -22,6 +22,8 @@ public class Student
 
 	public Student()
 	{
+		schedules = new Schedules();
+		plannedCourses = new Courses();
 	}
 
 	public Student(String studentId)
@@ -62,6 +64,16 @@ public class Student
 	public Schedules getSchedules()
 	{
 		return schedules;
+	}
+
+	/**
+	 * Gets the ith Schedule
+	 * @param i the index of the schedule
+	 * @return
+	 */
+	public Schedule getSchedule(int i)
+	{
+		return schedules.getSchedules().get(i);
 	}
 
 	public void setSchedules(Schedules schedules)
@@ -120,6 +132,55 @@ public class Student
 	public void addPlannedCourse(Course course)
 	{
 		this.plannedCourses.addCourse(course);
+	}
+
+
+	/**
+	 * Adds a section to the student
+	 * @param section
+	 */
+	public void addSection(Section section)
+	{
+		// Check if any schedules exist
+		if(this.schedules.isEmpty())
+		{
+			Schedule schedule = new Schedule(section.getSemesterID());
+			schedule.addSection(section);
+			this.schedules.addSchedule(schedule);
+		}
+		else
+		{
+			for (int i = 0; i < this.schedules.size(); i++)
+			{
+				Schedule schedule = this.getSchedule(i);
+				if (schedule.getSemesterID().equals(section.getSemesterID()))
+				{
+					schedule.addSection(section);
+				}
+			}
+		}
+	}
+
+	/**
+	 * removes a section from this student
+	 * @param section
+	 */
+	public void removeSection(Section section)
+	{
+		// do nothing if schedules don't exist
+//		if(this.schedules.isEmpty())
+//		{
+//			return;
+//		}
+
+		for(int i=0;i < this.schedules.size();i++)
+		{
+			Schedule schedule = this.getSchedule(i);
+			if(schedule.getSemesterID().equals(section.getSemesterID()))
+			{
+				schedule.removeSection(section);
+			}
+		}
 	}
 
 }

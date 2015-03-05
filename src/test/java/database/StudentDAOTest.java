@@ -90,16 +90,33 @@ public class StudentDAOTest
 		dao.saveStudent(student);
 		Student fromDB = dao.getStudent(testStudentID);
 
-		Assert.assertFalse(fromDB.getSchedules().contains(new Section())); //TODO finish this
-		Section section = new Section();
-		String sectionID = "OLAF";
-		dao.addSection(section, fromDB);
+		Section section = getTestSection();
+
+		Assert.assertFalse(fromDB.getSchedules().contains(section));
+
+		dao.addSection(section, student);
+
+		fromDB = dao.getStudent(testStudentID);
+		Assert.assertTrue("Section not added", fromDB.getSchedules().contains(section));
 
 	}
+
+
 
 	@Test
 	public void testRemoveSection() throws Exception
 	{
+		Student student = getTestStudent(testStudentID);
+		Section section = getTestSection();
+		student.addSection(section);
+		dao.saveStudent(student);
+
+		Student fromDB = dao.getStudent(testStudentID);
+		Assert.assertTrue(fromDB.getSchedules().contains(section));
+
+		dao.removeSection(section, student);
+		fromDB = dao.getStudent(testStudentID);
+		Assert.assertFalse(fromDB.getSchedules().contains(section));
 
 	}
 
@@ -148,5 +165,14 @@ public class StudentDAOTest
 		course.setCourseID(courseID);
 		course.setSections(new ArrayList<Section>());
 		return course;
+	}
+
+	private Section getTestSection()
+	{
+		Section section = new Section();
+		String sectionID = "__fakesection__";
+		section.setSectionID(sectionID);
+		section.setSemesterID("20158");
+		return section;
 	}
 }

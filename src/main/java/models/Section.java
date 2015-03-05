@@ -1,8 +1,10 @@
 package models;
 
+import org.jongo.marshall.jackson.oid.Id;
+
 import java.util.ArrayList;
 import java.util.List;
-import org.jongo.marshall.jackson.oid.Id;
+import java.util.Objects;
 
 /**
  * Created with IntelliJ IDEA.
@@ -208,5 +210,38 @@ public class Section {
 
     public void setRateMyProfId(String rateMyProfId) {
         this.rateMyProfId = rateMyProfId;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(courseID, semesterID, sectionID, sectionType, professor, pid, rateMyProfId, seatsAvailable, totalSeats, waitList, startTimes, endTimes, locations, daysTaught, credits);
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final Section other = (Section) obj;
+        return Objects.equals(this.courseID, other.courseID)
+                && Objects.equals(this.semesterID, other.semesterID)
+                && Objects.equals(this.sectionID, other.sectionID)
+                && Objects.equals(this.sectionType, other.sectionType)
+                && Objects.equals(this.professor, other.professor)
+                && Objects.equals(this.pid, other.pid)
+                && Objects.equals(this.rateMyProfId, other.rateMyProfId)
+                && Objects.equals(this.seatsAvailable, other.seatsAvailable)
+                && Objects.equals(this.totalSeats, other.totalSeats)
+                && Objects.equals(this.waitList, other.waitList)
+                && Objects.deepEquals(this.startTimes, other.startTimes)
+                && Objects.deepEquals(this.endTimes, other.endTimes)
+                && Objects.deepEquals(this.locations, other.locations)
+                && Objects.deepEquals(this.daysTaught, other.daysTaught)
+                && Objects.equals(this.credits, other.credits);
     }
 }

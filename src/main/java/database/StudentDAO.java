@@ -51,38 +51,24 @@ public class StudentDAO implements IStudentDAO
     }
 
     /**
-     * Add a section to the database
+     * Add a section to the student in the database
      * @param section
      */
     @Override
     public void addSection(Section section, Student student)
     {
-        deleteStudent(student);
-        for(int i=0;i<student.getSchedules().getSchedules().size();i++)
-        {
-            if(student.getSchedules().getSchedules().get(i).getSemesterID().equals(section.getSemesterID()))
-            {
-                student.getSchedules().getSchedules().get(i).addSection(section);
-            }
-        }
+        student.addSection(section);
         saveStudent(student);
     }
 
     /**
-     * Remove a section that
+     * Remove a section from the student in the database
      * @param section
      */
     @Override
     public void removeSection(Section section,Student student)
     {
-        deleteStudent(student);
-        for(int i=0;i<student.getSchedules().getSchedules().size();i++)
-        {
-            if(student.getSchedules().getSchedules().get(i).getSemesterID().equals(section.getSemesterID()))
-            {
-                student.getSchedules().getSchedules().get(i).removeSection(section);
-            }
-        }
+        student.removeSection(section);
         saveStudent(student);
     }
 

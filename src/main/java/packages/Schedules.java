@@ -47,4 +47,14 @@ public class Schedules
 		return false;
 	}
 
+	public int size()
+	{
+		return this.schedules.size();
+	}
+
+	public boolean isEmpty()
+	{
+		return this.schedules.isEmpty();
+	}
+
 }

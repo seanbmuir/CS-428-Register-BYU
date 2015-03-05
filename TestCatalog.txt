@@ -1,0 +1,115 @@
+04536#002#PHSCS#2#108##004##DAY#General Physics Lab 2#Peterson, Bryan#1#WF
+#2:00pm
+#4:50pm
+#C445 ESC 
+#PHSCS 108 students check with your departments to see if it is a requirement to take PHSCS 108 concurrently with PHSCS 106.
+#2 / 28#0#04536#002#PHSCS#2#108##005##DAY#General Physics Lab 2#Peterson, Bryan#1#TTh
+#08:00am
+#10:50am
+#C445 ESC 
+#PHSCS 108 students check with your departments to see if it is a requirement to take PHSCS 108 concurrently with PHSCS 106.
+#0 / 28#6#04536#002#PHSCS#2#108##006##EVENING#General Physics Lab 2#Peterson, Bryan#1#TTh
+#6:00pm
+#8:50pm
+#C445 ESC 
+#PHSCS 108 students check with your departments to see if it is a requirement to take PHSCS 108 concurrently with PHSCS 106.
+#25 / 28#0#09341#001#PHSCS#2#145##001##DAY#Experimental Methods#Peterson, Bryan#1#MW
+#2:00pm
+#4:50pm
+#S420 ESC 
+#PHSCS 145: If you would like to add this class and you are not a Physics Major or Minor, please email the instructor at Physics145@byu.edu.
+This class is for majors only.
+#9 / 14#0#09341#001#PHSCS#2#145##002##DAY#Experimental Methods#Peterson, Bryan#1#TTh
+#2:00pm
+#4:50pm
+#S420 ESC 
+#PHSCS 145: If you would like to add this class and you are not a Physics Major or Minor, please email the instructor at Physics145@byu.edu.
+This class is for majors only.
+#7 / 14#0#10386#000#PHSCS#2#297R#002##DAY#Intro to Research#Vanfleet, Richard#3V#TBA
+#TBA
+#TBA
+#TBA##10 / 10#0#08960#001#PHSCS#2#399R#002##DAY#Academic Internship#Allred, David#9V#TBA
+#TBA
+#TBA
+#TBA#PHSCS 399R: An APPROVED Internship Application is required before adding.
+This class requires internship coordinator approval.
+#5 / 5#0#09991#000#PHSCS#2#430##001##DAY#Computational Physics Lab 3#Berrondo, Manuel#1#TTh
+#08:00am
+#10:50am
+#N212 ESC 
+##6 / 20#0#04567#007#PHSCS#2#442##001##DAY#Electrodynamics#Berrondo, Manuel#3#MWF
+#11:00am
+#12:50pm
+#C247 ESC 
+##37 / 49#0#04574#009#PHSCS#2#471##001##DAY#Principles of Optics#Peatross, Justin#3#MWF
+#09:00am
+#10:50am
+#C285 ESC 
+##36 / 50#0#10164#000#PHSCS#2#492R#002##DAY#Capstone in Applied Phscs#Durfee, Dallin#2#TBA
+#TBA
+#TBA
+#TBA##10 / 10#0#04575#013#PHSCS#2#497R#002##DAY#Research in Physics#Vanfleet, Richard#3V#TBA
+#TBA
+#TBA
+#TBA#DEPARTMENT APPROVAL
+#15 / 15#0#04573#002#PHSCS#2#498R#002##DAY#Senior Thesis#Hintz, Eric#3V#TBA
+#TBA
+#TBA
+#TBA#DEPARTMENT APPROVAL
+#15 / 15#0#09709#000#PHSCS#2#599R#002##DAY#Academic Internship#Allred, David#9V#TBA
+#TBA
+#TBA
+#TBA#PHSCS 599R: An APPROVED Internship Application is required before adding.
+This class requires internship coordinator approval.
+#2 / 2#0#04622#000#PHSCS#2#697R#002##DAY#Research#Vanfleet, Richard#6V#TBA
+#TBA
+#TBA
+#TBA#DEPARTMENT APPROVAL
+#15 / 15#0#04623#007#PHSCS#2#699R#002##DAY#Graduate Thesis/Dissertation#Vanfleet, Richard#9V#TBA
+#TBA
+#TBA
+#TBA#DEPARTMENT APPROVAL
+#35 / 35#0#11306#000#PHSCS#2#795R#002##DAY#Research Readings#Hirschmann, Eric#3V#TBA
+#TBA
+#TBA
+#TBA##3 / 3#0#06509#002#PHY S#2#100##008##DAY#Physical Science#VanHuele, Jean-Francois#3#MWF
+W
+#10:00am
+12:00pm
+#11:50am
+12:50pm
+#377 CB 
+C285 ESC 
+#PHY S 100:  Also offered by BYU Independent Study; enroll anytime throughout year; one year to complete; additional tuition required; register at is.byu.edu.
+INCLUDES FRESHMAN MENTORING
+#14 / 40#0#06509#002#PHY S#2#100##009##DAY#Physical Science#VanHuele, Jean-Francois#3#MWF
+Th
+#10:00am
+09:00am
+#11:50am
+09:50am
+#377 CB 
+C285 ESC 
+#PHY S 100:  Also offered by BYU Independent Study; enroll anytime throughout year; one year to complete; additional tuition required; register at is.byu.edu.
+INCLUDES FRESHMAN MENTORING
+#22 / 40#0#06509#002#PHY S#2#100##010##DAY#Physical Science#VanHuele, Jean-Francois#3#MWF
+Th
+#10:00am
+10:00am
+#11:50am
+10:50am
+#377 CB 
+C285 ESC 
+#PHY S 100:  Also offered by BYU Independent Study; enroll anytime throughout year; one year to complete; additional tuition required; register at is.byu.edu.
+INCLUDES FRESHMAN MENTORING
+#20 / 40#0#06509#002#PHY S#2#100##011##DAY#Physical Science#VanHuele, Jean-Francois#3#MWF
+Th
+#10:00am
+11:00am
+#11:50am
+11:50am
+#377 CB 
+C285 ESC 
+#PHY S 100:  Also offered by BYU Independent Study; enroll anytime throughout year; one year to complete; additional tuition required; register at is.byu.edu.
+INCLUDES FRESHMAN MENTORING
+#

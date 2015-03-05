@@ -1,7 +1,9 @@
 package models;
 
-import java.util.List;
 import org.jongo.marshall.jackson.oid.Id;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @autor: Nick Humrich
@@ -19,6 +21,7 @@ public class Schedule
 	public Schedule(String semesterID)
 	{
 		this.semesterID = semesterID;
+		this.classes = new ArrayList<>();
 	}
 
 	public Schedule(){}
