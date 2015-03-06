@@ -97,6 +97,15 @@ public class PublicWebController {
 	}
 
 	
+	
+	//TODO:: change this method to return semesters that
+	// are published in the database, SemesterDownloader.getSemesterCodes()
+	// needs to be changed to webServie.getSemesterCodes() (needs to be implemented)
+	// the webService.getSemesterCodes() needs to talk to the DatabaseRegistrationStore/SemesterDAO
+	// and get all of the semesterCodes that are in the database
+	//
+	// The object that is returned as a List<String> of semester codes  
+	// ie.  { "20151", "20153" } 
 	@RequestMapping(value = "/semesters", method = GET)
 	public @ResponseBody
 	List<String> getSemesters()

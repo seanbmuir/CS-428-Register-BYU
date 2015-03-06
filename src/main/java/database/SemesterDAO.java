@@ -126,16 +126,6 @@ public class SemesterDAO implements ISemesterDAO
         return matchedCourses;
     }
 
-    public void addSection(Course course, Section section)
-    {
-
-    }
-
-    public void removeSection(Section section)
-    {
-
-    }
-
     public static String getCollectionID()
     {
         return collectionID;
