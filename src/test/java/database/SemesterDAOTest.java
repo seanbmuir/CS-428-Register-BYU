@@ -65,6 +65,10 @@ public class SemesterDAOTest {
 	public void getF2015Semester() throws Exception
 	{
 		int semesterId = 20155;
+		Semester sem = new Semester();
+		sem.setID(semesterId);
+		dao.saveSemester(sem);
+
 		Semester s = dao.getSemester(semesterId);
 		Assert.assertEquals("Semester id is the same", s.getID(), semesterId);
 	}

@@ -1,5 +1,6 @@
 package controllers;
 
+import catalogData.SemesterDownloader;
 import exceptions.NotAuthorizedException;
 import exceptions.ResourceNotFoundException;
 import exceptions.ServerException;
@@ -13,10 +14,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import packages.Courses;
 import packages.Departments;
-import packages.Requirements;
 import packages.Schedules;
 import service.PublicWebService;
-import catalogData.SemesterDownloader;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
@@ -93,30 +93,9 @@ public class PublicWebController {
 	Departments getAllDepartments(
 		@RequestParam(value = "dummy", required = false, defaultValue = "false") Boolean dummy)
 	{
-		if (dummy) {
-			return webService.getMockDepartments();
-		}
 		return webService.getAllDepartments();
 	}
 
-	/**
-	 * Gets all requirements for the given major.a If no major is given or major 'none', then all
-	 * the general requirements will be given
-	 * @param major shortCode for major
-	 * @return requirements for given major
-	 */
-	@RequestMapping(value = "/requirements", method = GET)
-	public @ResponseBody
-	Requirements getRequirements(
-		@RequestParam(value = "major", required = false, defaultValue = "none") String major,
-		@RequestParam(value = "dummy", required = false, defaultValue = "false")Boolean dummy)
-	{
-		if (dummy) {
-			return webService.getMockRequirements(major);
-		}
-		return webService.getRequirements(major);
-
-	}
 	
 	@RequestMapping(value = "/semesters", method = GET)
 	public @ResponseBody
@@ -137,17 +116,15 @@ public class PublicWebController {
 	      cachedCourses = webService.getAllCourses();
 	  return cachedCourses;
     } else {
-      return webService.getAllCourses(semester);
+      return webService.getCourses(semester);
     }
   }
 
-	@RequestMapping(value = "/courses", method = GET)
+	@RequestMapping(value = "/courses/{sem_id}", method = GET)
 	public @ResponseBody
-	Courses getCourses(
-		@RequestParam(value = "ids", required = true) String ids)
+	Courses getCourses(@PathVariable String sem_id)
 	{
-
-		return new Courses();
+		return webService.getCourses(sem_id);
 	}
 
     @RequestMapping(value = "/register", method = POST)
