@@ -122,22 +122,9 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
                 });
                 $scope.courses.push(course)
             });
+			if($scope.importedClasses!=undefined)
+				$scope.loadByuPlannedCoursesToSidebar();
 		};
-		
-		$scope.previouslySavedPlan = {}
-        $scope.isLoadingCourses = true;
-        $http.get('public-api/courses/all').success(function (data) {
-            if( $cookies.classes !== undefined && $cookies.classes !== "undefined" && $cookies.classes !== null )
-            {
-                try {
-                    var classes = JSON.parse($cookies.classes)
-                    for (var i = 0; i < classes.length; i++)
-                        previouslySavedPlan[classes[i].courseNumber] = classes[i].sectionId
-                } catch( exception ) { /* don't die */}
-            }
-            $scope.loadSemesterCourses(data);
-            $scope.isLoadingCourses = false;
-        });
 		
 		$scope.semesterNames = function(year){
 			var sType = year.substring(4,5);
@@ -157,22 +144,26 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
 			return year;
 		};
 		
-		$http.get('public-api/semesters').success(function (data) {
-			$scope.semesters = [];
-			for(var i=0;i<data.length;i++){
-				var se = {};
-				se["name"] = $scope.semesterNames(data[i]);
-				se["value"] = data[i];
-				if(parseInt(se["value"].substring(0,4))>=(new Date().getFullYear()))
-					$scope.semesters.push(se);
-			}
-			$scope.currentSemester = $scope.semesters[$scope.semesters.length-1].name;
-			$scope.selectedSemester = $scope.semesters[$scope.semesters.length-1];
-        });
+		$scope.loadSemeseters = function(){
+			$scope.previouslySavedPlan = {}
+			$http.get('public-api/semesters').success(function (data) {
+				$scope.semesters = [];
+				for(var i=0;i<data.length;i++){
+					var se = {};
+					se["name"] = $scope.semesterNames(data[i]);
+					se["value"] = data[i];
+					if(parseInt(se["value"].substring(0,4))>=(new Date().getFullYear()))
+						$scope.semesters.push(se);
+				}
+				$scope.selectedSemester = $scope.semesters[$scope.semesters.length-1];
+				$scope.changeCurrentSemester($scope.selectedSemester);
+			});
+		};
 		
         // popular courses to be shown when there are no filters applied
         $scope.popularCourses = ['REL A121', 'REL A122', 'A HTG100', 'BIO100', 'C S142', 'MATH112', 'MATH113', 'WRTG150', 'CHEM111', 'CHEM101', 'PHSCS121', 'COMMS101', 'ACC200', 'EL ED202'];
-
+		$scope.defaultCourses = $scope.popularCourses;
+		
         var autoSave = $interval(function () {
             $scope._savePlan()
         }, 5000);
@@ -194,7 +185,11 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
             $scope.sortBy = ['dept.shortCode','courseNumber'];
             $scope.filteredDept = '';
             $scope.selectedCourse = undefined;
-
+			
+			if($rootScope.initLoadingCourses!=true)//prevent 2 calls during init
+				$scope.loadSemeseters();
+			$rootScope.initLoadingCourses = true;
+			
             angular.forEach($scope.courseLevels, function(level) {
                 $scope.filterOptions.levels[level] = true;
             });
@@ -224,7 +219,7 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
         $scope.initStuff();
 
         $scope.allFilter = function(course) {
-            return (($scope.filterText && $scope.filterText.length) || ($scope.filteredDept && $scope.filteredDept.length) || $scope.popularCourses.indexOf(course.dept.shortCode + course.courseNumber) > -1);
+            return (($scope.filterText && $scope.filterText.length) || ($scope.filteredDept && $scope.filteredDept.length) || $scope.defaultCourses.indexOf(course.dept.shortCode + course.courseNumber) > -1);
         };
 
         // Searches both course name and course description fields
@@ -317,7 +312,7 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
 		$scope.changeCurrentSemester = function(selected){
 			$scope.currentSemester = selected.name;
 			$scope.isLoadingCourses = true;
-			$http.get('public-api/courses/all?semester='+selected.value).success(function (data) {
+			$http.get('public-api/courses/'+selected.value).success(function (data) {
 				if( $cookies.classes !== undefined && $cookies.classes !== "undefined" && $cookies.classes !== null )
 				{
 					try {
@@ -330,18 +325,24 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
 				$scope.isLoadingCourses = false;
 			});
 		};
+		
+		$scope.loadByuPlannedCoursesToSidebar = function(){
+			var plans = $scope.importedClasses.plans;
+			$scope.defaultCourses = [];
+			for(var i=0; i< plans.length; i++){
+				if(plans[i]["yearTerm"]==$scope.selectedSemester.value){
+					var courseTitle = plans[i]["title"];
+					$scope.defaultCourses.push(courseTitle.substr(0,courseTitle.length-4) + courseTitle.substr(courseTitle.length-3,3));
+				}
+			}
+			if($scope.defaultCourses.length==0)
+				$scope.defaultCourses = $scope.popularCourses;
+		};
 				
 		$scope.loadByuCoursesOkay = function(){
 			try{
 				$scope.importedClasses = JSON.parse($('#jsonPlannedClasses')[0].value);
-				var plans = $scope.importedClasses.plans;
-				$scope.popularCourses = [];
-				for(var i=0; i< plans.length; i++){
-					if(plans[i]["yearTerm"]=="20151"){
-						var courseTitle = plans[i]["title"];
-						$scope.popularCourses.push(courseTitle.substr(0,courseTitle.length-4) + courseTitle.substr(courseTitle.length-3,3));
-					}
-				}
+				$scope.loadByuPlannedCoursesToSidebar();
 			}catch(e){
 				//silently die, should tell users we couldn't parse their classes.
 			}
