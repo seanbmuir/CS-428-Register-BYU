@@ -19,6 +19,7 @@ classregControllers.controller('HeaderController', ['$scope', '$http', '$rootSco
             if(data._id!==null){
 				$rootScope.loggedIn = true;
 				$rootScope.username = data._id;
+				$rootScope.schedules = data.schedules;
 			}
         });
     }
@@ -160,6 +161,13 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
 			});
 		};
 		
+		$scope.loadPreviouslySavedMyMap = function(){
+			$http.get('public-api/loadCoursesFromMyMap').success(function (data) {
+				$scope.importedClasses = JSON.parse(data.mymapPlanned);
+				$scope.loadByuPlannedCoursesToSidebar();
+			});
+		};
+		
         // popular courses to be shown when there are no filters applied
         $scope.popularCourses = ['REL A121', 'REL A122', 'A HTG100', 'BIO100', 'C S142', 'MATH112', 'MATH113', 'WRTG150', 'CHEM111', 'CHEM101', 'PHSCS121', 'COMMS101', 'ACC200', 'EL ED202'];
 		$scope.defaultCourses = $scope.popularCourses;
@@ -186,8 +194,10 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
             $scope.filteredDept = '';
             $scope.selectedCourse = undefined;
 			
-			if($rootScope.initLoadingCourses!=true)//prevent 2 calls during init
+			if($rootScope.initLoadingCourses!=true){//prevent 2 calls during init
 				$scope.loadSemeseters();
+				$scope.loadPreviouslySavedMyMap();
+			}
 			$rootScope.initLoadingCourses = true;
 			
             angular.forEach($scope.courseLevels, function(level) {
@@ -342,6 +352,9 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
 		$scope.loadByuCoursesOkay = function(){
 			try{
 				$scope.importedClasses = JSON.parse($('#jsonPlannedClasses')[0].value);
+				$http.post('public-api/saveCoursesFromMyMap', {mymapPlanned:$scope.importedClasses}).success(function (data) {
+					//success!
+				});
 				$scope.loadByuPlannedCoursesToSidebar();
 			}catch(e){
 				//silently die, should tell users we couldn't parse their classes.
@@ -423,8 +436,15 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
             // change color of other sections of this course back to default
             $scope.$broadcast("changeEventColor", {course: cid.split('-')[0], color: eventColor});
         };
+		
+		$scope.savePlanToServer = function(){
+			$http.post('public-api/saveCoursesFromMyMap', {schedule: $scope.plannedCourses}).success(function (data) {
+					//success!
+				});
+		};
 
         $scope.savePlan = function() {
+			$scope.savePlanToServer();
             var classes = []
             for( var i=0; i<$scope.plannedCourses.length; i++ ) {
                 var klass = {}

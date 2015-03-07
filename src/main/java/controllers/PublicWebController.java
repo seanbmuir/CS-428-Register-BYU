@@ -45,12 +45,14 @@ public class PublicWebController
     private PublicWebService webService;
     private HashMap<String,Courses> cachedCourses;
     private List<String> cachedSemesters;
+    private String replaceWithImplementatedBYUPlannedCourses;
 
     public PublicWebController()
     {
     	cachedCourses = new HashMap<String,Courses>();
         countdown = 5;
         shuttingDown = false;
+        replaceWithImplementatedBYUPlannedCourses = "";
         webService = new PublicWebService();
     }
 
@@ -140,8 +142,40 @@ public class PublicWebController
         String uid = getUserId(session);
         return webService.getSchedule(uid, sem_id);
     }
-
-
+    
+    /**
+     * The method accepts a JSON blob (the data from https://home.byu.edu/webapp/mymap/organize/data.json )
+     * and store it in the database
+     */
+    @RequestMapping(value = "/saveCoursesFromMyMap", method = POST,
+            consumes = "application/json")
+    @ResponseStatus(value = HttpStatus.OK)
+    public void saveCoursesFromMyMap(@RequestBody String mymapPlanned, HttpSession session)
+    {
+        //TODO: This needs to be implemented;
+    	replaceWithImplementatedBYUPlannedCourses = mymapPlanned;
+    }
+    
+    /**
+     * The method returns the JSON blob
+     * stored in the database
+     */
+    @RequestMapping(value = "/loadCoursesFromMyMap", method = GET)
+    public
+    @ResponseBody
+    String loadCoursesFromMyMap(HttpSession session)
+    {
+        String uid = getUserId(session);
+        //TODO: This needs to be implemented, does not need to return a string necessarily. It can return an object.
+        // just needs to return something like this: 
+        return replaceWithImplementatedBYUPlannedCourses;
+    }
+    
+    /**
+     * returns the UID (netid) of the user logged in 
+     * @param session
+     * @return
+     */
     private String getUserId(HttpSession session)
     {
         Object uid = session.getAttribute("uid");
@@ -151,8 +185,21 @@ public class PublicWebController
         }
         return (String) uid;
     }
-
-
+    
+    /**
+     * Clears the cached objects, this method could be changed to 
+     * automatically regenerate the cache.
+     * @return "success"
+     */
+    @RequestMapping(value = "dbupdated", method = GET)
+    public
+    @ResponseBody
+    String dbUpdated()
+    {
+        cachedCourses = new HashMap<String,Courses>();
+        cachedSemesters = null;
+        return "success";
+    }
 
 
   /* Potentially Unused Methods =======================================================*/
@@ -272,17 +319,6 @@ public class PublicWebController
         String courseInfo = (String) session.getAttribute("CourseInfo");
         webService.handleRegistration(courseInfo, ticket);
         return "ok " + courseInfo + " " + ticket;
-    }
-
-
-    @RequestMapping(value = "dbupdated", method = GET)
-    public
-    @ResponseBody
-    String dbUpdated()
-    {
-        cachedCourses = new HashMap<String,Courses>();
-        cachedSemesters = null;
-        return "success";
     }
 
     @RequestMapping(value = "/shutdown", method = POST)
