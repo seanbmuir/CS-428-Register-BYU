@@ -16,7 +16,7 @@ import packages.Courses;
 import packages.Departments;
 import packages.Schedules;
 import service.PublicWebService;
-
+import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
@@ -43,11 +43,12 @@ public class PublicWebController
     private int countdown;
 
     private PublicWebService webService;
-    private Courses cachedCourses;
+    private HashMap<String,Courses> cachedCourses;
     private List<String> cachedSemesters;
 
     public PublicWebController()
     {
+    	cachedCourses = new HashMap<String,Courses>();
         countdown = 5;
         shuttingDown = false;
         webService = new PublicWebService();
@@ -75,31 +76,6 @@ public class PublicWebController
     }
 
     /**
-     * Returns all courses in all available semesters
-     *
-     * @param semester
-     * @return
-     */
-    @RequestMapping(value = "/courses/all", method = GET)
-    public
-    @ResponseBody
-    Courses getAllCourses(
-            @RequestParam(value = "semester", required = false, defaultValue = "current") String semester)
-    {
-        if ("current".equals(semester))
-        {
-            if (cachedCourses == null)
-            {
-                cachedCourses = webService.getAllCourses();
-            }
-            return cachedCourses;
-        } else
-        {
-            return webService.getCourses(semester);
-        }
-    }
-
-    /**
      * Returns the courses for the requested semester
      *
      * @param sem_id
@@ -110,7 +86,10 @@ public class PublicWebController
     @ResponseBody
     Courses getCourses(@PathVariable String sem_id)
     {
-        return webService.getCourses(sem_id);
+    	if(!cachedCourses.containsKey(sem_id)){
+    		cachedCourses.put(sem_id, webService.getCourses(sem_id));
+    	}
+        return cachedCourses.get(sem_id);
     }
 
 
@@ -301,7 +280,7 @@ public class PublicWebController
     @ResponseBody
     String dbUpdated()
     {
-        cachedCourses = null;
+        cachedCourses = new HashMap<String,Courses>();
         cachedSemesters = null;
         return "success";
     }

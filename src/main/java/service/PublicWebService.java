@@ -33,20 +33,15 @@ public class PublicWebService
 		studentDAO = new StudentDAO(DatabaseRegistrationStore.getDB());
 	}
 
-	public Courses getAllCourses()
-	{
-		return getCourses(getCurrentSemester());
-	}
-
 	public Courses getCourses(String sem_id)
 	{
 		int semesterID = Integer.parseInt(sem_id);
-		return semesterDAO.getSemester(semesterID).getCourses();
-	}
-
-	public String getCurrentSemester()
-	{
-		return "20155"; //ToDo: change this
+		try{
+			return semesterDAO.getSemester(semesterID).getCourses();
+		}catch(Exception e){
+			//semester does not exist
+			return new Courses();//empty set
+		}
 	}
 
 	public void handleRegistration(String courseInfo, String ticket)
