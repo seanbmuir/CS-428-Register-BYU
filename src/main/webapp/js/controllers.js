@@ -34,14 +34,29 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
 			angular.forEach(data.courses, function (apiCourse) {
 				if ($scope.departments.indexOf(apiCourse.departmentCode) < 0)
                     $scope.departments.push(apiCourse.departmentCode)
-				 angular.forEach(apiCourse.sections, function (apiSection) {
-					 if( apiSection.pid === "undefined" || apiSection.pid === undefined 
-									|| apiSection.pid === null || apiSection.pid === "" ){
-						apiSection.professor = (apiSection.professor==null)? 'Staff' : apiSection.professor;
-                        apiSection.rateMyProfessorQuery = "search.jsp?query=BYU%20" + apiSection.professor.split(",")[0] + " " + apiSection.professor.split(",")[1] 
-					  }else
-                        apiSection.rateMyProfessorQuery = "ShowRatings.jsp?tid="+apiSection.pid
-				 });
+                     angular.forEach(apiCourse.sections, function (apiSection) {
+                         if( apiSection.pid === "undefined" || apiSection.pid === undefined
+                                        || apiSection.pid === null || apiSection.pid === "" ){
+                            apiSection.professor = (apiSection.professor==null)? 'Staff' : apiSection.professor;
+                            apiSection.rateMyProfessorQuery = "search.jsp?query=BYU%20" + apiSection.professor.split(",")[0] + " " + apiSection.professor.split(",")[1]
+                          }else
+                            apiSection.rateMyProfessorQuery = "ShowRatings.jsp?tid="+apiSection.pid
+                     });
+
+                if (apiCourse.sections !== null && apiCourse.sections !== undefined && apiCourse.sections.length > 0) {
+                    var minCredits = 1000, maxCredits = -1;
+                    for( var i=0; i<apiCourse.sections.length; i++ ) {
+                        var sectionCredits = parseInt(apiCourse.sections[i].credits, 10)
+                        if( sectionCredits < minCredits )
+                            minCredits = sectionCredits
+                        if( sectionCredits > maxCredits )
+                            maxCredits = sectionCredits
+                    }
+                    if( minCredits == maxCredits )
+                        apiCourse.creditRange = minCredits
+                    else
+                        apiCourse.creditRange = minCredits+' - '+maxCredits
+                }
 			});
 			if($scope.importedClasses!=undefined)
 				$scope.loadByuPlannedCoursesToSidebar();
