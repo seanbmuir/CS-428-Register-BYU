@@ -54,7 +54,6 @@ public class UpdateDatabase {
 	        		Semester semester = new Semester();
 	        		semester.setName(SemesterDownloader.getSemesterName(semesterCodes.get(i)));
 	        		semester.setID(Integer.parseInt(semesterCodes.get(i)));
-	        		sdao.deleteSemester(semester);
 	        		try {
 						semester.setCourses(CatalogParser.parseCourses(httpCourseDownloader.downloadCourses(semesterCodes.get(i))));
 					} catch (IOException e) {

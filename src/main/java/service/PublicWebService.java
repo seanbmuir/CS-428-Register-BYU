@@ -100,17 +100,7 @@ public class PublicWebService
 
 	public Schedule getSchedule(String uid, String sid)
 	{
-		int scheduleId = AuthenticationService.decodeId(sid);
-		int userId = AuthenticationService.decodeId(uid);
-
-		int ownerId = tempRegistrationStore.getOwningUserForSchedule(scheduleId);
-
-		if (ownerId != userId) {
-			throw new ForbiddenException("Not allowed to retrieve this schedule");
-		}
-		Schedule schedule = tempRegistrationStore.getSchedule(scheduleId);
-		schedule.setId(sid);
-		return schedule;
+		return studentDAO.getStudent(uid).getSchedules().getSemester(sid);
 	}
 
 	public void addSchedule(String uid, Schedule schedule)

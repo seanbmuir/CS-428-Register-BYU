@@ -56,5 +56,15 @@ public class Schedules
 	{
 		return this.schedules.isEmpty();
 	}
+	
+	public Schedule getSemester(String semesterID)
+	{
+		for (Schedule s : schedules)
+			if(s.getSemesterID().equals(semesterID))
+				return s;
+		
+		return null;
+		
+	}
 
 }
