@@ -3,7 +3,6 @@ package database;
 import com.mongodb.*;
 import exceptions.AccountAlreadyExistsException;
 import models.*;
-import packages.*;
 import models.requirements.Requirement;
 
 import java.net.UnknownHostException;
@@ -31,7 +30,7 @@ public class DatabaseRegistrationStore implements RegistrationStore {
         db = getDB();
     }
 
-	public static DB getDB() {
+	public static DB getDB() { // TODO: Revert to online use when deploying
 // ONLINE USE
 //		String dbUser = "admin";
 //		String dbPassword = "ad428min";

@@ -4,7 +4,6 @@ import com.mongodb.DB;
 import com.mongodb.WriteResult;
 import exceptions.DatabaseException;
 import models.Course;
-import models.Section;
 import models.Semester;
 import models.TimePlace;
 import org.jongo.Jongo;
@@ -47,7 +46,7 @@ public class SemesterDAO implements ISemesterDAO
         	DBValidator.validate(result);
         }
         catch(Exception e){
-        	System.out.println("Failed to delete database, it may not exist. "+e.getMessage());
+        	System.out.println("Failed to delete semester from database, it may not exist. "+e.getMessage());
         }
     }
 

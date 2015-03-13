@@ -4,6 +4,7 @@ import org.jongo.marshall.jackson.oid.Id;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @autor: Nick Humrich
@@ -20,11 +21,14 @@ public class Schedule
 
 	public Schedule(String semesterID)
 	{
+		this();
 		this.semesterID = semesterID;
-		this.classes = new ArrayList<>();
+
 	}
 
-	public Schedule(){}
+	public Schedule(){
+		this.classes = new ArrayList<>();
+	}
 
 	public String getName()
 	{
@@ -74,5 +78,29 @@ public class Schedule
 	public void removeSection(Section section)
 	{
 		this.classes.remove(section);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(id, name, semesterID, classes);
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+		{
+			return true;
+		}
+		if (obj == null || getClass() != obj.getClass())
+		{
+			return false;
+		}
+		final Schedule other = (Schedule) obj;
+		return Objects.equals(this.id, other.id)
+				&& Objects.equals(this.name, other.name)
+				&& Objects.equals(this.semesterID, other.semesterID)
+				&& Objects.equals(this.classes, other.classes);
 	}
 }

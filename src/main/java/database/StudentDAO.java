@@ -4,6 +4,7 @@ import com.mongodb.DB;
 import com.mongodb.WriteResult;
 import exceptions.DatabaseException;
 import models.Course;
+import models.Schedule;
 import models.Section;
 import models.Student;
 import org.jongo.Jongo;
@@ -69,6 +70,13 @@ public class StudentDAO implements IStudentDAO
     public void removeSection(Section section,Student student)
     {
         student.removeSection(section);
+        saveStudent(student);
+    }
+
+    @Override
+    public void saveSchedule(Schedule schedule, Student student)
+    {
+        student.setSchedule(schedule);
         saveStudent(student);
     }
 

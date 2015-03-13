@@ -1,19 +1,11 @@
 package service;
 
 import database.*;
-import exceptions.ForbiddenException;
-import models.Department;
 import models.Schedule;
 import models.Student;
 import packages.Courses;
 import packages.Departments;
 import packages.Schedules;
-
-import javax.net.ssl.HttpsURLConnection;
-import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.List;
 
 /**
  * @author: Nick Humrich
@@ -44,57 +36,10 @@ public class PublicWebService
 		}
 	}
 
-	public void handleRegistration(String courseInfo, String ticket)
-	{
-		HttpsURLConnection connection = null;
-		try {
-			URL url = new URL("https://gamma.byu.edu/ry/ae/prod/registration/cgi/regOfferings.cgi");
-			connection = (HttpsURLConnection) url.openConnection();
-			connection.setRequestMethod("POST");
-			connection.setRequestProperty("Cookie", "BYU-Web-Session=" + courseInfo);
-			int b = courseInfo.getBytes().length;
-			connection.setRequestProperty("Content-Length", "" + b);
-
-			connection.setDoInput(true);
-			connection.setDoOutput(true);
-
-			DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
-
-			wr.writeBytes(courseInfo);
-			wr.flush();
-			wr.close();
-
-			InputStream is = connection.getInputStream();
-			BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-			String line;
-			StringBuffer response = new StringBuffer();
-			while ((line = rd.readLine()) != null) {
-				response.append(line);
-				response.append('\r');
-			}
-			rd.close();
-			//return response.toString();roperties()
-			System.out.println(response);
-
-
-		} catch (MalformedURLException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 	public Schedules getAllSchedulesForUser(String uid)
 	{
-		Schedules schedules = new Schedules();
 		Student student = studentDAO.getStudent(uid);
-		List<Schedule> list = student.getSchedules().getSchedules();
-		for (Schedule s : list) {
-			s.setId(AuthenticationService.encodeId(Integer.parseInt(s.getId())));
-		}
-
-		schedules.setSchedules(list);
-		return schedules;
+		return student.getSchedules();
 	}
 
 
@@ -103,49 +48,15 @@ public class PublicWebService
 		return studentDAO.getStudent(uid).getSchedules().getSemester(sid);
 	}
 
-	public void addSchedule(String uid, Schedule schedule)
+	public void saveSchedule(String uid, Schedule schedule)
 	{
-		int userId = AuthenticationService.decodeId(uid);
 
-		tempRegistrationStore.addSchedule(userId, schedule);
 	}
 
-	public void editSchedule(String uid, String sid, Schedule schedule)
-	{
-		int userId = AuthenticationService.decodeId(uid);
-		int scheduleId = AuthenticationService.decodeId(sid);
-
-		int ownerId = tempRegistrationStore.getOwningUserForSchedule(scheduleId);
-
-		if (ownerId != userId) {
-			throw new ForbiddenException("Not allowed to edit this schedule");
-		}
-
-		tempRegistrationStore.editSchedule(scheduleId, schedule);
-	}
-
-	public void removeSchedule(String uid, String sid)
-	{
-		int userId = AuthenticationService.decodeId(uid);
-		int scheduleId = AuthenticationService.decodeId(sid);
-
-		int ownerId = tempRegistrationStore.getOwningUserForSchedule(scheduleId);
-
-		if (ownerId != userId) {
-			throw new ForbiddenException("Not allowed to remove this schedule");
-		}
-
-		tempRegistrationStore.removeSchedule(scheduleId);
-
-	}
 
 	public Departments getAllDepartments()
 	{
-		Departments departments = new Departments();
-		List<Department> departmentList = tempRegistrationStore.getAllDepartments();
-		departments.setDepartments(departmentList);
-
-		return departments;
+		return null;
 	}
 
 

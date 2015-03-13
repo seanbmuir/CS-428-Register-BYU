@@ -2,8 +2,6 @@ package controllers;
 
 import catalogData.SemesterDownloader;
 import exceptions.NotAuthorizedException;
-import exceptions.ResourceNotFoundException;
-import exceptions.ServerException;
 import models.Schedule;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
@@ -13,11 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import packages.Courses;
-import packages.Departments;
 import packages.Schedules;
 import service.PublicWebService;
-import java.util.HashMap;
-import javax.servlet.http.HttpServletRequest;
+
 import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,9 +22,11 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-import static org.springframework.web.bind.annotation.RequestMethod.*;
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
  * @autor: Nick Humrich
@@ -119,11 +117,10 @@ public class PublicWebController
     @RequestMapping(value = "/saveSchedule", method = POST,
             consumes = "application/json")
     @ResponseStatus(value = HttpStatus.OK)
-    public void addSchedule(
+    public void saveSchedule(
             @RequestBody Schedule schedule, HttpSession session)
     {
-        String uid = getUserId(session);
-        webService.addSchedule(uid, schedule);
+
     }
 
     /**
@@ -201,9 +198,6 @@ public class PublicWebController
         return "success";
     }
 
-
-  /* Potentially Unused Methods =======================================================*/
-
     @RequestMapping(value = "recaptcha", method = GET)
     public
     @ResponseBody
@@ -272,21 +266,6 @@ public class PublicWebController
         }
     }
 
-    /**
-     * Gets all departments that exist in the systen
-     *
-     * @param dummy a boolean stating if you want dummy data
-     * @return fully populated list of departments
-     */
-    @RequestMapping(value = "/departments", method = GET)
-    public
-    @ResponseBody
-    Departments getAllDepartments(
-            @RequestParam(value = "dummy", required = false, defaultValue = "false") Boolean dummy)
-    {
-        return webService.getAllDepartments();
-    }
-
     String getRecaptchaImage(String recaptchaChallenge) throws IOException
     {
         URL url = new URL("https://www.google.com/recaptcha/api/image?c=" + recaptchaChallenge);
@@ -298,63 +277,4 @@ public class PublicWebController
         is.close();
         return result;
     }
-
-
-    @RequestMapping(value = "/register", method = POST)
-    public String registerSchedule(@RequestBody String courseDetails, HttpSession session)
-    {
-        session.setAttribute("CourseInfo", courseDetails);
-        System.out.println(courseDetails);
-        return "redirect:https://cas.byu.edu/cas/login?service=http://andyetitcompiles.com/" +
-                "public-api/register/handle?courseInfo="
-                + courseDetails;
-    }
-
-    @RequestMapping(value = "/register/handle")
-    public
-    @ResponseBody
-    String handleRegistration(
-            @RequestParam String ticket, HttpSession session)
-    {
-        String courseInfo = (String) session.getAttribute("CourseInfo");
-        webService.handleRegistration(courseInfo, ticket);
-        return "ok " + courseInfo + " " + ticket;
-    }
-
-    @RequestMapping(value = "/shutdown", method = POST)
-    @ResponseStatus(value = HttpStatus.OK)
-    public void shutdown(HttpServletRequest req)
-    {
-        //for temparary testing
-        //System.out.println(req.getRemoteAddr());
-
-        if (!req.getRemoteAddr().matches("172[.]31[.]\\d{1,3}[.]\\d{1,3}|localhost|127[.]0[.]0[.]1"))
-        {
-            throw new ResourceNotFoundException();
-        }
-        shuttingDown = true;
-    }
-
-    @RequestMapping(value = "/health", method = GET)
-    @ResponseStatus(value = HttpStatus.OK)
-    public void healthCheck(HttpServletRequest req)
-    {
-        //for temporary testing
-        //System.out.println(req.getRemoteAddr());
-
-        if (!req.getRemoteAddr().matches("172[.]31[.]\\d{1,3}[.]\\d{1,3}|localhost|127[.]0[.]0[.]1"))
-        {
-            throw new ResourceNotFoundException();
-        }
-        if (shuttingDown)
-        {
-            if (countdown-- <= 0)
-            {
-                System.exit(0);
-            }
-            //ToDo: should probably be changed to a 503 instead of a 500
-            throw new ServerException("Server Shutting Down");
-        }
-    }
-
 }
