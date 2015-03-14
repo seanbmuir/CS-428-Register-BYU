@@ -57,6 +57,11 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
                     else
                         apiCourse.creditRange = minCredits+' - '+maxCredits
                 }
+
+                if (apiCourse.department == null)
+                    apiCourse.department = '';
+                if (apiCourse.courseName == null)
+                    apiCourse.courseName = '';
 			});
 			if($scope.importedClasses!=undefined)
 				$scope.loadByuPlannedCoursesToSidebar();
