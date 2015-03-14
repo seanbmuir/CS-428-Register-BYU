@@ -157,11 +157,11 @@
                     </table>
                 </div>
                 <div id="register-buttons" class="pull-right">
-                    <button ng-show="plannedCourses.length" ng-click="registerClasses()" class="btn btn-xs btn-primary" ng-class="{ disabled: added }" data-toggle="modal" data-target="#registrationIframeModal">
+                    <button ng-show="plannedSemesterSchedules[currentSemesterId].classes.length" ng-click="registerClasses()" class="btn btn-xs btn-primary" ng-class="{ disabled: added }" data-toggle="modal" data-target="#registrationIframeModal">
                         <span ng-show="!added"><span class="glyphicon glyphicon-ok"></span>  Register All Courses</span>
                         <span ng-show="added"><span class="glyphicon glyphicon-thumbs-up"></span>  Courses Registered!</span>
                     </button>
-                    <button ng-show="plannedCourses.length" ng-click="savePlan()" class="btn btn-xs btn-primary" ng-class="{ disabled: saved }">
+                    <button ng-show="plannedSemesterSchedules[currentSemesterId].classes.length" ng-click="savePlan()" class="btn btn-xs btn-primary" ng-class="{ disabled: saved }">
                         <span ng-show="!saved"><span class="glyphicon glyphicon-save"></span>  Save Plan</span>
                         <span ng-show="saved"><span class="glyphicon glyphicon-saved"></span>  Plan saved!</span>
                     </button>
