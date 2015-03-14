@@ -131,11 +131,11 @@ public class PublicWebController
      * @param session
      * @return
      */
-    @RequestMapping(value = "/loadSchedule", method = GET)
+    @RequestMapping(value = "/loadSchedule/{sem_id}", method = GET)
     public
     @ResponseBody
     Schedule
-    getSchedule(@RequestParam(value = "sem_id", required = true) String sem_id, HttpSession session)
+    getSchedule(@PathVariable String sem_id, HttpSession session)
     {
         String uid = getUserId(session);
         return webService.getSchedule(uid, sem_id);
