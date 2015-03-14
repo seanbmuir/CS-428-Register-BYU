@@ -120,7 +120,8 @@ public class PublicWebController
     public void saveSchedule(
             @RequestBody Schedule schedule, HttpSession session)
     {
-
+        String uid = getUserId(session);
+        webService.saveSchedule(uid, schedule);
     }
 
     /**

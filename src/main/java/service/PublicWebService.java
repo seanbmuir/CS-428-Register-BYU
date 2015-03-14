@@ -50,7 +50,8 @@ public class PublicWebService
 
 	public void saveSchedule(String uid, Schedule schedule)
 	{
-
+        Student student = studentDAO.getStudent(uid);
+        studentDAO.saveSchedule(schedule, student);
 	}
 
 
