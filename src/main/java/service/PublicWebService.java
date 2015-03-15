@@ -51,6 +51,12 @@ public class PublicWebService
 	public void saveSchedule(String uid, Schedule schedule)
 	{
         Student student = studentDAO.getStudent(uid);
+        if (student == null){
+            student = new Student(uid);
+            studentDAO.saveStudent(student);
+        }
+
+        student = studentDAO.getStudent(uid);
         studentDAO.saveSchedule(schedule, student);
 	}
 

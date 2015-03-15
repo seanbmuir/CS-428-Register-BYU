@@ -1,10 +1,13 @@
 package controllers;
 
 import catalogData.SemesterDownloader;
+import exceptions.BadRequestException;
 import exceptions.NotAuthorizedException;
 import models.Schedule;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.HttpStatus;
@@ -111,17 +114,24 @@ public class PublicWebController
     /**
      * Saves the given schedule in the database
      *
-     * @param schedule
+     * @param json json string representation of a schedule
      * @param session
      */
-    @RequestMapping(value = "/saveSchedule", method = POST,
+    @RequestMapping(value = "/saveSchedule/{sem_id}", method = POST,
             consumes = "application/json")
     @ResponseStatus(value = HttpStatus.OK)
     public void saveSchedule(
-            @RequestBody Schedule schedule, HttpSession session)
+            @RequestBody String json, @PathVariable String sem_id, HttpSession session)
     {
         String uid = getUserId(session);
-        webService.saveSchedule(uid, schedule);
+        
+        try{
+            Schedule s = new Schedule(sem_id, new JSONObject(json));
+            webService.saveSchedule(uid, s);
+        }
+        catch (JSONException e){
+            throw new BadRequestException("Couldn't parse schedule json: " + e.getMessage());
+        }
     }
 
     /**
@@ -181,7 +191,9 @@ public class PublicWebController
         {
             throw new NotAuthorizedException("User must be logged in.");
         }
+
         return (String) uid;
+
     }
     
     /**

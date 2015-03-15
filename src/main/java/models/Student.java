@@ -91,6 +91,7 @@ public class Student
 
 	public void setSchedule(Schedule schedule)
 	{
+        System.out.println(schedule.getSemesterID());
 		this.schedules.setSemester(schedule.getSemesterID(), schedule);
 	}
 

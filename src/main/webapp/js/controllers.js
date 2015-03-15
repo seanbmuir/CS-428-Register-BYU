@@ -416,9 +416,10 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
             $scope.$broadcast("changeEventColor", {course: cid.split('-')[0], color: eventColor});
         };
 		
-		$scope.savePlanToServer = function(){
+		$scope.savePlanToServer = function(semId){
 			var scheduleToSend = angular.toJson($scope.plannedSemesterSchedules[$scope.currentSemesterId]);
-			$http.post('public-api/saveSchedule', scheduleToSend).success(function (data) {
+			$http.post('public-api/saveSchedule/'+semId, scheduleToSend).success(function (data) {
+
 					//success!
 				});
 		};
@@ -439,7 +440,7 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
 		};
 
         $scope.savePlan = function() {
-			$scope.savePlanToServer();
+			$scope.savePlanToServer($scope.currentSemesterId);
 			//this classes object needs to be set in the cookie this way for the registration process
 			//look at register.js before making any changes.
             var classes = []
