@@ -1,5 +1,8 @@
 package models;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Keith
@@ -17,8 +20,17 @@ public class TimePlace {
 
     }
 
+    public TimePlace(JSONObject jsonBody) throws JSONException{
+        this();
+
+        setDay(jsonBody.get("day").toString());
+        setStartTime(jsonBody.get("startTime").toString());
+        setEndTime(jsonBody.get("endTime").toString());
+        setLocation(jsonBody.get("location").toString());
+    }
 
     public TimePlace(String day, String startTime, String endTime, String location) {
+        this();
         this.day = day;
         this.startTime = startTime;
         this.endTime = endTime;

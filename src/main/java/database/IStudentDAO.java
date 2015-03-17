@@ -1,6 +1,7 @@
 package database;
 
 import models.Course;
+import models.Schedule;
 import models.Section;
 import models.Student;
 
@@ -19,4 +20,6 @@ public interface IStudentDAO {
     public void addCourse(Course course, Student student);
     
     public void removeCourse(Course course,Student student);
+
+    public void saveSchedule(Schedule schedule, Student student);
 }

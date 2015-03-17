@@ -56,5 +56,30 @@ public class Schedules
 	{
 		return this.schedules.isEmpty();
 	}
+	
+	public Schedule getSemester(String semesterID)
+	{
+		for (Schedule s : schedules)
+			if(s.getSemesterID().equals(semesterID))
+				return s;
+		
+		return null;
+		
+	}
 
+	public void setSemester(String semesterID, Schedule schedule)
+	{
+		for (int i = 0; i < schedules.size(); i++)
+		{
+			Schedule s = schedules.get(i);
+			if (s.getSemesterID().equals(semesterID))
+			{
+				schedules.set(i, schedule);
+				return;
+			}
+		}
+
+		// This semester not yet added
+		schedules.add(schedule);
+	}
 }

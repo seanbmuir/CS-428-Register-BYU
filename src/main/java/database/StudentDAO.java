@@ -4,6 +4,7 @@ import com.mongodb.DB;
 import com.mongodb.WriteResult;
 import exceptions.DatabaseException;
 import models.Course;
+import models.Schedule;
 import models.Section;
 import models.Student;
 import org.jongo.Jongo;
@@ -72,6 +73,13 @@ public class StudentDAO implements IStudentDAO
         saveStudent(student);
     }
 
+    @Override
+    public void saveSchedule(Schedule schedule, Student student)
+    {
+        student.setSchedule(schedule);
+        saveStudent(student);
+    }
+
     /**
      *
      * @param id
@@ -81,10 +89,6 @@ public class StudentDAO implements IStudentDAO
     public Student getStudent(String id)
     {
         Student student = this.students.findOne(studentIdQuery, id).as(Student.class);
-        if(student == null)
-        {
-            throw new DatabaseException("Could not find student");
-        }
 
         return student;
     }

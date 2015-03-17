@@ -3,6 +3,7 @@ package database;
 import com.mongodb.DB;
 import exceptions.DatabaseException;
 import models.Course;
+import models.Schedule;
 import models.Section;
 import models.Student;
 import org.jongo.Jongo;
@@ -18,6 +19,7 @@ public class StudentDAOTest
 {
 	private final String testCourseID = "1234";
 	private final String testStudentID = "reggiebyu";
+	private final String testSemesterID = "20158";
 	private StudentDAO dao;
 	private MongoCollection collection;
 
@@ -145,6 +147,22 @@ public class StudentDAOTest
 
 	}
 
+	@Test
+	public void testSaveSchedule() throws Exception
+	{
+		Student student = getTestStudent(testStudentID);
+		dao.saveStudent(student);
+
+		Assert.assertNull("Schedule not null", student.getSchedule(testSemesterID));
+
+		Schedule schedule = getTestSchedule();
+		dao.saveSchedule(schedule, student);
+
+		Student fromDB = dao.getStudent(testStudentID);
+		Assert.assertEquals("Schedules not equal", schedule, fromDB.getSchedule(testSemesterID));
+	}
+
+
 	private Student getTestStudent(String studentID)
 	{
 		Student student = new Student();
@@ -172,7 +190,15 @@ public class StudentDAOTest
 		Section section = new Section();
 		String sectionID = "__fakesection__";
 		section.setSectionID(sectionID);
-		section.setSemesterID("20158");
+		section.setSemesterID(testSemesterID);
 		return section;
+	}
+
+	private Schedule getTestSchedule()
+	{
+		Schedule schedule = new Schedule();
+		schedule.setSemesterID(testSemesterID);
+		schedule.addSection(getTestSection());
+		return schedule;
 	}
 }
