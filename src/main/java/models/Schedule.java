@@ -1,6 +1,10 @@
 package models;
 
+import exceptions.BadRequestException;
 import org.jongo.marshall.jackson.oid.Id;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +33,24 @@ public class Schedule
 	public Schedule(){
 		this.classes = new ArrayList<>();
 	}
+
+    public Schedule(String sem_id, JSONObject jsonBody) throws JSONException{
+        this(sem_id);
+
+        setSemesterID(jsonBody.getString("semesterID"));
+        setName(jsonBody.getString("name"));
+
+        JSONArray jsonSectionList = jsonBody.getJSONArray("classes");
+
+        List<Section> sections = new ArrayList<Section>();
+
+        for (int i=0; i < jsonSectionList.length(); i++){
+            Section section = new Section(jsonSectionList.getJSONObject(i));
+            sections.add(section);
+        }
+
+        setClasses(sections);
+    }
 
 	public String getName()
 	{

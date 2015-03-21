@@ -1,6 +1,9 @@
 package models;
 
 import org.jongo.marshall.jackson.oid.Id;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +32,35 @@ public class Section {
     private String[] endTimes;
     private String[] locations;
     private String[] daysTaught;
+
+    public Section(){
+
+    }
+
+    public Section(JSONObject jsonBody) throws JSONException{
+        this();
+
+        setSectionID(jsonBody.get("_id").toString());
+        setProfessor(jsonBody.get("professor").toString());
+
+        JSONArray jsonTimePlaceList = jsonBody.getJSONArray("timePlaces");
+        List<TimePlace> timePlaces = new ArrayList<TimePlace>();
+
+        for (int i=0; i < jsonTimePlaceList.length(); i++){
+            TimePlace tp = new TimePlace(jsonTimePlaceList.getJSONObject(i));
+            timePlaces.add(tp);
+        }
+
+        setTimePlaces(timePlaces);
+
+        setCourseID(jsonBody.get("courseID").toString());
+        setCredits(jsonBody.getString("credits"));
+        setSectionType(jsonBody.get("sectionType").toString());
+        setSemesterID(jsonBody.getString("semesterID"));
+
+    }
+
+
 
     public String getSemesterID()
     {
@@ -95,9 +127,7 @@ public class Section {
     }
 
 
-    public Section(){
 
-    }
 
     public String toString(){
         String output = "Section: " + sectionID + "\t" + sectionType + "\t" + professor + "\t";

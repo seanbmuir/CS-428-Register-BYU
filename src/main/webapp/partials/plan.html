@@ -127,10 +127,10 @@
             <div class="well">
                 <h3 class="text-center">My Planned Classes ({{ currentSemester }})</h3>
                 <!--<h5>{{currentSemester}}</h5>-->
-                <p ng-show="!plannedCourses.length">Add some classes you want to take next semester!</p>
+                <p ng-show="!plannedSemesterSchedules[currentSemesterId].classes.length">Add some classes you want to take next semester!</p>
                 <table class="table table-condensed">
                     <thead>
-                    <tr ng-show="plannedCourses.length">
+                    <tr ng-show="plannedSemesterSchedules[currentSemesterId].classes.length">
                             <th>Course</th>
                             <th>Instructor</th>
                             <th>Class Periods</th>
@@ -138,12 +138,12 @@
                             <th></th>
                         </tr>
                         </thead>
-                        <tbody class="selectable-tbody" ng-click="updateSelectedCourse(course.departmentCode, course.courseNumber)" ng-class="course.courseNumber == selectedCourse.courseNumber && course.departmentCode == selectedCourse.departmentCode ? 'selected-tbody' : ''" ng-repeat="course in plannedCourses">
+                        <tbody class="selectable-tbody" ng-click="updateSelectedCourse(course)" ng-repeat="course in plannedSemesterSchedules[currentSemesterId].classes">
                         <tr class="selectable-td" id="plannedCourse-{{$index}}">
-                            <td>{{ course.departmentCode }} {{ course.courseNumber }}</td>
+                            <td>{{ getCID(course) }}</td>
                             <td>{{ course.professor }}</td>
                             <td>{{ classPeriodsToString(course.timePlaces) }}</td>
-                            <td>{{ course.credit }}</td>
+                            <td>{{ course.credits }}</td>
                             <td><a ng-click="removeCourseFromPlan(course)" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-minus"></span></a></td>
                         </tr>
                         </tbody>
@@ -157,11 +157,11 @@
                     </table>
                 </div>
                 <div id="register-buttons" class="pull-right">
-                    <button ng-show="plannedCourses.length" ng-click="registerClasses()" class="btn btn-xs btn-primary" ng-class="{ disabled: added }" data-toggle="modal" data-target="#registrationIframeModal">
+                    <button ng-show="plannedSemesterSchedules[currentSemesterId].classes.length" ng-click="registerClasses()" class="btn btn-xs btn-primary" ng-class="{ disabled: added }" data-toggle="modal" data-target="#registrationIframeModal">
                         <span ng-show="!added"><span class="glyphicon glyphicon-ok"></span>  Register All Courses</span>
                         <span ng-show="added"><span class="glyphicon glyphicon-thumbs-up"></span>  Courses Registered!</span>
                     </button>
-                    <button ng-show="plannedCourses.length" ng-click="savePlan()" class="btn btn-xs btn-primary" ng-class="{ disabled: saved }">
+                    <button ng-show="plannedSemesterSchedules[currentSemesterId].classes.length" ng-click="savePlan()" class="btn btn-xs btn-primary" ng-class="{ disabled: saved }">
                         <span ng-show="!saved"><span class="glyphicon glyphicon-save"></span>  Save Plan</span>
                         <span ng-show="saved"><span class="glyphicon glyphicon-saved"></span>  Plan saved!</span>
                     </button>

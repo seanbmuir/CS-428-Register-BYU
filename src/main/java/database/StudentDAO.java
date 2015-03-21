@@ -89,10 +89,6 @@ public class StudentDAO implements IStudentDAO
     public Student getStudent(String id)
     {
         Student student = this.students.findOne(studentIdQuery, id).as(Student.class);
-        if(student == null)
-        {
-            throw new DatabaseException("Could not find student");
-        }
 
         return student;
     }

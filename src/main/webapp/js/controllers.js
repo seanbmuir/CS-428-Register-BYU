@@ -108,6 +108,23 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
 			});
 		};
 		
+		$scope.loadPreviouslySavedSchedule = function(semId){
+			$scope.$broadcast("removeAllCourses");
+			if($scope.plannedSemesterSchedules[semId]==undefined)
+				$http.get('public-api/loadSchedule/'+semId).success(function (data) {
+					if(data.classes!==undefined){
+						$scope.plannedSemesterSchedules[semId] = data;
+						angular.forEach($scope.plannedSemesterSchedules[semId].classes, function (section) {
+							$scope.$broadcast("courseAdded", {course: $scope.getCID(section), classPeriods: section.timePlaces, color: eventColor });
+						});
+					}
+				});
+			else
+				angular.forEach($scope.plannedSemesterSchedules[semId].classes, function (section) {
+					$scope.$broadcast("courseAdded", {course: $scope.getCID(section), classPeriods: section.timePlaces, color: eventColor });
+				});
+		};
+		
         // popular courses to be shown when there are no filters applied
         $scope.popularCourses = ['REL A121', 'REL A122', 'A HTG100', 'BIO100', 'C S142', 'MATH112', 'MATH113', 'WRTG150', 'CHEM111', 'CHEM101', 'PHSCS121', 'COMMS101', 'ACC200', 'EL ED202'];
 		$scope.defaultCourses = $scope.popularCourses;
@@ -124,6 +141,7 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
         $scope.initStuff = function() {
 			$scope.semesters = [];
             $scope.courseLevels = ['100', '200', '300', '400', '500', '600'];
+			$scope.currentSemesterId = "20155"
             $scope.currentSemester = "Fall 2015" //updated after the load semesters is called
             $scope.initPlannedCourses();
             $scope.saved = false;
@@ -161,7 +179,7 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
         })
 
         $scope.initPlannedCourses = function() {
-            $scope.plannedCourses = [];
+            $scope.plannedSemesterSchedules = [];
             $scope.sumPlannedCredits = 0.0;
             $scope.$broadcast("removeAllCourses");
         };
@@ -206,8 +224,9 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
             return $scope.sortBy == selected ? ($scope.desc ? 'sorted-desc' : 'sorted-asc') : '';
         };
 
-        $scope.updateSelectedCourse = function(dept, id) {
-            var course = $.grep($scope.courses, function(c){ return c.departmentCode == dept && c.courseNumber == id; });
+        $scope.updateSelectedCourse = function(section) {
+			var thisCourse = $scope.getCourseObject(section.courseID);
+            var course = $.grep($scope.courses, function(c){ return c.departmentCode == thisCourse.departmentCode && c.courseNumber == thisCourse.courseNumber; });
             if (course) {
                 $scope.selectedCourse = course[0];
             }
@@ -243,8 +262,9 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
 
         // check if a course is planned, where cid is a course/section id that looks like this: "CS256-1" for section 1
         $scope.isPlanned = function(cid) {
-            for (var i = 0; i < $scope.plannedCourses.length; i++) {
-                if ($scope.plannedCourses[i].cid == cid) {
+			if($scope.plannedSemesterSchedules[$scope.currentSemesterId]!== undefined)
+            for (var i = 0; i < $scope.plannedSemesterSchedules[$scope.currentSemesterId].classes.length; i++) {
+                if ($scope.getCID($scope.plannedSemesterSchedules[$scope.currentSemesterId].classes[i]) == cid) {
                     return true;
                 }
             }
@@ -253,9 +273,10 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
 
         // gets the planned section of a course. if no planned section, returns null.
         $scope.getPlannedCourse = function(dept, num) {
-            for (var i = 0; i < $scope.plannedCourses.length; i++) {
-                if ($scope.plannedCourses[i].departmentCode == dept && $scope.plannedCourses[i].courseNumber == num) {
-                    return $scope.plannedCourses[i];
+            for (var i = 0; i < $scope.plannedSemesterSchedules[$scope.currentSemesterId].classes.length; i++) {
+				var thisCourse = $scope.getCourseObject($scope.plannedSemesterSchedules[$scope.currentSemesterId].classes[i].courseID);
+                if (thisCourse.departmentCode == dept && thisCourse.courseNumber == num) {
+                    return $scope.plannedSemesterSchedules[$scope.currentSemesterId].classes[i];
                 }
             }
             return null;
@@ -270,17 +291,14 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
 		};
 		
 		$scope.changeCurrentSemester = function(selected){
+			$scope.sortBy = ['departmentCode','courseNumber'];
+            $scope.filteredDept = '';
+            $scope.selectedCourse = undefined;
+			$scope.currentSemesterId = selected.value;
 			$scope.currentSemester = selected.name;
 			$scope.isLoadingCourses = true;
 			$http.get('public-api/courses/'+selected.value).success(function (data) {
-				if( $cookies.classes !== undefined && $cookies.classes !== "undefined" && $cookies.classes !== null )
-				{
-					try {
-						var classes = JSON.parse($cookies.classes)
-						for (var i = 0; i < classes.length; i++)
-							previouslySavedPlan[classes[i].courseNumber] = classes[i].sectionId
-					} catch( exception ) { /* don't die */}
-				}
+				$scope.loadPreviouslySavedSchedule(selected.value);
 				$scope.loadSemesterCourses(data);
 				$scope.isLoadingCourses = false;
 			});
@@ -315,6 +333,15 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
         $scope.addCourseToPlan = function(course, section) {
             $scope.saved = false;
             $scope.added = false;
+			if($scope.plannedSemesterSchedules[$scope.currentSemesterId]==undefined || $scope.plannedSemesterSchedules[$scope.currentSemesterId] == null){
+				var newSemester = new Object();
+				newSemester._id = $scope.currentSemesterId;
+				newSemester.semesterID = $scope.currentSemesterId;
+				newSemester.name = $scope.currentSemester;
+				newSemester.classes = [];
+				$scope.plannedSemesterSchedules[$scope.currentSemesterId] = newSemester;
+			}
+			
             // when the class is added, remove its temporary calendar event
             $scope.hideTempEvent(course, section);
             var fullCourseName = course.departmentCode + ' ' + course.courseNumber;
@@ -331,24 +358,25 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
 
             if (!$scope.isPlanned(cid)) {
                 var plannedCourse = new Object();
-                plannedCourse.cid = cid;
-                plannedCourse.department = course.department;
-				plannedCourse.departmentCode = course.departmentCode;
-                plannedCourse.courseNumber = course.courseNumber;
-                plannedCourse.sectionId = section._id;
+                //plannedCourse.cid = cid;
+                //plannedCourse.department = course.department;
+				//plannedCourse.departmentCode = course.departmentCode;
+                //plannedCourse.courseNumber = course.courseNumber;
+                plannedCourse._id = section._id;
                 plannedCourse.professor = section.professor;
                 plannedCourse.timePlaces = section.timePlaces;
                 plannedCourse.courseID = course.courseID;
-                plannedCourse.newTitleCode = course.newTitleCode;
-                plannedCourse.credits = course.credits;
+                //plannedCourse.newTitleCode = course.newTitleCode;
+                plannedCourse.credits = section.credits;
                 plannedCourse.sectionType = section.sectionType;
-                plannedCourse.courseName = course.courseName;
-                $scope.plannedCourses.push(plannedCourse);
+                //plannedCourse.courseName = course.courseName;
+				plannedCourse.semesterID = $scope.currentSemesterId;
+                $scope.plannedSemesterSchedules[$scope.currentSemesterId].classes.push(plannedCourse);
             }
             $scope.savePlan()
             $scope.sumPlannedCredits += course.credits;
 
-            var elId = '#plannedCourse-' + ($scope.plannedCourses.length - 1).toString();
+            var elId = '#plannedCourse-' + ($scope.plannedSemesterSchedules[$scope.currentSemesterId].classes.length - 1).toString();
 
             setTimeout(function() {
                 $(elId).effect("highlight", {}, 1000);
@@ -359,11 +387,11 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
             $scope.saved = false;
             $scope.added = false;
 
-            $scope.$broadcast("courseRemoved", {course: course.cid, temp: false});
+            $scope.$broadcast("courseRemoved", {course: $scope.getCID(course), temp: false});
 
-            var i = $scope.plannedCourses.indexOf(course);
+            var i = $scope.plannedSemesterSchedules[$scope.currentSemesterId].classes.indexOf(course);
             if (i > -1)
-                $scope.plannedCourses.splice(i, 1);
+                $scope.plannedSemesterSchedules[$scope.currentSemesterId].classes.splice(i, 1);
 
             $scope.savePlan()
             $scope.sumPlannedCredits -= course.credits;
@@ -388,28 +416,46 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
             $scope.$broadcast("changeEventColor", {course: cid.split('-')[0], color: eventColor});
         };
 		
-		$scope.savePlanToServer = function(){
-			$http.post('public-api/saveCoursesFromMyMap', {schedule: $scope.plannedCourses}).success(function (data) {
+		$scope.savePlanToServer = function(semId){
+			var scheduleToSend = angular.toJson($scope.plannedSemesterSchedules[$scope.currentSemesterId]);
+			$http.post('public-api/saveSchedule/'+semId, scheduleToSend).success(function (data) {
+
 					//success!
 				});
 		};
+		
+		$scope.getCourseObject = function(inCourseID){
+			var thisCourse = null;
+			angular.forEach($scope.courses, function (course) {
+				if(course.courseID == inCourseID) 
+					thisCourse = course;
+			});
+			return thisCourse;
+		};
+		
+		$scope.getCID = function(inSection){
+			var thisCourse = $scope.getCourseObject(inSection.courseID);
+			var fullCourseName = thisCourse.departmentCode + ' ' + thisCourse.courseNumber;
+            return fullCourseName + "-" + inSection._id;
+		};
 
         $scope.savePlan = function() {
-			$scope.savePlanToServer();
+			$scope.savePlanToServer($scope.currentSemesterId);
 			//this classes object needs to be set in the cookie this way for the registration process
 			//look at register.js before making any changes.
             var classes = []
-            for( var i=0; i<$scope.plannedCourses.length; i++ ) {
+            for( var i=0; i<$scope.plannedSemesterSchedules[$scope.currentSemesterId].classes.length; i++ ) {
+				var thisCourse = $scope.getCourseObject($scope.plannedSemesterSchedules[$scope.currentSemesterId].classes[i].courseID);
                 var klass = {}
                 klass.e = '@AddClass';
 //                klass.e = '@ConfirmWaitlist'
-                klass.courseNumber = $scope.plannedCourses[i].courseID;
-                klass.titleCode = $scope.plannedCourses[i].newTitleCode;
-                klass.credits = $scope.plannedCourses[i].credits;
-                klass.sectionType = $scope.plannedCourses[i].sectionType;
-                klass.sectionId = $scope.plannedCourses[i]._id;
-                klass.dept = $scope.plannedCourses[i].departmentCode
-                klass.title = $scope.plannedCourses[i].courseName;
+                klass.courseNumber = thisCourse.courseID;
+                klass.titleCode = thisCourse.newTitleCode;
+                klass.credits = $scope.plannedSemesterSchedules[$scope.currentSemesterId].classes[i].credits;
+                klass.sectionType = $scope.plannedSemesterSchedules[$scope.currentSemesterId].classes[i].sectionType;
+                klass.sectionId = $scope.plannedSemesterSchedules[$scope.currentSemesterId].classes[i]._id;
+                klass.dept = thisCourse.departmentCode;
+                klass.title = thisCourse.courseName;
                 classes.push(klass)
             }
             $cookies.classes = JSON.stringify(classes)
