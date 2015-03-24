@@ -456,6 +456,7 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
                 klass.sectionId = $scope.plannedSemesterSchedules[$scope.currentSemesterId].classes[i]._id;
                 klass.dept = thisCourse.departmentCode;
                 klass.title = thisCourse.courseName;
+				klass.term = $scope.currentSemesterId;
                 classes.push(klass)
             }
             $cookies.classes = JSON.stringify(classes)
