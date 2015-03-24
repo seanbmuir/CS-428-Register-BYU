@@ -197,3 +197,16 @@ h2 {
 	border-radius: 15px;
 }
 #semesterSelect{ margin-top: 10px;}
+
+
+
+.filterDiv{
+    float:center;
+}
+
+.filterInstructions
+{
+    text-align: left;
+}
+
+
