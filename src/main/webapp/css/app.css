@@ -209,4 +209,25 @@ h2 {
     text-align: left;
 }
 
+.courseModalContent
+{
+    width: 300px;
+}
+
+.sectionModalContent
+{
+    width : 350px;
+}
+
+.checkbox
+{
+    width: 50px;
+}
+
+.sectionFormGroup
+{
+    padding-left: 15px;
+}
+
+
 

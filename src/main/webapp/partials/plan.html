@@ -44,17 +44,50 @@
             <!-- Course Modal -->
             <div class="modal fade" id="courseModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
-                    <div class="modal-content">
+                    <div class="modal-content courseModalContent">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" id="myModalLabel">Add a Course Filter</h4>
                         </div>
                         <div class="modal-body">
-                            ...
+
+                            <div class="row">
+                                <div>
+                                    <div class = col-md-8>
+                                        <div class="form-group">
+                                            <label for="credits">Credit Hours</label>
+                                            <input type="creditsType" class="form-control" id="credits" placeholder="2.0">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Professor Filter-->
+                            <div class="row">
+                                <div>
+                                    <div class = col-md-8>
+                                        <div class="form-group">
+                                            <label for="professor">Professor</label>
+                                            <input type="professorType" class="form-control" id="professor">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--Block Filter-->
+                            <div class="row">
+                                <div>
+                                    <div class = col-md-8>
+                                        <div class="form-group">
+                                            <label for="block">Block</label>
+                                            <input type="blockType" class="form-control" id="block">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="reset" class="btn btn-default">Clear</button>
+                            </div>
                         </div>
-                        <div class="modal-footer">
-                            <p class="filterInstructions">Press the plus sign to use the filter in your results.</p>
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -103,16 +136,61 @@
             <!-- Section Modal -->
             <div class="modal fade" id="sectionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
-                    <div class="modal-content">
+                    <div class="modal-content sectionModalContent ">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" id="sectionLabel">Add a Section Filter</h4>
                         </div>
                         <div class="modal-body">
-                            ...
+                            <!--Time of Day Filter-->
+                            <label>Time of Day</label>
+                            <div class="row">
+                                <div>
+                                    <div class = col-md-8>
+                                    </div>
+                                </div>
+                            </div>
+                           <!-- Day of the Week Filter -->
+                            <label>Days of the Week</label>
+                            <div class="row daysOfWeek">
+                                <div class="form-inline">
+                                    <div class="form-group sectionFormGroup">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox"> Mon
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox"> Tue
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox"> Wed
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox"> Th
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox"> Fri
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox"> Sat
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
-                            <p class="filterInstructions">Press the plus sign to use the filter in your results.</p>
+                            <button type="reset" class="btn btn-default">Clear</button>
                         </div>
                     </div>
                 </div>
