@@ -1,26 +1,21 @@
 <div class="container plan-container main-content" ng-controller="CourseListCtrl">
-	<div class="row">
-		<div class="col-md-3">
-			<div class="col-md-4"><h4>Semester:</h4></div>
-			<div class="col-md-8">
-				<select id="semesterSelect" ng-model="selectedSemester" ng-options="sem.name for sem in semesters" ng-change="changeCurrentSemester(selectedSemester)"></select>
-			</div>
-		</div>
-	</div>
     <div class="row">
         <div class="col-md-3">
             <div class="row">
-                <form class="form-inline" role="form">
-                    <div class="col-md-4">
-                        <select id="filterByDepartment" class="form-control" ng-model="filteredDept" ng-change="filterOptions.searchQuery = ''">
-                            <option value="">All</option>
-                            <option ng-repeat="dept in departments.sort()" value="{{dept}}">{{dept}}</option>
-                        </select>
-                    </div>
-                    <div class="col-md-8">
-                        <input id="filterByDescriptionQuery" class="form-control" ng-model="searchText" placeholder="Search">
-                    </div>
-                </form>
+                <div class="col-md-8">
+                    <select class="form-control" id="semesterSelect" ng-model="selectedSemester" ng-options="sem.name for sem in semesters" ng-change="changeCurrentSemester(selectedSemester)"></select>
+                </div>
+            </div><br>
+            <div class="row">
+                <div class="col-md-4">
+                    <select id="filterByDepartment" class="form-control" ng-model="filteredDept" ng-change="filterOptions.searchQuery = ''">
+                        <option value="">All</option>
+                        <option ng-repeat="dept in departments.sort()" value="{{dept}}">{{dept}}</option>
+                    </select>
+                </div>
+                <div class="col-md-8">
+                    <input id="filterByDescriptionQuery" class="form-control" ng-model="searchText" placeholder="Search">
+                </div>
             </div>
             <!-- example of a course level filter, it's not very good though -->
             <!-- <div class="row" id="courseLevelFilter">
