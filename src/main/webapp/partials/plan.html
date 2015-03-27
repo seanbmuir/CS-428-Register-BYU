@@ -73,12 +73,19 @@
                                 </div>
                             </div>
                             <!--Block Filter-->
+                            <label>Block</label>
                             <div class="row">
-                                <div>
-                                    <div class = col-md-8>
-                                        <div class="form-group">
-                                            <label for="block">Block</label>
-                                            <input type="blockType" class="form-control" id="block">
+                                <div class="form-inline">
+                                    <div class="form-group sectionFormGroup">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox"> 1st
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox"> 2nd
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
@@ -144,9 +151,24 @@
                         <div class="modal-body">
                             <!--Time of Day Filter-->
                             <label>Time of Day</label>
-                            <div class="row">
-                                <div>
-                                    <div class = col-md-8>
+                            <div class="row daysOfWeek">
+                                <div class="form-inline">
+                                    <div class="form-group sectionFormGroup">
+                                        <div class="checkbox timeOfDayCheck">
+                                            <label>
+                                                <input type="checkbox"> Morning(7-12)
+                                            </label>
+                                        </div>
+                                        <div class="checkbox timeOfDayCheck">
+                                            <label>
+                                                <input type="checkbox"> Afternoon(12-5)
+                                            </label>
+                                        </div>
+                                        <div class="checkbox timeOfDayCheck">
+                                            <label>
+                                                <input type="checkbox"> Evening(5-10)
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
