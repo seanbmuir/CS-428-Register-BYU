@@ -2,18 +2,21 @@
     <div class="row">
         <div class="col-md-3">
             <div class="row">
-                <div class="col-md-8">
-                    <select class="form-control" id="semesterSelect" ng-model="selectedSemester" ng-options="sem.name for sem in semesters" ng-change="changeCurrentSemester(selectedSemester)"></select>
-                </div>
+                    <form class="form-inline">
+                        <div class="col-md-7">
+                            <select class="form-control" id="semesterSelect" ng-model="selectedSemester" ng-options="sem.name for sem in semesters" ng-change="changeCurrentSemester(selectedSemester)"></select>
+                        </div>
+                        <div class="col-md-5">
+                            <select id="filterByDepartment" class="form-control" ng-model="filteredDept" ng-change="filterOptions.searchQuery = ''">
+                                <option value="">All</option>
+                                <option ng-repeat="dept in departments.sort()" value="{{dept}}">{{dept}}</option>
+                            </select>
+                        </div>
+                    </form>
+
             </div><br>
             <div class="row">
-                <div class="col-md-4">
-                    <select id="filterByDepartment" class="form-control" ng-model="filteredDept" ng-change="filterOptions.searchQuery = ''">
-                        <option value="">All</option>
-                        <option ng-repeat="dept in departments.sort()" value="{{dept}}">{{dept}}</option>
-                    </select>
-                </div>
-                <div class="col-md-8">
+                <div class="col-md-12">
                     <input id="filterByDescriptionQuery" class="form-control" ng-model="searchText" placeholder="Search">
                 </div>
             </div>
