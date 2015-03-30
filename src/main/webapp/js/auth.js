@@ -1,4 +1,4 @@
-unction doHash(pass, pepper) {
+function doHash(pass, pepper) {
 	for (var i = 0; i < pepper; i++) {
 		pass = SHA256(pass);
 	}
