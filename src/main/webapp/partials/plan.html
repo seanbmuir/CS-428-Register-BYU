@@ -1,26 +1,24 @@
 <div class="container plan-container main-content" ng-controller="CourseListCtrl">
-	<div class="row">
-		<div class="col-md-3">
-			<div class="col-md-4"><h4>Semester:</h4></div>
-			<div class="col-md-8">
-				<select id="semesterSelect" ng-model="selectedSemester" ng-options="sem.name for sem in semesters" ng-change="changeCurrentSemester(selectedSemester)"></select>
-			</div>
-		</div>
-	</div>
     <div class="row">
         <div class="col-md-3">
             <div class="row">
-                <form class="form-inline" role="form">
-                    <div class="col-md-4">
-                        <select id="filterByDepartment" class="form-control" ng-model="filteredDept" ng-change="filterOptions.searchQuery = ''">
-                            <option value="">All</option>
-                            <option ng-repeat="dept in departments.sort()" value="{{dept}}">{{dept}}</option>
-                        </select>
-                    </div>
-                    <div class="col-md-8">
-                        <input id="filterByDescriptionQuery" class="form-control" ng-model="searchText" placeholder="Search">
-                    </div>
-                </form>
+                    <form class="form-inline">
+                        <div class="col-md-7">
+                            <select class="form-control" id="semesterSelect" ng-model="selectedSemester" ng-options="sem.name for sem in semesters" ng-change="changeCurrentSemester(selectedSemester)"></select>
+                        </div>
+                        <div class="col-md-5">
+                            <select id="filterByDepartment" class="form-control" ng-model="filteredDept" ng-change="filterOptions.searchQuery = ''">
+                                <option value="">All</option>
+                                <option ng-repeat="dept in departments.sort()" value="{{dept}}">{{dept}}</option>
+                            </select>
+                        </div>
+                    </form>
+
+            </div><br>
+            <div class="row">
+                <div class="col-md-12">
+                    <input id="filterByDescriptionQuery" class="form-control" ng-model="searchText" placeholder="Search">
+                </div>
             </div>
             <!-- example of a course level filter, it's not very good though -->
             <!-- <div class="row" id="courseLevelFilter">
@@ -73,12 +71,19 @@
                                 </div>
                             </div>
                             <!--Block Filter-->
+                            <label>Block</label>
                             <div class="row">
-                                <div>
-                                    <div class = col-md-8>
-                                        <div class="form-group">
-                                            <label for="block">Block</label>
-                                            <input type="blockType" class="form-control" id="block">
+                                <div class="form-inline">
+                                    <div class="form-group sectionFormGroup">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox"> 1st
+                                            </label>
+                                        </div>
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox"> 2nd
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
@@ -144,9 +149,24 @@
                         <div class="modal-body">
                             <!--Time of Day Filter-->
                             <label>Time of Day</label>
-                            <div class="row">
-                                <div>
-                                    <div class = col-md-8>
+                            <div class="row daysOfWeek">
+                                <div class="form-inline">
+                                    <div class="form-group sectionFormGroup">
+                                        <div class="checkbox timeOfDayCheck">
+                                            <label>
+                                                <input type="checkbox"> Morning(7-12)
+                                            </label>
+                                        </div>
+                                        <div class="checkbox timeOfDayCheck">
+                                            <label>
+                                                <input type="checkbox"> Afternoon(12-5)
+                                            </label>
+                                        </div>
+                                        <div class="checkbox timeOfDayCheck">
+                                            <label>
+                                                <input type="checkbox"> Evening(5-10)
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

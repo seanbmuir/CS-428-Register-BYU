@@ -196,7 +196,6 @@ h2 {
 	background: #dddddd;
 	border-radius: 15px;
 }
-#semesterSelect{ margin-top: 10px;}
 
 
 
@@ -227,6 +226,11 @@ h2 {
 .sectionFormGroup
 {
     padding-left: 15px;
+}
+
+.timeOfDayCheck
+{
+    width: 120px;
 }
 
 
