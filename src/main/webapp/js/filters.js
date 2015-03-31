@@ -1,3 +1,5 @@
 'use strict';
 
-/* Filters */
+$('.sectionClear').click(function(){
+    $('.sectionModalContents :checked').removeAttr('checked');
+})
