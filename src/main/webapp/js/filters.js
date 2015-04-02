@@ -1,5 +1,13 @@
 'use strict';
 
-$('.sectionClear').click(function(){
-    $('.sectionModalContents :checked').removeAttr('checked');
-})
+function clearSectionFilter()
+{
+    $(".sectionCheck").prop("checked", false);
+}
+
+function clearCourseFilter()
+{
+    $('.courseFilterOption').prop('checked', false);
+    $('.courseFilterOption').val('');
+}
+

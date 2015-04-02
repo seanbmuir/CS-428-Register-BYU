@@ -51,10 +51,10 @@
 
                             <div class="row">
                                 <div>
-                                    <div class = col-md-8>
+                                    <div class = col-md-9>
                                         <div class="form-group">
                                             <label for="credits">Credit Hours</label>
-                                            <input type="creditsType" class="form-control" id="credits" placeholder="2.0">
+                                            <input type="creditsType" class="form-control courseFilterOption" id="credits" placeholder="2.0">
                                         </div>
                                     </div>
                                 </div>
@@ -62,10 +62,10 @@
                             <!--Professor Filter-->
                             <div class="row">
                                 <div>
-                                    <div class = col-md-8>
+                                    <div class = col-md-9>
                                         <div class="form-group">
                                             <label for="professor">Professor</label>
-                                            <input type="professorType" class="form-control" id="professor">
+                                            <input type="professorType" class="form-control courseFilterOption" id="professor" placeholder="Last Name, First Name">
                                         </div>
                                     </div>
                                 </div>
@@ -77,19 +77,19 @@
                                     <div class="form-group sectionFormGroup">
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox"> 1st
+                                                <input type="checkbox" class="courseFilterOption"> 1st
                                             </label>
                                         </div>
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox"> 2nd
+                                                <input type="checkbox" class="courseFilterOption"> 2nd
                                             </label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="reset" class="btn btn-default">Clear</button>
+                                <button type="reset" class="btn btn-default" onclick="clearCourseFilter()">Clear</button>
                             </div>
                         </div>
 
@@ -154,17 +154,17 @@
                                     <div class="form-group sectionFormGroup">
                                         <div class="checkbox timeOfDayCheck">
                                             <label>
-                                                <input type="checkbox"> Morning(7-12)
+                                                <input type="checkbox" class="sectionCheck"> Morning(7-12)
                                             </label>
                                         </div>
                                         <div class="checkbox timeOfDayCheck">
                                             <label>
-                                                <input type="checkbox"> Afternoon(12-5)
+                                                <input type="checkbox" class="sectionCheck"> Afternoon(12-5)
                                             </label>
                                         </div>
                                         <div class="checkbox timeOfDayCheck">
                                             <label>
-                                                <input type="checkbox"> Evening(5-10)
+                                                <input type="checkbox" class="sectionCheck"> Evening(5-10)
                                             </label>
                                         </div>
                                     </div>
@@ -177,32 +177,32 @@
                                     <div class="form-group sectionFormGroup">
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox"> Mon
+                                                <input type="checkbox" class="sectionCheck"> Mon
                                             </label>
                                         </div>
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox"> Tue
+                                                <input type="checkbox" class="sectionCheck"> Tue
                                             </label>
                                         </div>
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox"> Wed
+                                                <input type="checkbox" class="sectionCheck"> Wed
                                             </label>
                                         </div>
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox"> Th
+                                                <input type="checkbox" class="sectionCheck"> Th
                                             </label>
                                         </div>
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox"> Fri
+                                                <input type="checkbox" class="sectionCheck"> Fri
                                             </label>
                                         </div>
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox"> Sat
+                                                <input type="checkbox" class="sectionCheck"> Sat
                                             </label>
                                         </div>
                                     </div>
@@ -210,9 +210,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="reset" class="btn btn-default sectionClear"></button>
+                            <button type="reset" class="btn btn-default sectionClear " onclick="clearSectionFilter()">Clear</button>
                         </div>
-                        <script src="src/webapp/js/filters.js"></script>
                     </div>
                 </div>
             </div>
