@@ -377,7 +377,7 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
 
 
 
-            $scope.sumPlannedCredits += course.credits;
+            $scope.sumPlannedCredits += Number(section.credits);
 
             // put a cap on generating schedules or it will get way out of hand
             if($scope.plannedSemesterSchedules[$scope.currentSemesterId].classes.length >1 && $scope.sumPlannedCredits < 18) {
