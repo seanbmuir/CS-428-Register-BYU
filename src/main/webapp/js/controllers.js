@@ -187,9 +187,24 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
         $scope.initStuff();
 
         $scope.allFilter = function(course) {
-            return (($scope.filterText && $scope.filterText.length) || ($scope.filteredDept && $scope.filteredDept.length) || $scope.defaultCourses.indexOf(course.departmentCode + course.courseNumber) > -1);
+            return (($scope.filterText && $scope.filterText.length) || 
+					($rootScope.creditFilter && $rootScope.creditFilter.length) ||
+					($rootScope.profName && $rootScope.profName.length) ||
+					($scope.filteredDept && $scope.filteredDept.length) || 
+					$scope.defaultCourses.indexOf(course.departmentCode + course.courseNumber) > -1);
         };
-
+		
+		$scope.profTeachesSection = function(course,profName){
+			var found = false;
+			angular.forEach(course.sections, function (apiSection) {
+				if(!found)
+					if(angular.lowercase(apiSection.professor).indexOf(angular.lowercase(profName)) > -1){
+							found = true;
+					}
+			 });
+			 return found;
+		};
+		
         // Searches both course name and course description fields
         $scope.searchQueryFilter = function(course) {
             var q = angular.lowercase($scope.filterText);
@@ -199,9 +214,17 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
                     angular.lowercase(course.department).indexOf(q) >= 0 ||
                     angular.lowercase(course.courseNumber).indexOf(q) >= 0 ||
                     angular.lowercase(course.departmentCode + course.courseNumber).indexOf(q.replace(/\s/g,'')) >= 0 ||
-                    angular.lowercase(course.departmentCode.replace(/\s/g,'') + course.courseNumber).indexOf(q.replace(/\s/g,'')) >= 0));
+                    angular.lowercase(course.departmentCode.replace(/\s/g,'') + course.courseNumber).indexOf(q.replace(/\s/g,'')) >= 0))
+					&&
+						(!angular.isDefined($rootScope.creditFilter) || 
+						(angular.isDefined($rootScope.creditFilter) && $rootScope.creditFilter.length==0) || 
+						course.creditRange==$rootScope.creditFilter)
+					&&
+						(!angular.isDefined($rootScope.profName) ||
+						(angular.isDefined($rootScope.profName) && $rootScope.profName.length==0) ||
+						$scope.profTeachesSection(course,$rootScope.profName));
         };
-
+		
         //Filters by department
         $scope.departmentFilter = function(course) {
             return $scope.filteredDept === /* all departments */ '' || $scope.filteredDept === course.departmentCode
@@ -259,6 +282,74 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
             }
             return result
         };
+		
+		$scope.timeIncludes = [];
+		$scope.dayIncludes = [];
+		
+		$scope.includeTimeOfDay = function(timeFrame) {
+			var i = $.inArray(timeFrame, $scope.timeIncludes);
+			if (i > -1) {
+				$scope.timeIncludes.splice(i, 1);
+			} else {
+				$scope.timeIncludes.push(timeFrame);
+			}
+		}
+		
+		$scope.includeDay = function(day) {
+			var i = $.inArray(day, $scope.dayIncludes);
+			if (i > -1) {
+				$scope.dayIncludes.splice(i, 1);
+			} else {
+				$scope.dayIncludes.push(day);
+			}
+		}
+		
+		$scope.sectionFilter = function(section) {
+			if ($scope.timeIncludes.length > 0 || $scope.dayIncludes.length > 0 ){
+				for(var key in section.timePlaces) {
+					if($scope.dayIncludes.length > 0){
+						var days;
+						if(section.timePlaces[key].day=="TTh"){
+							days = ["T","Th"];
+						}else if(section.timePlaces[key].day=="Th"){
+							days = ["Th"];
+						}else{
+							days = section.timePlaces[key].day.split("");
+						}
+						for(var index=0; index < days.length; ++index){
+							if ($.inArray(days[index], $scope.dayIncludes) < 0)
+								return;
+						}
+					}
+					if ($scope.timeIncludes.length > 0){
+						var startTimeLen = section.timePlaces[key].startTime.length;
+						var startRawTime = section.timePlaces[key].startTime.substring(0,startTimeLen-2); //section.timePlaces[key].startTime in the format "09:50am"  
+						var startRawAMPM = section.timePlaces[key].startTime.substring(startTimeLen-2,startTimeLen);
+						var startTime = new Date(Date.parse("2015/01/01 "+startRawTime+" "+startRawAMPM)); //converted to comparable date
+						var startsInTimeConstraint = false;
+						var compareTime;
+						if($.inArray("Evening",$scope.timeIncludes)>-1){
+							compareTime = new Date(Date.parse("2015/01/01 5:00 PM"));
+							if(compareTime<startTime) 
+								startsInTimeConstraint = true;
+						}
+						if($.inArray("Afternoon",$scope.timeIncludes)>-1){
+							compareTime = new Date(Date.parse("2015/01/01 5:00 PM"));
+							var compareTime2 = new Date(Date.parse("2015/01/01 11:59 AM"));
+							if(startTime<compareTime && compareTime2<startTime) 
+								startsInTimeConstraint = true;
+						}
+						if($.inArray("Morning",$scope.timeIncludes)>-1){
+							compareTime = new Date(Date.parse("2015/01/01 11:59 AM"));
+							if(startTime<compareTime) 
+								startsInTimeConstraint = true;
+						}
+						if(!startsInTimeConstraint)return;
+					}
+				}
+			}
+			return section;
+		}
 
         // check if a course is planned, where cid is a course/section id that looks like this: "CS256-1" for section 1
         $scope.isPlanned = function(cid) {

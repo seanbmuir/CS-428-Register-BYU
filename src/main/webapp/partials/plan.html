@@ -40,7 +40,7 @@
             </div>
 
             <!-- Course Modal -->
-            <div class="modal fade" id="courseModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal fade" id="courseModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" ng-controller="FilterCtrl">
                 <div class="modal-dialog">
                     <div class="modal-content courseModalContent">
                         <div class="modal-header">
@@ -54,7 +54,7 @@
                                     <div class = col-md-9>
                                         <div class="form-group">
                                             <label for="credits">Credit Hours</label>
-                                            <input type="creditsType" class="form-control courseFilterOption" id="credits" placeholder="2.0">
+                                            <input type="creditsType" class="form-control courseFilterOption" id="credits" placeholder="2.0" ng-model="$rootScope.creditFilter">
                                         </div>
                                     </div>
                                 </div>
@@ -65,12 +65,12 @@
                                     <div class = col-md-9>
                                         <div class="form-group">
                                             <label for="professor">Professor</label>
-                                            <input type="professorType" class="form-control courseFilterOption" id="professor" placeholder="Last Name, First Name">
+                                            <input type="professorType" class="form-control courseFilterOption" id="professor" placeholder="Last Name, First Name" ng-model="$rootScope.profName">
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <!--Block Filter-->
+                            <!--Block Filter
                             <label>Block</label>
                             <div class="row">
                                 <div class="form-inline">
@@ -87,8 +87,9 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
                             <div class="modal-footer">
+								<button class="btn btn-default" data-dismiss="modal">Close</button>
                                 <button type="reset" class="btn btn-default" onclick="clearCourseFilter()">Clear</button>
                             </div>
                         </div>
@@ -118,7 +119,7 @@
             </div>
 
         </div>
-		<div id='loadByuCoursesModal' class='modal'>
+		<!--<div id='loadByuCoursesModal' class='modal'>
 			<div class='innerModal'>
 				<h4>To load your classes, please copy the text in this box:</h4>
 				<iframe id='byuPlannedClassesIFrame' src='https://home.byu.edu/webapp/mymap/organize/data.json'></iframe>
@@ -126,7 +127,7 @@
 				<textarea id='jsonPlannedClasses'></textarea><br/><br/>
 				<a ng-click="loadByuCoursesOkay()" class="btn btn-success btn-xs">Ok</a>
 			</div>
-		</div>
+		</div>-->
 
         <!-- Section Modal Filter button-->
 
@@ -154,17 +155,17 @@
                                     <div class="form-group sectionFormGroup">
                                         <div class="checkbox timeOfDayCheck">
                                             <label>
-                                                <input type="checkbox" class="sectionCheck"> Morning(7-12)
+                                                <input type="checkbox" class="sectionCheck" ng-click="includeTimeOfDay('Morning')"> Morning(7-12)
                                             </label>
                                         </div>
                                         <div class="checkbox timeOfDayCheck">
                                             <label>
-                                                <input type="checkbox" class="sectionCheck"> Afternoon(12-5)
+                                                <input type="checkbox" class="sectionCheck" ng-click="includeTimeOfDay('Afternoon')"> Afternoon(12-5)
                                             </label>
                                         </div>
                                         <div class="checkbox timeOfDayCheck">
                                             <label>
-                                                <input type="checkbox" class="sectionCheck"> Evening(5-10)
+                                                <input type="checkbox" class="sectionCheck" ng-click="includeTimeOfDay('Evening')"> Evening(5-10)
                                             </label>
                                         </div>
                                     </div>
@@ -177,32 +178,32 @@
                                     <div class="form-group sectionFormGroup">
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" class="sectionCheck"> Mon
+                                                <input type="checkbox" class="sectionCheck" ng-click="includeDay('M')"> Mon
                                             </label>
                                         </div>
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" class="sectionCheck"> Tue
+                                                <input type="checkbox" class="sectionCheck" ng-click="includeDay('T')"> Tue
                                             </label>
                                         </div>
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" class="sectionCheck"> Wed
+                                                <input type="checkbox" class="sectionCheck" ng-click="includeDay('W')"> Wed
                                             </label>
                                         </div>
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" class="sectionCheck"> Th
+                                                <input type="checkbox" class="sectionCheck" ng-click="includeDay('Th')"> Th
                                             </label>
                                         </div>
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" class="sectionCheck"> Fri
+                                                <input type="checkbox" class="sectionCheck" ng-click="includeDay('F')"> Fri
                                             </label>
                                         </div>
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" class="sectionCheck"> Sat
+                                                <input type="checkbox" class="sectionCheck" ng-click="includeDay('S')"> Sat
                                             </label>
                                         </div>
                                     </div>
@@ -210,6 +211,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
+							<button class="btn btn-default" data-dismiss="modal">Close</button>
                             <button type="reset" class="btn btn-default sectionClear " onclick="clearSectionFilter()">Clear</button>
                         </div>
                     </div>
@@ -250,7 +252,7 @@
                                 <td colspan="4">No sections offered this semester!</td>
                             </tr>
                             </tbody>
-                            <tbody class="selectable-special" ng-repeat="section in selectedCourse.sections" ng-mouseenter="showTempEvent(selectedCourse, section)" ng-mouseleave="hideTempEvent(selectedCourse, section)">
+                            <tbody class="selectable-special" ng-repeat="section in selectedCourse.sections | filter:sectionFilter" ng-mouseenter="showTempEvent(selectedCourse, section)" ng-mouseleave="hideTempEvent(selectedCourse, section)">
                             <tr class="selectable-td">
                                 <td>{{ section._id }}</td>
                                 <td><a target="_blank" href="http://www.ratemyprofessors.com/{{section.rateMyProfessorQuery}}">{{ section.professor }}</a></td>

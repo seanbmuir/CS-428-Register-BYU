@@ -11,3 +11,8 @@ function clearCourseFilter()
     $('.courseFilterOption').val('');
 }
 
+classregControllers.controller('FilterCtrl', ['$scope', '$rootScope', function ($scope,$rootScope) {
+	
+	
+	
+}]);
