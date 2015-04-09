@@ -189,7 +189,7 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
         $scope.allFilter = function(course) {
             return (($scope.filterText && $scope.filterText.length) || 
 					($rootScope.creditFilter && $rootScope.creditFilter.length) ||
-					($rootScope.profName && $rootScope.profName.length) ||
+					($rootScope.profName && $rootScope.profName.length > 2) ||
 					($scope.filteredDept && $scope.filteredDept.length) || 
 					$scope.defaultCourses.indexOf(course.departmentCode + course.courseNumber) > -1);
         };
@@ -221,8 +221,8 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
 						course.creditRange==$rootScope.creditFilter)
 					&&
 						(!angular.isDefined($rootScope.profName) ||
-						(angular.isDefined($rootScope.profName) && $rootScope.profName.length==0) ||
-						$scope.profTeachesSection(course,$rootScope.profName));
+						(angular.isDefined($rootScope.profName) && $rootScope.profName.length < 3) ||
+						($rootScope.profName.length > 2 && $scope.profTeachesSection(course,$rootScope.profName)));
         };
 		
         //Filters by department
