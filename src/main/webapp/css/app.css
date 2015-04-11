@@ -45,7 +45,7 @@ h2 {
 }
 
 .main-content {
-    padding: 40px 15px;
+    padding: 15px 15px;
 }
 
 .sortable-header {
@@ -173,10 +173,19 @@ h2 {
     cursor: hand !important;
 }
 
+#sections-container{
+    height: 47vh;
+}
 .sections-table-container {
-    height: 65vh;
+    height: 35vh;
     overflow: scroll;
 }
+
+.schedules-table-container {
+    height: 15vh;
+    overflow: scroll;
+}
+
 #loadByuCoursesModal{
 	background:rgba(0,0,0,0.5);
 	display:none;
@@ -233,5 +242,9 @@ h2 {
     width: 120px;
 }
 
-
+.right {
+    text-align: right;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
 

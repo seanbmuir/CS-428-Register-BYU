@@ -17,7 +17,7 @@ import packages.Courses;
 public class CatalogParser {
 	
 	//Flip flag for more printouts to help debug parser
-	final private static boolean SHOULD_LOG = false;
+	final private static boolean SHOULD_LOG = true;
 	
 	public static void main(String[] args)
 	{

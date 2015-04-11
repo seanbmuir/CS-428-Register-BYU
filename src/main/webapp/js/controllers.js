@@ -27,7 +27,6 @@ classregControllers.controller('HeaderController', ['$scope', '$http', '$rootSco
 
 classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies', '$rootScope', '$interval', '$timeout','classPeriodParser',
     function ($scope, $http, $cookies, $rootScope, $interval, $timeout, classPeriodParser) {
-
 		$scope.loadSemesterCourses = function(data){
 			$scope.departments = []
             $scope.courses = data.courses;
@@ -41,6 +40,10 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
                             apiSection.rateMyProfessorQuery = "search.jsp?query=BYU%20" + apiSection.professor.split(",")[0] + " " + apiSection.professor.split(",")[1]
                           }else
                             apiSection.rateMyProfessorQuery = "ShowRatings.jsp?tid="+apiSection.pid
+
+
+						 if(!apiSection.courseID)
+						 	apiSection.courseID = apiCourse.courseID;
                      });
 
                 if (apiCourse.sections !== null && apiCourse.sections !== undefined && apiCourse.sections.length > 0) {
@@ -85,7 +88,7 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
 			return year;
 		};
 		
-		$scope.loadSemeseters = function(){
+		$scope.loadSemesters = function(){
 			$scope.previouslySavedPlan = {}
 			$http.get('public-api/semesters').success(function (data) {
 				$scope.semesters = [];
@@ -114,17 +117,21 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
 				$http.get('public-api/loadSchedule/'+semId).success(function (data) {
 					if(data.classes!==undefined){
 						$scope.plannedSemesterSchedules[semId] = data;
-						angular.forEach($scope.plannedSemesterSchedules[semId].classes, function (section) {
-							$scope.$broadcast("courseAdded", {course: $scope.getCID(section), classPeriods: section.timePlaces, color: eventColor });
-						});
+						$scope.plotSchedule($scope.plannedSemesterSchedules[semId]);
 					}
 				});
 			else
-				angular.forEach($scope.plannedSemesterSchedules[semId].classes, function (section) {
-					$scope.$broadcast("courseAdded", {course: $scope.getCID(section), classPeriods: section.timePlaces, color: eventColor });
-				});
+				$scope.plotSchedule($scope.plannedSemesterSchedules[semId]);
 		};
-		
+
+		$scope.plotSchedule = function(schedule){
+
+			$scope.$broadcast("removeAllCourses");
+			angular.forEach(schedule.classes, function (section) {
+				$scope.$broadcast("courseAdded", {course: $scope.getCID(section), classPeriods: section.timePlaces, color: eventColor });
+			});
+		};
+
         // popular courses to be shown when there are no filters applied
         $scope.popularCourses = ['REL A121', 'REL A122', 'A HTG100', 'BIO100', 'C S142', 'MATH112', 'MATH113', 'WRTG150', 'CHEM111', 'CHEM101', 'PHSCS121', 'COMMS101', 'ACC200', 'EL ED202'];
 		$scope.defaultCourses = $scope.popularCourses;
@@ -153,7 +160,7 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
             $scope.selectedCourse = undefined;
 			
 			if($rootScope.initLoadingCourses!=true){//prevent 2 calls during init
-				$scope.loadSemeseters();
+				$scope.loadSemesters();
 				$scope.loadPreviouslySavedMyMap();
 			}
 			$rootScope.initLoadingCourses = true;
@@ -181,6 +188,8 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
         $scope.initPlannedCourses = function() {
             $scope.plannedSemesterSchedules = [];
             $scope.sumPlannedCredits = 0.0;
+            $scope.manualSchedules = {};
+            $scope.alternateSchedules = {};
             $scope.$broadcast("removeAllCourses");
         };
 
@@ -421,7 +430,37 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
 			$('#loadByuCoursesModal').hide();
 		};
 
+		$scope.switchToSchedule = function(altSchedule){
+			$scope.plannedSemesterSchedules[$scope.currentSemesterId] = altSchedule;
+			$scope.plotSchedule($scope.plannedSemesterSchedules[$scope.currentSemesterId]);
+		}
+
+		$scope.addCourseToSchedule = function(schedule, course, section){
+			var fullCourseName = course.departmentCode + ' ' + course.courseNumber;
+            var cid = fullCourseName + "-" + section._id;
+            var classLocation = section.buildingAbbreviation + ' ' + section.room;
+
+            var plannedCourse = new Object();
+			//plannedCourse.cid = cid;
+			//plannedCourse.department = course.department;
+			//plannedCourse.departmentCode = course.departmentCode;
+			//plannedCourse.courseNumber = course.courseNumber;
+			plannedCourse._id = section._id;
+			plannedCourse.professor = section.professor;
+			plannedCourse.timePlaces = section.timePlaces;
+			plannedCourse.courseID = course.courseID;
+			//plannedCourse.newTitleCode = course.newTitleCode;
+			plannedCourse.credits = section.credits;
+			plannedCourse.sectionType = section.sectionType;
+			//plannedCourse.courseName = course.courseName;
+			plannedCourse.semesterID = $scope.currentSemesterId;
+			schedule.classes.push(plannedCourse);
+		};
+
         $scope.addCourseToPlan = function(course, section) {
+            if($scope.plannedSemesterSchedules[$scope.currentSemesterId] !== $scope.manualSchedules[$scope.currentSemesterId])
+            	$scope.switchToSchedule($scope.manualSchedules[$scope.currentSemesterId]);
+
             $scope.saved = false;
             $scope.added = false;
 			if($scope.plannedSemesterSchedules[$scope.currentSemesterId]==undefined || $scope.plannedSemesterSchedules[$scope.currentSemesterId] == null){
@@ -432,7 +471,7 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
 				newSemester.classes = [];
 				$scope.plannedSemesterSchedules[$scope.currentSemesterId] = newSemester;
 			}
-			
+
             // when the class is added, remove its temporary calendar event
             $scope.hideTempEvent(course, section);
             var fullCourseName = course.departmentCode + ' ' + course.courseNumber;
@@ -464,6 +503,7 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
 				plannedCourse.semesterID = $scope.currentSemesterId;
                 $scope.plannedSemesterSchedules[$scope.currentSemesterId].classes.push(plannedCourse);
             }
+            $scope.manualSchedules[$scope.currentSemesterId] = $scope.plannedSemesterSchedules[$scope.currentSemesterId];
             $scope.savePlan();
 
 
@@ -473,6 +513,9 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
             // put a cap on generating schedules or it will get way out of hand
             if($scope.plannedSemesterSchedules[$scope.currentSemesterId].classes.length >1 && $scope.sumPlannedCredits < 18) {
                 $scope.generateAlternateSchedules();
+            }
+            else{
+            	$scope.alternateSchedules[$scope.currentSemesterId] = [];
             }
 
             var elId = '#plannedCourse-' + ($scope.plannedSemesterSchedules[$scope.currentSemesterId].classes.length - 1).toString();
@@ -485,6 +528,8 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
         $scope.generateAlternateSchedules = function()
         {
             $scope.generatedSchedules = []; // reset generated schedules
+            $scope.alternateSchedules[$scope.currentSemesterId] = []; //the data-bound schedules element
+
             var courses = $scope.getCourses();
             $scope.exploreCourses([], courses);
             if($scope.generatedSchedules.length == 0)
@@ -507,9 +552,24 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
             //    return b.freeDays - a.freeDays;
             //})
 
-            console.log("Best Schedule is:");
-            console.log($scope.generatedSchedules[0]);
+//            console.log("Best Schedule is:");
+//            console.log($scope.generatedSchedules);
 
+			angular.forEach($scope.generatedSchedules, function(sectionSet){
+				//copy the semester schedule
+				var newSchedule = new Object();
+				newSchedule._id = $scope.currentSemesterId;
+				newSchedule.semesterID = $scope.currentSemesterId;
+				newSchedule.name = $scope.currentSemester;
+				newSchedule.classes = [];
+
+				angular.forEach(sectionSet, function(section){
+					var course = $scope.getCourseObject(section.courseID)
+					$scope.addCourseToSchedule(newSchedule, course, section);
+				});
+
+				$scope.alternateSchedules[$scope.currentSemesterId].push(newSchedule);
+			});
         }
 
         /**
@@ -627,6 +687,9 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
         }
 
         $scope.removeCourseFromPlan = function(course) {
+            if($scope.plannedSemesterSchedules[$scope.currentSemesterId] !== $scope.manualSchedules[$scope.currentSemesterId])
+            	$scope.switchToSchedule($scope.manualSchedules[$scope.currentSemesterId]);
+
             $scope.saved = false;
             $scope.added = false;
 
@@ -635,6 +698,12 @@ classregControllers.controller('CourseListCtrl', ['$scope', '$http', '$cookies',
             var i = $scope.plannedSemesterSchedules[$scope.currentSemesterId].classes.indexOf(course);
             if (i > -1)
                 $scope.plannedSemesterSchedules[$scope.currentSemesterId].classes.splice(i, 1);
+
+            $scope.manualSchedules[$scope.currentSemesterId] = $scope.plannedSemesterSchedules[$scope.currentSemesterId];
+
+            if($scope.plannedSemesterSchedules[$scope.currentSemesterId].classes.length < 2 || $scope.sumPlannedCredits > 18) {
+				$scope.alternateSchedules[$scope.currentSemesterId] = [];
+            }
 
             $scope.savePlan()
             $scope.sumPlannedCredits -= course.credits;

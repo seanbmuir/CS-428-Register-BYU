@@ -2,17 +2,19 @@
     <div class="row">
         <div class="col-md-3">
             <div class="row">
+                <div class="col-md-12">
                     <form class="form-inline">
-                        <div class="col-md-7">
-                            <select class="form-control" id="semesterSelect" ng-model="selectedSemester" ng-options="sem.name for sem in semesters" ng-change="changeCurrentSemester(selectedSemester)"></select>
-                        </div>
-                        <div class="col-md-5">
-                            <select id="filterByDepartment" class="form-control" ng-model="filteredDept" ng-change="filterOptions.searchQuery = ''">
-                                <option value="">All</option>
-                                <option ng-repeat="dept in departments.sort()" value="{{dept}}">{{dept}}</option>
-                            </select>
-                        </div>
+                        <select class="form-control" id="semesterSelect" ng-model="selectedSemester" ng-options="sem.name for sem in semesters" ng-change="changeCurrentSemester(selectedSemester)"></select>
+
+                        <select id="filterByDepartment" class="form-control" ng-model="filteredDept" ng-change="filterOptions.searchQuery = ''">
+                            <option value="">All</option>
+                            <option ng-repeat="dept in departments.sort()" value="{{dept}}">{{dept}}</option>
+                        </select>
+
+                        <a data-toggle="modal" data-target="#courseModal" class="btn btn-info">Filters <span class="glyphicon glyphicon-filter"></span></a>
                     </form>
+                </div>
+
 
             </div><br>
             <div class="row">
@@ -35,9 +37,7 @@
             </div> -->
 
             <br>
-            <div class="row filterDiv">
-                <div class="col-md-8"><a data-toggle="modal" data-target="#courseModal">Filters</a></div>
-            </div>
+
 
             <!-- Course Modal -->
             <div class="modal fade" id="courseModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" ng-controller="FilterCtrl">
@@ -135,10 +135,6 @@
 
         <div class="col-md-5">
 
-            <div class="row filterDiv">
-                <div class="col-md-8"><a data-toggle="modal" data-target="#sectionModal">Filters</a></div>
-            </div>
-
             <!-- Section Modal -->
             <div class="modal fade" id="sectionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -155,17 +151,17 @@
                                     <div class="form-group sectionFormGroup">
                                         <div class="checkbox timeOfDayCheck">
                                             <label>
-                                                <input type="checkbox" class="sectionCheck" ng-click="includeTimeOfDay('Morning')"> Morning(7-12)
+                                                <input type="checkbox" class="sectionCheck" ng-click="includeTimeOfDay('Morning')"> Morning (7-12)
                                             </label>
                                         </div>
                                         <div class="checkbox timeOfDayCheck">
                                             <label>
-                                                <input type="checkbox" class="sectionCheck" ng-click="includeTimeOfDay('Afternoon')"> Afternoon(12-5)
+                                                <input type="checkbox" class="sectionCheck" ng-click="includeTimeOfDay('Afternoon')"> Afternoon (12-5)
                                             </label>
                                         </div>
                                         <div class="checkbox timeOfDayCheck">
                                             <label>
-                                                <input type="checkbox" class="sectionCheck" ng-click="includeTimeOfDay('Evening')"> Evening(5-10)
+                                                <input type="checkbox" class="sectionCheck" ng-click="includeTimeOfDay('Evening')"> Evening (5-10)
                                             </label>
                                         </div>
                                     </div>
@@ -221,19 +217,28 @@
 
 
             <div class="well">
-                <h4 ng-show="!selectedCourse">&larr; Start typing a course name, choose a department from the dropdown, or <a ng-click="loadByuCourses()">load your already planned classes from BYU.</a></h4>
-                <div ng-show="selectedCourse">
+                <h4 ng-show="!selectedCourse">&larr; Start typing a course name or choose a department from the dropdown.</h4>
+                <div ng-show="selectedCourse" id="sections-container">
+
                     <h3 class="text-center"><span class="glyphicon glyphicon-list-alt"></span>
                         {{ selectedCourse.departmentCode + " " + selectedCourse.courseNumber}}
                     </h3>
-                    <h5>{{ selectedCourse.courseName }}</h5>
-                    <span ng-show="selectedCourse.outcomes.length > 0">
-                        <p>Learning Outcomes:</p>
-                        <ul>
-                            <div ng-repeat="outcome in selectedCourse.outcomes"><li>{{ outcome }}</li></div>
-                        </ul>
-                    </span>
-                    <p>Credit hours: {{ selectedCourse.creditRange }}</p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>{{ selectedCourse.courseName }}</h5>
+                            <span ng-show="selectedCourse.outcomes.length > 0">
+                                <p>Learning Outcomes:</p>
+                                <ul>
+                                    <div ng-repeat="outcome in selectedCourse.outcomes"><li>{{ outcome }}</li></div>
+                                </ul>
+                            </span>
+                            <p>Credit hours: {{ selectedCourse.creditRange }}</p>
+                        </div>
+                        <div class="col-md-6 right">
+                            <span><a data-toggle="modal" data-target="#sectionModal" class="btn btn-info btn-xs">Filters <span class="glyphicon glyphicon-filter"></span></a></span>
+                        </div>
+                    </div>
+
                     <div class="sections-table-container">
                         <table class="table table-condensed">
                             <thead>
@@ -274,51 +279,103 @@
                     </div>
                 </div>
             </div>
+
+            <div class="well">
+                <h3 class="text-center">Schedules</h3>
+                <div class="schedules-table-container">
+                    <table class="table table-condensed">
+                        <tbody class="selectable-special" ng-show="!manualSchedules[currentSemesterId].classes.length">
+                        <tr>
+                            <td>
+                                Add a course section to build a schedule!
+                            </td>
+                        </tr>
+                        </tbody>
+
+                        <tbody class="selectable-special" ng-show="manualSchedules[currentSemesterId].classes.length" ng-mouseenter="plotSchedule(manualSchedules[currentSemesterId])" ng-mouseleave="plotSchedule(plannedSemesterSchedules[currentSemesterId])">
+                        <tr class="selectable-td">
+                            <td>Manual</td>
+                            <td ng-show="!(plannedSemesterSchedules[currentSemesterId] === manualSchedules[currentSemesterId])">
+                                <a class="btn btn-success btn-xs" ng-click="switchToSchedule(manualSchedules[currentSemesterId])"><span class="glyphicon glyphicon-random" title="Switch to this schedule."></span></a>
+                            </td>
+                            <td ng-show="plannedSemesterSchedules[currentSemesterId] === manualSchedules[currentSemesterId]">
+                                <div style="height: 22px;"><span class="glyphicon glyphicon-ok btn-xs"></span></div>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tbody class="selectable-special" ng-show="!alternateSchedules[currentSemesterId].length">
+                        <tr>
+                            <td>
+                                Add multiple courses to auto-generate possible schedules! (Limit 18 credits)
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tbody class="selectable-special" ng-show="alternateSchedules[currentSemesterId].length" ng-repeat="schedule in alternateSchedules[currentSemesterId]" ng-mouseenter="plotSchedule(schedule)" ng-mouseleave="plotSchedule(plannedSemesterSchedules[currentSemesterId])">
+                        <tr class="selectable-td">
+                            <td>Auto-generated #{{$index+1}}</td>
+                            <td ng-show="!(schedule === plannedSemesterSchedules[currentSemesterId])">
+                                <a class="btn btn-success btn-xs" ng-click="switchToSchedule(schedule)"><span class="glyphicon glyphicon-random" title="Switch to this schedule."></span></a>
+                            </td>
+                            <td ng-show="schedule === plannedSemesterSchedules[currentSemesterId]">
+                                <div style="height: 22px;"><span class="glyphicon glyphicon-ok btn-xs"></span></div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
         <div class="col-md-4 col-sm-4">
             <div class="well">
                 <h3 class="text-center">My Planned Classes ({{ currentSemester }})</h3>
                 <!--<h5>{{currentSemester}}</h5>-->
-                <p ng-show="!plannedSemesterSchedules[currentSemesterId].classes.length">Add some classes you want to take next semester!</p>
                 <table class="table table-condensed">
                     <thead>
                     <tr ng-show="plannedSemesterSchedules[currentSemesterId].classes.length">
-                            <th>Course</th>
-                            <th>Instructor</th>
-                            <th>Class Periods</th>
-                            <th>Hrs</th>
-                            <th></th>
+                        <th>Course</th>
+                        <th>Instructor</th>
+                        <th>Class Periods</th>
+                        <th>Hrs</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody ng-show="!plannedSemesterSchedules[currentSemesterId].classes.length">
+                        <tr>
+                            <td>Add some classes you want to take this semester!</td>
                         </tr>
-                        </thead>
-                        <tbody class="selectable-tbody" ng-click="updateSelectedCourse(course)" ng-repeat="course in plannedSemesterSchedules[currentSemesterId].classes">
-                        <tr class="selectable-td" id="plannedCourse-{{$index}}">
-                            <td>{{ getCID(course) }}</td>
-                            <td>{{ course.professor }}</td>
-                            <td>{{ classPeriodsToString(course.timePlaces) }}</td>
-                            <td>{{ course.credits }}</td>
-                            <td><a ng-click="removeCourseFromPlan(course)" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-minus"></span></a></td>
-                        </tr>
-                        </tbody>
-                        <!--<tr ng-show="plannedCourses.length">-->
-                            <!--<td></td>-->
-                            <!--<td></td>-->
-                            <!--<td><span class="pull-right"><b>Total Hrs:</b></span></td>-->
-                            <!--<td><b>{{ sumPlannedCredits }}</b></td>-->
-                            <!--<td></td>-->
-                        <!--</tr>-->
-                    </table>
-                </div>
-                <div id="register-buttons" class="pull-right">
-                    <button ng-show="plannedSemesterSchedules[currentSemesterId].classes.length" ng-click="registerClasses()" class="btn btn-xs btn-primary" ng-class="{ disabled: added }" data-toggle="modal" data-target="#registrationIframeModal">
-                        <span ng-show="!added"><span class="glyphicon glyphicon-ok"></span>  Register All Courses</span>
-                        <span ng-show="added"><span class="glyphicon glyphicon-thumbs-up"></span>  Courses Registered!</span>
-                    </button>
-                    <button ng-show="plannedSemesterSchedules[currentSemesterId].classes.length" ng-click="savePlan()" class="btn btn-xs btn-primary" ng-class="{ disabled: saved }">
-                        <span ng-show="!saved"><span class="glyphicon glyphicon-save"></span>  Save Plan</span>
-                        <span ng-show="saved"><span class="glyphicon glyphicon-saved"></span>  Plan saved!</span>
-                    </button>
-                </div>
-                <br><br>
+                    </tbody>
+                    <tbody class="selectable-tbody" ng-click="updateSelectedCourse(course)" ng-repeat="course in plannedSemesterSchedules[currentSemesterId].classes">
+                    <tr class="selectable-td" id="plannedCourse-{{$index}}">
+                        <td>{{ getCID(course) }}</td>
+                        <td>{{ course.professor }}</td>
+                        <td>{{ classPeriodsToString(course.timePlaces) }}</td>
+                        <td>{{ course.credits }}</td>
+                        <td><a ng-click="removeCourseFromPlan(course)" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-minus"></span></a></td>
+                    </tr>
+                    </tbody>
+                    <!--<tr ng-show="plannedCourses.length">-->
+                        <!--<td></td>-->
+                        <!--<td></td>-->
+                        <!--<td><span class="pull-right"><b>Total Hrs:</b></span></td>-->
+                        <!--<td><b>{{ sumPlannedCredits }}</b></td>-->
+                        <!--<td></td>-->
+                    <!--</tr>-->
+                </table>
+            </div>
+            <div id="register-buttons" class="pull-right">
+                <button ng-show="plannedSemesterSchedules[currentSemesterId].classes.length" ng-click="registerClasses()" class="btn btn-xs btn-primary" ng-class="{ disabled: added }" data-toggle="modal" data-target="#registrationIframeModal">
+                    <span ng-show="!added"><span class="glyphicon glyphicon-ok"></span>  Register All Courses</span>
+                    <span ng-show="added"><span class="glyphicon glyphicon-thumbs-up"></span>  Courses Registered!</span>
+                </button>
+                <button ng-show="plannedSemesterSchedules[currentSemesterId].classes.length" ng-click="savePlan()" class="btn btn-xs btn-primary" ng-class="{ disabled: saved }">
+                    <span ng-show="!saved"><span class="glyphicon glyphicon-save"></span>  Save Plan</span>
+                    <span ng-show="saved"><span class="glyphicon glyphicon-saved"></span>  Plan saved!</span>
+                </button>
+            </div>
+            <br/><br/>
+
+
             <div class="well">
                 <!--<button ng-click="viewWeekLayout()" class="btn btn-primary" data-toggle="modal" data-target="#weekLayoutModal">-->
                 <!--<span><span class="glyphicon glyphicon-calendar"></span>  View Details</span>-->
